@@ -192,41 +192,45 @@
 
         <!-- 2. MAIN RIGHT CANVAS (AIRY WHITESPACE) -->
         <div class="flex-1 md:ml-64 xl:ml-72 min-h-screen flex flex-col justify-between">
-            <!-- Global Top Header Bar (Subtle & Airy) -->
-            <header class="px-6 sm:px-10 lg:px-14 pt-8 pb-4 flex items-center justify-between gap-4">
-                <!-- Left Mobile Hamburger & Global Search Bar -->
-                <div class="flex items-center space-x-3 w-full max-w-xl">
-                    <button @click="sidebarOpen = true" class="md:hidden p-2 rounded-full border border-[#d9d9d9] bg-white text-black/80">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                    </button>
+            @hasSection('top_navbar')
+                @yield('top_navbar')
+            @else
+                <!-- Global Top Header Bar (Subtle & Airy) -->
+                <header class="px-6 sm:px-10 lg:px-14 pt-8 pb-4 flex items-center justify-between gap-4">
+                    <!-- Left Mobile Hamburger & Global Search Bar -->
+                    <div class="flex items-center space-x-3 w-full max-w-xl">
+                        <button @click="sidebarOpen = true" class="md:hidden p-2 rounded-full border border-[#d9d9d9] bg-white text-black/80">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        </button>
 
-                    <!-- Global Search Bar -->
-                    <div class="relative w-full">
-                        <input type="text" 
-                               placeholder="Cari risalah, agenda, atau berkas transkrip..." 
-                               class="w-full bg-white border border-[#d9d9d9] rounded-full pl-11 pr-14 py-2.5 text-[14px] text-black placeholder-black/40 focus:outline-none focus:border-black transition-colors">
-                        <svg class="w-4 h-4 text-black/40 absolute left-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                        <span class="absolute right-3.5 top-2.5 text-[11px] font-mono text-black/40 bg-[#F8F7F3] border border-[#d9d9d9] px-2 py-0.5 rounded-full">⌘K</span>
+                        <!-- Global Search Bar -->
+                        <div class="relative w-full">
+                            <input type="text" 
+                                   placeholder="Cari risalah, agenda, atau berkas transkrip..." 
+                                   class="w-full bg-white border border-[#d9d9d9] rounded-full pl-11 pr-14 py-2.5 text-[14px] text-black placeholder-black/40 focus:outline-none focus:border-black transition-colors">
+                            <svg class="w-4 h-4 text-black/40 absolute left-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <span class="absolute right-3.5 top-2.5 text-[11px] font-mono text-black/40 bg-[#F8F7F3] border border-[#d9d9d9] px-2 py-0.5 rounded-full">⌘K</span>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Right Quick Action & Notification -->
-                <div class="flex items-center space-x-3 shrink-0">
-                    <a href="{{ url('/history') }}" class="hidden sm:flex p-2.5 rounded-full bg-white border border-[#d9d9d9] text-black/60 hover:text-black transition-colors" title="Pemberitahuan">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                    </a>
+                    <!-- Right Quick Action & Notification -->
+                    <div class="flex items-center space-x-3 shrink-0">
+                        <a href="{{ url('/history') }}" class="hidden sm:flex p-2.5 rounded-full bg-white border border-[#d9d9d9] text-black/60 hover:text-black transition-colors" title="Pemberitahuan">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                        </a>
 
-                    <a href="{{ url('/add-memo') }}" class="inline-flex items-center space-x-2 bg-black text-white hover:bg-black/85 rounded-full px-5 py-2.5 text-[13px] font-medium transition-transform active:scale-95">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        <span>Rapat Baru</span>
-                    </a>
-                </div>
-            </header>
+                        <a href="{{ url('/add-memo') }}" class="inline-flex items-center space-x-2 bg-black text-white hover:bg-black/85 rounded-full px-5 py-2.5 text-[13px] font-medium transition-transform active:scale-95">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            <span>Rapat Baru</span>
+                        </a>
+                    </div>
+                </header>
+            @endif
 
             <!-- Main Content Area with Massive Breathing Room (p-8 sm:p-12 lg:p-16) -->
-            <main class="flex-1 px-6 sm:px-10 lg:px-14 py-6">
+            <main class="@yield('main_class', 'flex-1 px-6 sm:px-10 lg:px-14 py-6')">
                 @yield('content')
             </main>
 

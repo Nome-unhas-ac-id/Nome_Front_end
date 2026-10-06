@@ -183,20 +183,137 @@
                 </div>
             </div>
 
-            <!-- VIEW 1: DASHBOARD -->
-            <div x-show="currentView === 'dashboard'" class="space-y-16">
-                <!-- Macro Greeting -->
-                <div class="space-y-3 pt-2">
-                    <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white border border-[#d9d9d9] text-[12px] font-medium text-black/60">
-                        <span>Fakultas Teknik &bull; Universitas Hasanuddin</span>
+            <!-- VIEW 1: DASHBOARD (HERO SECTION + WARM LOWER CANVAS) -->
+            <div x-show="currentView === 'dashboard'" class="-m-8 sm:-m-12 lg:-m-14 space-y-0">
+                <!-- 1. TOP NAVBAR -->
+                <header class="bg-white border-b border-[#d9d9d9]/60 px-6 sm:px-10 lg:px-14 py-4 sticky top-0 z-30 flex items-center justify-between gap-4">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-xl bg-black text-white flex items-center justify-center font-black text-base tracking-tighter">N</span>
+                        <span class="text-[22px] font-black tracking-tight text-black leading-none">Nome.</span>
                     </div>
-                    <h1 class="text-[48px] sm:text-[64px] lg:text-[76px] font-black tracking-tighter text-black leading-[1.05]">
-                        Ruang Kerja Notulensi.
-                    </h1>
-                    <p class="text-[18px] text-black/55 max-w-2xl font-normal leading-relaxed">
-                        Sistem notulensi rapat cerdas berbasis kecerdasan buatan. Mengubah diskusi sidang menjadi transkrip terverifikasi dan risalah keputusan dinas.
-                    </p>
-                </div>
+
+                    <nav class="hidden md:flex items-center space-x-8 text-[13px] font-medium text-black">
+                        <button @click="currentView = 'dashboard'" class="text-black font-semibold hover:text-black/60 transition-colors">Workspace</button>
+                        <button @click="currentView = 'add-memo'" class="text-black/70 hover:text-black transition-colors">Buat Risalah</button>
+                        <button @click="currentView = 'history'" class="text-black/70 hover:text-black transition-colors">Arsip Sidang</button>
+                        <button @click="currentView = 'preview'" class="text-black/70 hover:text-black transition-colors">Editor AI</button>
+                    </nav>
+
+                    <button @click="currentView = 'add-memo'" class="inline-flex items-center space-x-2 bg-black text-white hover:bg-black/85 rounded-full px-5 py-2.5 text-[13px] font-semibold transition-transform active:scale-95">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+                        <span>Mulai Rapat</span>
+                    </button>
+                </header>
+
+                <!-- 2. TWO-COLUMN HERO SECTION (BG-WHITE) -->
+                <section class="w-full bg-white border-b border-[#d9d9d9]/70 py-16 sm:py-20 px-6 sm:px-10 lg:px-14">
+                    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+                        <!-- Left Column (Typography & CTA) -->
+                        <div class="lg:col-span-6 space-y-8">
+                            <div class="space-y-4">
+                                <div class="text-[12px] font-semibold tracking-wider uppercase text-black/50">
+                                    Platform Transkripsi & Risalah AI
+                                </div>
+                                <h1 class="text-[44px] sm:text-[56px] lg:text-[62px] font-black tracking-tighter text-black leading-[1.05]">
+                                    1,090 Risalah dibuat untuk <span class="relative inline-block text-black">Notulensi<span class="absolute left-0 bottom-1 sm:bottom-2 w-full h-3 sm:h-3.5 bg-[#FFD027] -z-10 rounded-xs"></span></span> otomatis
+                                </h1>
+                                <p class="text-[17px] text-gray-500 font-normal leading-relaxed max-w-lg">
+                                    Masuki era baru perumusan risalah sidang dinas menggunakan transkripsi suara monokromatik dan ringkasan berbasis AI.
+                                </p>
+                            </div>
+
+                            <div>
+                                <button @click="currentView = 'add-memo'" class="inline-flex items-center space-x-2.5 bg-black text-white hover:bg-black/85 rounded-xl px-8 py-4 text-[15px] font-bold transition-transform active:scale-95">
+                                    <span>Mulai Notulensi Sekarang</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </button>
+                            </div>
+
+                            <div class="pt-6 border-t border-[#d9d9d9]/60 flex flex-col sm:flex-row sm:items-center gap-5">
+                                <div id="hero-illustration-bottom-left" class="w-20 h-20 sm:w-24 sm:h-24 shrink-0 bg-[#F8F7F3] rounded-2xl border border-[#d9d9d9]/70 flex items-center justify-center p-2 relative overflow-hidden">
+                                    <svg class="w-full h-full text-black" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="50" cy="50" r="38" stroke-dasharray="2 2" stroke-width="1"/>
+                                        <rect x="28" y="24" width="40" height="52" rx="4" fill="white"/>
+                                        <path d="M36 36h14M36 46h24M36 56h18"/>
+                                        <path d="M60 34l4 4 10-10" stroke-width="2.2"/>
+                                    </svg>
+                                </div>
+                                <div class="space-y-1">
+                                    <h4 class="text-[14px] font-bold text-black tracking-tight">Alur Kerja Terintegrasi</h4>
+                                    <p class="text-[13px] text-gray-500 leading-relaxed max-w-sm">
+                                        Diarisasi pembicara otomatis, ringkasan keputusan dinas, dan ekspor instan tanpa rekap manual.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column (Overlapping Illustrations Grid) -->
+                        <div class="lg:col-span-6 relative flex items-center justify-center">
+                            <div class="relative w-full h-[440px] sm:h-[480px] flex items-center justify-center select-none">
+                                <div class="absolute inset-0 border border-dashed border-[#d9d9d9]/60 rounded-3xl -z-10 bg-[#fafafa]/50"></div>
+
+                                <!-- Slot 1: Top Floating Card -->
+                                <div id="hero-illustration-top-card" class="absolute top-2 right-6 sm:right-12 z-20 w-44 bg-white border border-black rounded-2xl p-3">
+                                    <div class="text-[9px] font-mono text-black/40 border-b border-[#d9d9d9]/60 pb-1 mb-1.5 flex justify-between">
+                                        <span>#hero-illustration-top-card</span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                    </div>
+                                    <svg class="w-full h-24 text-black" viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M60 40 Q80 20 100 40 Q110 60 90 70 Q70 75 60 40 Z" fill="white"/>
+                                        <path d="M55 35 Q80 15 105 35 Q105 50 95 50 Q75 40 55 35 Z" fill="black"/>
+                                        <circle cx="75" cy="45" r="2" fill="black"/><circle cx="88" cy="45" r="2" fill="black"/>
+                                        <path d="M78 55 Q82 60 86 55"/>
+                                        <path d="M110 50 Q125 35 130 45 Q125 55 115 60" stroke-width="2.2"/>
+                                    </svg>
+                                </div>
+
+                                <!-- Slot 2: Right Card -->
+                                <div id="hero-illustration-right-card" class="absolute top-24 -right-2 sm:right-2 z-30 w-52 bg-white border border-black rounded-2xl p-3">
+                                    <div class="text-[9px] font-mono text-black/40 border-b border-[#d9d9d9]/60 pb-1 mb-1.5 flex justify-between">
+                                        <span>#hero-illustration-right-card</span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                    </div>
+                                    <svg class="w-full h-28 text-black" viewBox="0 0 180 120" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="25" y="25" width="65" height="55" rx="6" fill="white"/>
+                                        <circle cx="58" cy="48" r="14" fill="white"/>
+                                        <path d="M120 30 Q140 10 160 30 Q150 45 135 40 Z" fill="black"/>
+                                        <path d="M135 70 L115 85 L95 72" stroke-width="2.5"/>
+                                    </svg>
+                                </div>
+
+                                <!-- Slot 3: Main Central Character -->
+                                <div id="hero-illustration-main" class="relative z-20 w-72 sm:w-80 bg-white border border-black rounded-3xl p-4 mt-16">
+                                    <div class="text-[9px] font-mono text-black/40 border-b border-[#d9d9d9]/60 pb-1 mb-2 flex justify-between">
+                                        <span>#hero-illustration-main</span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-black"></span>
+                                    </div>
+                                    <svg class="w-full h-44 text-black" viewBox="0 0 240 160" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M90 60 Q110 30 130 60 Q135 85 115 95 Q95 90 90 60 Z" fill="white"/>
+                                        <path d="M85 55 Q105 30 135 50 Q130 65 120 60 Q100 50 85 55 Z" fill="black"/>
+                                        <circle cx="105" cy="65" r="7"/><circle cx="122" cy="65" r="7"/>
+                                        <rect x="145" y="85" width="75" height="50" rx="6" fill="black"/>
+                                        <line x1="135" y1="135" x2="225" y2="135" stroke-width="3"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. LOWER DASHBOARD UI (WARM CANVAS #F8F7F3) -->
+                <div class="bg-[#F8F7F3] p-8 sm:p-12 lg:p-14 space-y-16">
+                    <!-- Macro Greeting -->
+                    <div class="space-y-3 pt-2">
+                        <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white border border-[#d9d9d9] text-[12px] font-medium text-black/60">
+                            <span>Fakultas Teknik &bull; Universitas Hasanuddin</span>
+                        </div>
+                        <h2 class="text-[40px] sm:text-[52px] lg:text-[60px] font-black tracking-tighter text-black leading-[1.05]">
+                            Ruang Kerja Notulensi.
+                        </h2>
+                        <p class="text-[17px] text-black/55 max-w-2xl font-normal leading-relaxed">
+                            Sistem notulensi rapat cerdas berbasis kecerdasan buatan. Mengubah diskusi sidang menjadi transkrip terverifikasi dan risalah keputusan dinas.
+                        </p>
+                    </div>
 
                 <!-- Pastel Workspace Folders -->
                 <div class="space-y-6">
