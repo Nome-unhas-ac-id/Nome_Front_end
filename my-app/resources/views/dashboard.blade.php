@@ -24,9 +24,9 @@
                     </p>
                 </div>
 
-                <!-- CTA Button (Secondary Color #ff5347, rounded-xl, white text) -->
+                <!-- CTA Button (Secondary Color #ff5347, rounded-full, white text) -->
                 <div class="animate-fade-in-up-delay">
-                    <a href="{{ url('/add-memo') }}" class="inline-flex items-center space-x-2.5 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-xl px-8 py-4 text-[15px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 shadow-none">
+                    <a href="{{ url('/add-memo') }}" class="inline-flex items-center space-x-2.5 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-8 py-4 text-[15px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 shadow-none">
                         <span>Mulai Rapat Sekarang</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </a>
@@ -383,7 +383,7 @@
                         </div>
 
                         <div class="flex items-center space-x-3 shrink-0">
-                            <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                            <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
                                 Pratinjau
                             </a>
                             <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
@@ -416,7 +416,7 @@
                         </div>
 
                         <div class="flex items-center space-x-3 shrink-0">
-                            <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                            <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
                                 Pratinjau
                             </a>
                             <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
@@ -449,7 +449,7 @@
                         </div>
 
                         <div class="flex items-center space-x-3 shrink-0">
-                            <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                            <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
                                 Pratinjau
                             </a>
                             <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">

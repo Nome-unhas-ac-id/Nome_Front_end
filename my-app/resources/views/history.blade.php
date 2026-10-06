@@ -136,41 +136,41 @@
             <div class="flex flex-wrap items-center gap-1.5">
                 <button @click="selectedCategory = 'all'" 
                         :class="selectedCategory === 'all' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                        class="px-4 py-2 rounded-lg text-[13px] font-medium transition-all">
+                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-all">
                     Semua
                 </button>
                 <button @click="selectedCategory = 'produk'" 
                         :class="selectedCategory === 'produk' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                        class="px-4 py-2 rounded-lg text-[13px] font-medium transition-all">
+                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-all">
                     Produk
                 </button>
                 <button @click="selectedCategory = 'desain'" 
                         :class="selectedCategory === 'desain' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                        class="px-4 py-2 rounded-lg text-[13px] font-medium transition-all">
+                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-all">
                     Desain
                 </button>
                 <button @click="selectedCategory = 'teknis'" 
                         :class="selectedCategory === 'teknis' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                        class="px-4 py-2 rounded-lg text-[13px] font-medium transition-all">
+                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-all">
                     Teknis
                 </button>
                 <button @click="selectedCategory = 'eksplorasi'" 
                         :class="selectedCategory === 'eksplorasi' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                        class="px-4 py-2 rounded-lg text-[13px] font-medium transition-all">
+                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-all">
                     Eksplorasi
                 </button>
             </div>
 
             <!-- View Mode Switcher -->
-            <div class="flex items-center p-1 bg-white border border-[#d9d9d9] rounded-lg text-[12px] font-medium">
+            <div class="flex items-center p-1 bg-white border border-[#d9d9d9] rounded-full text-[12px] font-medium">
                 <button @click="viewMode = 'grid'" 
                         :class="viewMode === 'grid' ? 'bg-black text-white' : 'text-black/50 hover:text-black'"
-                        class="px-3 py-1.5 rounded-md transition-colors">
+                        class="px-3.5 py-1.5 rounded-full transition-colors">
                     Galeri
                 </button>
                 <button @click="viewMode = 'list'" 
                         :class="viewMode === 'list' ? 'bg-black text-white' : 'text-black/50 hover:text-black'"
-                        class="px-3 py-1.5 rounded-md transition-colors">
+                        class="px-3.5 py-1.5 rounded-full transition-colors">
                     Daftar
                 </button>
             </div>
@@ -211,7 +211,7 @@
                     </div>
 
                     <div class="flex items-center space-x-2 pt-1" @click.stop>
-                        <a href="{{ url('/preview') }}" class="flex-1 text-center rounded-lg border border-[#d9d9d9] font-medium text-[13px] py-2 text-black/80 hover:bg-black hover:text-white transition-all">
+                        <a href="{{ url('/preview') }}" class="flex-1 text-center rounded-full border border-[#d9d9d9] font-medium text-[13px] py-2 text-black/80 hover:bg-black hover:text-white transition-all">
                             Buka Transkrip
                         </a>
                         <a href="{{ url('/preview') }}" class="flex-1 text-center rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white font-medium text-[13px] py-2 transition-all">
@@ -248,7 +248,7 @@
                 </div>
 
                 <div class="flex items-center space-x-3 shrink-0" @click.stop>
-                    <a href="{{ url('/preview') }}" class="px-5 py-2 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all">
+                    <a href="{{ url('/preview') }}" class="px-5 py-2 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all">
                         Transkrip
                     </a>
                     <a href="{{ url('/preview') }}" class="px-5 py-2 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-medium transition-all">

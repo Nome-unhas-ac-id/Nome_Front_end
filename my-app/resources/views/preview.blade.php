@@ -117,7 +117,7 @@
             <div class="flex flex-wrap items-center gap-3 shrink-0 self-start lg:self-auto">
                 <button type="button" 
                         @click="window.print()" 
-                        class="px-5 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm flex items-center space-x-2">
+                        class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm flex items-center space-x-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                     <span>Cetak Lembar</span>
                 </button>
@@ -125,14 +125,14 @@
                 <button type="button" 
                         @click="exportDocx()" 
                         :disabled="isExportingDocx" 
-                        class="px-5 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm flex items-center space-x-2">
+                        class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm flex items-center space-x-2">
                     <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     <span x-text="isExportingDocx ? 'Membuat...' : 'Ekspor Docx'"></span>
                 </button>
 
                 <button type="button" 
                         @click="exportPdf()" 
-                        :disabled="isExportingPdf"
+                        :disabled="isExportingPdf" 
                         class="px-6 py-2.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 flex items-center space-x-2">
                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                     <span x-text="isExportingPdf ? 'Menyiapkan...' : 'Ekspor PDF'"></span>
@@ -146,7 +146,7 @@
         <button type="button" 
                 @click="activeTab = 'document'" 
                 :class="activeTab === 'document' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                class="px-5 py-2 rounded-lg text-[13px] font-medium transition-colors flex items-center space-x-2">
+                class="px-5 py-2 rounded-full text-[13px] font-medium transition-colors flex items-center space-x-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
             <span>Lembar Dokumen (WYSIWYG)</span>
         </button>
@@ -154,7 +154,7 @@
         <button type="button" 
                 @click="activeTab = 'transcript'" 
                 :class="activeTab === 'transcript' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                class="px-5 py-2 rounded-lg text-[13px] font-medium transition-colors flex items-center space-x-2">
+                class="px-5 py-2 rounded-full text-[13px] font-medium transition-colors flex items-center space-x-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
             <span>Transkrip Suara & Diarisasi</span>
         </button>
@@ -162,7 +162,7 @@
         <button type="button" 
                 @click="activeTab = 'json'" 
                 :class="activeTab === 'json' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                class="px-5 py-2 rounded-lg text-[13px] font-medium transition-colors flex items-center space-x-2">
+                class="px-5 py-2 rounded-full text-[13px] font-medium transition-colors flex items-center space-x-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
             <span>Skema Data (JSON)</span>
         </button>

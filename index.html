@@ -237,7 +237,7 @@
                             </div>
 
                             <div class="animate-fade-in-up-delay">
-                                <button @click="currentView = 'add-memo'; memoStep = 1; memoTitle = ''" class="inline-flex items-center space-x-2.5 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-xl px-8 py-4 text-[15px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 shadow-none">
+                                <button @click="currentView = 'add-memo'; memoStep = 1; memoTitle = ''" class="inline-flex items-center space-x-2.5 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-8 py-4 text-[15px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 shadow-none">
                                     <span>Mulai Rapat Sekarang</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                 </button>
@@ -617,7 +617,7 @@
                                    class="w-full sm:w-56 border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[14px] text-black font-medium placeholder-black/30 transition-colors">
                             <button type="button" 
                                     @click="addAttendee()"
-                                    class="px-5 py-2 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors shrink-0 self-end sm:self-auto">
+                                    class="px-5 py-2 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors shrink-0 self-end sm:self-auto">
                                 + Tambah
                             </button>
                         </div>
@@ -720,7 +720,7 @@
                         </button>
 
                         <div class="flex items-center space-x-3">
-                            <button @click="currentView = 'dashboard'" class="px-6 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black/70 hover:bg-black hover:text-white transition-all">
+                            <button @click="currentView = 'dashboard'" class="px-6 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/70 hover:bg-black hover:text-white transition-all">
                                 Batal
                             </button>
                             <button @click="currentView = 'preview'; triggerToast('Rangkuman notulensi selesai!')" class="px-7 py-3 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[14px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">
@@ -1016,7 +1016,7 @@
                                             <p class="text-[12px] text-black/50">Tarik rekaman awan Zoom setelah sesi pertemuan.</p>
                                         </div>
                                     </div>
-                                    <button class="text-[13px] font-medium text-black hover:text-[#ff5347] border border-[#d9d9d9] rounded-lg px-4 py-1.5 hover:border-black transition-colors">Sambungkan</button>
+                                    <button class="text-[13px] font-medium text-black hover:text-[#ff5347] border border-[#d9d9d9] rounded-full px-4 py-1.5 hover:border-black transition-colors">Sambungkan</button>
                                 </div>
                             </div>
                         </div>
@@ -1040,7 +1040,7 @@
                         <p class="text-[15px] text-black/55 mt-1">Dokumen catatan rapi hasil rangkuman otomatis.</p>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button onclick="window.print()" class="px-5 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Cetak</button>
+                        <button onclick="window.print()" class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Cetak</button>
                         <button @click="triggerToast('Berkas PDF berhasil diunduh!')" class="px-6 py-2.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">Ekspor PDF</button>
                     </div>
                 </div>

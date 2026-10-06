@@ -278,7 +278,7 @@
                             Tingkatkan kapasitas transkripsi audio tanpa batas untuk mendukung diskusi tim, proyek freelance, atau komunitas Anda.
                         </p>
                         <div class="pt-2">
-                            <button type="button" class="px-6 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors">
+                            <button type="button" class="px-6 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors">
                                 Tingkatkan Kuota
                             </button>
                         </div>
@@ -323,7 +323,7 @@
                                 <p class="text-[12px] text-black/50">Tarik rekaman awan Zoom setelah sesi pertemuan usai.</p>
                             </div>
                         </div>
-                        <button type="button" class="text-[13px] font-medium text-black hover:text-[#ff5347] border border-[#d9d9d9] rounded-lg px-4 py-1.5 hover:border-black transition-colors">
+                        <button type="button" class="text-[13px] font-medium text-black hover:text-[#ff5347] border border-[#d9d9d9] rounded-full px-4 py-1.5 hover:border-black transition-colors">
                             Sambungkan
                         </button>
                     </div>
@@ -340,7 +340,7 @@
                                 <p class="text-[12px] text-black/50">Arsipkan otomatis ekspor berkas notulensi ke folder Google Drive Anda.</p>
                             </div>
                         </div>
-                        <button type="button" class="text-[13px] font-medium text-black hover:text-[#ff5347] border border-[#d9d9d9] rounded-lg px-4 py-1.5 hover:border-black transition-colors">
+                        <button type="button" class="text-[13px] font-medium text-black hover:text-[#ff5347] border border-[#d9d9d9] rounded-full px-4 py-1.5 hover:border-black transition-colors">
                             Sambungkan
                         </button>
                     </div>
