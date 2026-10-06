@@ -9,13 +9,12 @@
         meetingTimeStart: '09:00',
         meetingTimeEnd: '11:00',
         meetingLocation: '',
-        meetingLeader: 'Pengguna Utama',
-        meetingNotetaker: 'Pengguna Notulis',
+        meetingLeader: '',
+        meetingNotetaker: '',
         agenda: '',
         attendees: [
-            { name: 'Pengguna Utama', role: 'Koordinator Tim' },
-            { name: 'Rian Pratama', role: 'Manajer Produk' },
-            { name: 'Siti Sarah', role: 'Desainer UI/UX' }
+            { name: 'Peserta 1', role: 'Koordinator' },
+            { name: 'Peserta 2', role: 'Notulis' }
         ],
         newAttendeeName: '',
         newAttendeeRole: '',
@@ -174,12 +173,12 @@
                 <input type="text" 
                        x-model="newAttendeeName"
                        @keydown.enter.prevent="addAttendee()"
-                       placeholder="Nama peserta..."
+                       placeholder="Peserta 1..."
                        class="flex-1 w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[14px] text-black font-medium placeholder-black/30 transition-colors">
                 <input type="text" 
                        x-model="newAttendeeRole"
                        @keydown.enter.prevent="addAttendee()"
-                       placeholder="Jabatan / Peran..."
+                       placeholder="Peran (opsional)..."
                        class="w-full sm:w-56 border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[14px] text-black font-medium placeholder-black/30 transition-colors">
                 <button type="button" 
                         @click="addAttendee()"
@@ -188,19 +187,15 @@
                 </button>
             </div>
 
-            <!-- Clean Tag Pills of Attendees with Simple Colored Div Placeholder -->
-            <div class="flex flex-wrap gap-2.5 pt-2">
+            <!-- Clean Tag Pills of Attendees (Borderless soft gray, no bullets) -->
+            <div class="flex flex-wrap gap-2 pt-2">
                 <template x-for="(att, idx) in attendees" :key="idx">
-                    <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full border border-[#d9d9d9] bg-white text-[13px] text-black">
-                        <!-- Simple Colored Div Placeholder for Avatar -->
-                        <div class="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-[10px] font-bold text-black/70"
-                             x-text="att.name.charAt(0)"></div>
+                    <div class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full border-none bg-gray-100/80 text-sm text-gray-800">
                         <span class="font-medium" x-text="att.name"></span>
-                        <span class="text-black/40 text-[11px]">&bull;</span>
-                        <span class="text-black/55 text-[11px]" x-text="att.role"></span>
+                        <span class="text-gray-500" x-text="att.role"></span>
                         <button type="button" 
                                 @click="removeAttendee(idx)"
-                                class="text-black/40 hover:text-red-500 transition-colors ml-1"
+                                class="text-gray-400 hover:text-black transition-colors ml-1 leading-none"
                                 title="Hapus">
                             &times;
                         </button>
@@ -281,11 +276,11 @@
                 <!-- Uploaded file display -->
                 <div x-show="uploadedFileName" class="flex items-center justify-between text-[13px] border-b border-[#d9d9d9] py-2">
                     <div class="flex items-center space-x-2">
-                        <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-black/60"></div>
                         <span class="font-medium text-black" x-text="uploadedFileName"></span>
                         <span class="text-black/40" x-text="'(' + uploadedFileSize + ')'"></span>
                     </div>
-                    <span class="text-emerald-700 font-medium">Siap diproses</span>
+                    <span class="text-gray-600 font-medium">Siap diproses</span>
                 </div>
             </div>
         </div>

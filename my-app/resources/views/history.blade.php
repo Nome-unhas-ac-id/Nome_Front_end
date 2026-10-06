@@ -188,9 +188,9 @@
                         <span class="font-mono text-black/45" x-text="memo.letterNo"></span>
                         <span class="px-3 py-1 rounded-full text-[11px] font-semibold border"
                               :class="{
-                                  'bg-emerald-50 text-emerald-800 border-emerald-200/60': memo.status === 'completed',
-                                  'bg-amber-50 text-amber-800 border-amber-200/60': memo.status === 'review',
-                                  'bg-gray-100 text-gray-700 border-gray-300/60': memo.status === 'draft'
+                                  'bg-transparent text-gray-600 border-[#d9d9d9]': memo.status === 'completed',
+                                  'bg-gray-100 text-gray-700 border-gray-300/60': memo.status === 'review',
+                                  'bg-gray-50 text-gray-500 border-gray-200': memo.status === 'draft'
                               }" 
                               x-text="memo.statusLabel"></span>
                     </div>
@@ -236,9 +236,9 @@
                         <span class="w-1 h-1 rounded-full bg-black/20"></span>
                         <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold border"
                               :class="{
-                                  'bg-emerald-50 text-emerald-800 border-emerald-200/60': memo.status === 'completed',
-                                  'bg-amber-50 text-amber-800 border-amber-200/60': memo.status === 'review',
-                                  'bg-gray-100 text-gray-700 border-gray-300/60': memo.status === 'draft'
+                                  'bg-transparent text-gray-600 border-[#d9d9d9]': memo.status === 'completed',
+                                  'bg-gray-100 text-gray-700 border-gray-300/60': memo.status === 'review',
+                                  'bg-gray-50 text-gray-500 border-gray-200': memo.status === 'draft'
                               }" 
                               x-text="memo.statusLabel"></span>
                     </div>

@@ -63,7 +63,7 @@
                          class="absolute top-2 right-6 sm:right-16 z-20 w-44 sm:w-52 bg-white border border-black rounded-2xl p-3 shadow-none hover:rotate-1 transition-transform">
                         <div class="text-[10px] font-mono text-black/40 border-b border-[#d9d9d9]/60 pb-1 mb-2 flex items-center justify-between">
                             <span>#hero-illustration-top-card</span>
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            <span class="w-2 h-2 rounded-full bg-[#ff5347]"></span>
                         </div>
                         <!-- Default SVG: Waving character -->
                         <svg class="w-full h-28 sm:h-32 text-black" viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -250,20 +250,20 @@
                         </div>
                     </a>
 
-                    <!-- Folder 4: Soft Mint Pastel -->
-                    <a href="{{ url('/memo') }}" class="group block bg-[#EDF7EE] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
+                    <!-- Folder 4: Minimal Neutral Gray -->
+                    <a href="{{ url('/memo') }}" class="group block bg-[#F4F4F3] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
                         <div class="flex items-center justify-between mb-8">
                             <span class="w-10 h-10 rounded-2xl bg-white/80 flex items-center justify-center text-black">
-                                <svg class="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                                <svg class="w-5 h-5 text-black/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                             </span>
                             <span class="text-[12px] font-mono font-medium text-black/50 bg-white/60 px-2.5 py-0.5 rounded-full">3 Catatan</span>
                         </div>
-                        <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-emerald-900 transition-colors">
+                        <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
                             Eksplorasi Ide Baru
                         </h4>
                         <p class="text-[13px] text-black/50 mt-1">Brainstorming gagasan dan eksperimen</p>
-                        <div class="flex items-center space-x-1.5 mt-5 pt-4 border-t border-emerald-950/5 text-[11px] font-medium text-black/40">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                        <div class="flex items-center space-x-1.5 mt-5 pt-4 border-t border-black/5 text-[11px] font-medium text-black/40">
+                            <span class="w-1.5 h-1.5 rounded-full bg-black/40"></span>
                             <span>Diperbarui 2 minggu lalu</span>
                         </div>
                     </a>
@@ -368,7 +368,7 @@
                                 <span class="text-black/30">&bull;</span>
                                 <span class="text-black/55 font-medium">06 Okt 2026 &bull; 09:00 WIB</span>
                                 <span class="text-black/30">&bull;</span>
-                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-transparent text-gray-600 border border-[#d9d9d9]">
                                     Selesai
                                 </span>
                             </div>
@@ -401,7 +401,7 @@
                                 <span class="text-black/30">&bull;</span>
                                 <span class="text-black/55 font-medium">03 Okt 2026 &bull; 13:30 WIB</span>
                                 <span class="text-black/30">&bull;</span>
-                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-transparent text-gray-600 border border-[#d9d9d9]">
                                     Selesai
                                 </span>
                             </div>

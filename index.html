@@ -98,14 +98,13 @@
              memoTimeStart: '09:00',
              memoTimeEnd: '11:00',
              memoLocation: '',
-             memoLeader: 'Pengguna Utama',
-             memoNotetaker: 'Pengguna Notulis',
+             memoLeader: '',
+             memoNotetaker: '',
              memoAudioMode: 'record',
              uploadedAudioName: null,
              attendees: [
-                 { name: 'Pengguna Utama', role: 'Koordinator Tim' },
-                 { name: 'Rian Pratama', role: 'Manajer Produk' },
-                 { name: 'Siti Sarah', role: 'Desainer UI/UX' }
+                 { name: 'Peserta 1', role: 'Koordinator' },
+                 { name: 'Peserta 2', role: 'Notulis' }
              ],
              newAttName: '',
              newAttRole: '',
@@ -149,7 +148,7 @@
              x-transition
              class="fixed bottom-8 right-8 z-50 bg-black text-white border border-[#d9d9d9]/40 rounded-full px-6 py-3 flex items-center space-x-3 text-[14px] font-medium"
              style="display: none;">
-            <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-[#ff5347]"></div>
             <span x-text="toastMsg"></span>
         </div>
 
@@ -265,7 +264,7 @@
                                 <div id="hero-illustration-top-card" class="absolute top-2 right-6 sm:right-12 z-20 w-44 bg-white border border-black rounded-2xl p-3">
                                     <div class="text-[9px] font-mono text-black/40 border-b border-[#d9d9d9]/60 pb-1 mb-1.5 flex justify-between">
                                         <span>#hero-illustration-top-card</span>
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-[#ff5347]"></span>
                                     </div>
                                     <svg class="w-full h-24 text-black" viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M60 40 Q80 20 100 40 Q110 60 90 70 Q70 75 60 40 Z" fill="white"/>
@@ -367,9 +366,9 @@
                                 </div>
                             </div>
 
-                            <div @click="currentView = 'history'" class="bg-[#EDF7EE] rounded-3xl p-6 flex flex-col justify-between h-44 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
+                            <div @click="currentView = 'history'" class="bg-[#F4F4F3] rounded-3xl p-6 flex flex-col justify-between h-44 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-[12px] font-bold tracking-wider uppercase text-[#166534]">Eksplorasi</span>
+                                    <span class="text-[12px] font-bold tracking-wider uppercase text-black/70">Eksplorasi</span>
                                     <span class="text-[11px] font-mono font-medium text-black/50 bg-white/60 px-2.5 py-0.5 rounded-full">3 Catatan</span>
                                 </div>
                                 <div>
@@ -456,7 +455,7 @@
                                 </div>
 
                                 <div class="flex items-center space-x-3 shrink-0">
-                                    <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                                    <span class="px-3 py-1 rounded-full text-[11px] font-medium bg-transparent text-gray-600 border border-[#d9d9d9]">
                                         Selesai
                                     </span>
                                     <button class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
@@ -485,7 +484,7 @@
                                 </div>
 
                                 <div class="flex items-center space-x-3 shrink-0">
-                                    <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                                    <span class="px-3 py-1 rounded-full text-[11px] font-medium bg-transparent text-gray-600 border border-[#d9d9d9]">
                                         Selesai
                                     </span>
                                     <button class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
@@ -608,12 +607,12 @@
                             <input type="text" 
                                    x-model="newAttName"
                                    @keydown.enter.prevent="addAttendee()"
-                                   placeholder="Nama peserta..."
+                                   placeholder="Peserta 1..."
                                    class="flex-1 w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[14px] text-black font-medium placeholder-black/30 transition-colors">
                             <input type="text" 
                                    x-model="newAttRole"
                                    @keydown.enter.prevent="addAttendee()"
-                                   placeholder="Jabatan / Peran..."
+                                   placeholder="Peran (opsional)..."
                                    class="w-full sm:w-56 border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[14px] text-black font-medium placeholder-black/30 transition-colors">
                             <button type="button" 
                                     @click="addAttendee()"
@@ -622,18 +621,16 @@
                             </button>
                         </div>
 
-                        <!-- Tags with Simple Colored Div Placeholder -->
-                        <div class="flex flex-wrap gap-2.5 pt-2">
+                        <!-- Tags with Clean Attendee Styling -->
+                        <div class="flex flex-wrap gap-2 pt-2">
                             <template x-for="(att, idx) in attendees" :key="idx">
-                                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full border border-[#d9d9d9] bg-white text-[13px] text-black">
-                                    <div class="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-[10px] font-bold text-black/70"
-                                         x-text="att.name.charAt(0)"></div>
+                                <div class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full border-none bg-gray-100/80 text-sm text-gray-800">
                                     <span class="font-medium" x-text="att.name"></span>
-                                    <span class="text-black/40 text-[11px]">&bull;</span>
-                                    <span class="text-black/55 text-[11px]" x-text="att.role"></span>
+                                    <span class="text-gray-500" x-text="att.role"></span>
                                     <button type="button" 
                                             @click="removeAttendee(idx)"
-                                            class="text-black/40 hover:text-red-500 transition-colors ml-1">
+                                            class="text-gray-400 hover:text-black transition-colors ml-1 leading-none"
+                                            title="Hapus">
                                         &times;
                                     </button>
                                 </div>
@@ -705,10 +702,10 @@
 
                             <div x-show="uploadedAudioName" class="flex items-center justify-between text-[13px] border-b border-[#d9d9d9] py-2">
                                 <div class="flex items-center space-x-2">
-                                    <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-black/60"></div>
                                     <span class="font-medium text-black" x-text="uploadedAudioName"></span>
                                 </div>
-                                <span class="text-emerald-700 font-medium">Siap diproses</span>
+                                <span class="text-gray-600 font-medium">Siap diproses</span>
                             </div>
                         </div>
                     </div>
@@ -766,7 +763,7 @@
                         <div class="space-y-4">
                             <div class="flex items-center justify-between text-[12px]">
                                 <span class="font-mono text-black/45">RPT-2026-003</span>
-                                <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">Selesai</span>
+                                <span class="px-3 py-1 rounded-full text-[11px] font-medium bg-transparent text-gray-600 border border-[#d9d9d9]">Selesai</span>
                             </div>
                             <h2 class="text-[22px] font-extrabold text-black tracking-tight leading-snug hover:text-[#ff5347] transition-colors">
                                 Sinkronisasi Target Kuartal & Roadmap Fitur
@@ -786,7 +783,7 @@
                         <div class="space-y-4">
                             <div class="flex items-center justify-between text-[12px]">
                                 <span class="font-mono text-black/45">RPT-2026-002</span>
-                                <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">Selesai</span>
+                                <span class="px-3 py-1 rounded-full text-[11px] font-medium bg-transparent text-gray-600 border border-[#d9d9d9]">Selesai</span>
                             </div>
                             <h2 class="text-[22px] font-extrabold text-black tracking-tight leading-snug hover:text-[#ff5347] transition-colors">
                                 Diskusi Alur Pengguna & Uji Coba Tampilan Baru
@@ -1002,7 +999,7 @@
                                             <p class="text-[12px] text-black/50">Sinkronkan jadwal dan agenda rapat otomatis.</p>
                                         </div>
                                     </div>
-                                    <span class="text-[12px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">Tersambung</span>
+                                    <span class="text-[12px] font-medium text-gray-600 bg-transparent border border-[#d9d9d9] px-3 py-1 rounded-full">Tersambung</span>
                                 </div>
                                 <div class="bg-white border border-[#d9d9d9] rounded-2xl p-5 flex items-center justify-between">
                                     <div class="flex items-center space-x-4">
@@ -1060,7 +1057,7 @@
                         <h3 class="text-[15px] font-bold uppercase border-b border-[#d9d9d9] pb-1">I. Keterangan Rapat</h3>
                         <p class="text-[15px]"><strong>Agenda:</strong> Rapat Sinkronisasi Rencana Kerja & Roadmap Fitur</p>
                         <p class="text-[15px]"><strong>Hari/Tanggal:</strong> Rabu, 07 Oktober 2026 &bull; 09:00 - 11:45 WIB</p>
-                        <p class="text-[15px]"><strong>Koordinator:</strong> Pengguna Utama</p>
+                        <p class="text-[15px]"><strong>Koordinator:</strong> Peserta 1</p>
                     </div>
 
                     <div class="space-y-3">
@@ -1075,11 +1072,11 @@
                     <div class="pt-8 grid grid-cols-2 gap-8 text-[14px] text-center">
                         <div class="space-y-16">
                             <p class="text-black/80">Mengetahui,<br><strong class="text-black">Koordinator Tim</strong></p>
-                            <p class="font-bold underline">Pengguna Utama</p>
+                            <p class="font-bold underline">Peserta 1</p>
                         </div>
                         <div class="space-y-16">
                             <p class="text-black/80">07 Oktober 2026<br><strong class="text-black">Pencatat Notulensi</strong></p>
-                            <p class="font-bold underline">Pengguna Notulis</p>
+                            <p class="font-bold underline">Peserta 2</p>
                         </div>
                     </div>
                 </div>

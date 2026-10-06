@@ -14,8 +14,8 @@
             date: 'Rabu, 07 Oktober 2026',
             time: '09:00 - 11:45 WIB',
             location: 'Ruang Rapat Utama / Hybrid Video Call',
-            leader: 'Pengguna Utama (Koordinator Tim)',
-            notetaker: 'Pengguna Notulis',
+            leader: 'Peserta 1',
+            notetaker: 'Peserta 2',
             agenda: 'Penyelarasan target kuartal, pembagian tugas prioritas, dan uji coba sistem pencatatan otomatis.',
             conclusions: [
                 'Menyetujui ringkasan rencana kerja dan prioritas tugas untuk kuartal ini.',
@@ -42,9 +42,9 @@
                 room: 'Ruang Rapat Utama'
             },
             speakers: [
-                { id: 'SPK_01', name: 'Pengguna Utama', role: 'Koordinator Tim' },
-                { id: 'SPK_02', name: 'Rian Pratama', role: 'Manajer Produk' },
-                { id: 'SPK_03', name: 'Pengguna Notulis', role: 'Notulis' }
+                { id: 'SPK_01', name: 'Peserta 1', role: 'Koordinator' },
+                { id: 'SPK_02', name: 'Peserta 2', role: 'Notulis' },
+                { id: 'SPK_03', name: 'Peserta 3', role: 'Anggota' }
             ],
             summary_bullets: [
                 'Persetujuan ringkasan rencana kerja dan target kuartal.',
@@ -53,11 +53,11 @@
             ]
         },
         transcriptSegments: [
-            { time: '00:01:15', speaker: 'Pengguna Utama', role: 'Koordinator Tim', badge: 'bg-[#EAF4FE] text-[#1E40AF]', text: 'Selamat pagi rekan-rekan sekalian. Terima kasih telah hadir tepat waktu pada sesi diskusi hari ini. Kita akan fokus pada sinkronisasi rencana kerja dan pembagian tugas utama.' },
-            { time: '00:03:40', speaker: 'Rian Pratama', role: 'Manajer Produk', badge: 'bg-[#F0EEFF] text-[#5B21B6]', text: 'Dari tim produk, kami sudah merapikan daftar prioritas fitur dan timeline pengerjaan agar seluruh anggota tim memiliki acuan yang jelas.' },
-            { time: '00:08:22', speaker: 'Pengguna Utama', role: 'Koordinator Tim', badge: 'bg-[#EAF4FE] text-[#1E40AF]', text: 'Sangat baik. Bagaimana dengan alur pencatatan dan dokumentasi hasil diskusi kita?' },
-            { time: '00:10:05', speaker: 'Rian Pratama', role: 'Manajer Produk', badge: 'bg-[#F0EEFF] text-[#5B21B6]', text: 'Sistem pencatatan otomatis langsung merekam poin penting, mengenali pembicara, dan merangkum kesimpulan dengan rapi.' },
-            { time: '00:14:50', speaker: 'Pengguna Notulis', role: 'Notulis', badge: 'bg-black text-white', text: 'Catatan poin kesepakatan sudah dirangkum dan siap ditinjau oleh seluruh tim.' }
+            { time: '00:01:15', speaker: 'Peserta 1', role: 'Koordinator', badge: 'bg-gray-100 text-gray-700', text: 'Selamat pagi rekan-rekan sekalian. Terima kasih telah hadir tepat waktu pada sesi diskusi hari ini. Kita akan fokus pada sinkronisasi rencana kerja dan pembagian tugas utama.' },
+            { time: '00:03:40', speaker: 'Peserta 2', role: 'Notulis', badge: 'bg-gray-100 text-gray-700', text: 'Dari tim produk, kami sudah merapikan daftar prioritas fitur dan timeline pengerjaan agar seluruh anggota tim memiliki acuan yang jelas.' },
+            { time: '00:08:22', speaker: 'Peserta 1', role: 'Koordinator', badge: 'bg-gray-100 text-gray-700', text: 'Sangat baik. Bagaimana dengan alur pencatatan dan dokumentasi hasil diskusi kita?' },
+            { time: '00:10:05', speaker: 'Peserta 2', role: 'Notulis', badge: 'bg-gray-100 text-gray-700', text: 'Sistem pencatatan otomatis langsung merekam poin penting, mengenali pembicara, dan merangkum kesimpulan dengan rapi.' },
+            { time: '00:14:50', speaker: 'Peserta 3', role: 'Anggota', badge: 'bg-gray-100 text-gray-700', text: 'Catatan poin kesepakatan sudah dirangkum dan siap ditinjau oleh seluruh tim.' }
         ],
 
         exportPdf() {
@@ -92,7 +92,7 @@
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 translate-y-3"
          class="fixed bottom-8 right-8 z-50 bg-black text-white border border-[#d9d9d9]/40 rounded-full px-6 py-3 flex items-center space-x-3 text-[14px] font-medium">
-        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+        <svg class="w-4 h-4 text-[#ff5347]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
         <span x-text="toastMessage"></span>
     </div>
 
@@ -104,7 +104,7 @@
                     <h1 class="text-[44px] sm:text-[56px] lg:text-[68px] font-black tracking-tighter text-black leading-[1.05]">
                         Pratinjau Catatan.
                     </h1>
-                    <span class="px-3.5 py-1 rounded-full text-[12px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60 self-center">
+                    <span class="px-3.5 py-1 rounded-full text-[12px] font-medium bg-transparent text-gray-600 border border-[#d9d9d9] self-center">
                         Rangkuman Otomatis
                     </span>
                 </div>
@@ -184,8 +184,8 @@
             </div>
             
             <div class="flex items-center space-x-2 text-[12px] text-black/45">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span>Mode Sunting Aktif &bull; Klik teks untuk merevisi</span>
+                <span class="w-2 h-2 rounded-full bg-[#ff5347]"></span>
+                <span>Mode Sunting Aktif: Klik teks untuk merevisi</span>
             </div>
         </div>
 
@@ -195,7 +195,7 @@
             <div class="text-center border-b-2 border-black pb-6 space-y-1.5">
                 <p class="text-[12px] uppercase tracking-widest font-semibold text-black/70">Dokumen Catatan Rapat</p>
                 <p class="text-[20px] sm:text-[22px] uppercase tracking-wide font-black text-black">Ruang Kerja Notulensi</p>
-                <p class="text-[14px] uppercase font-bold text-black/90">Laporan Diskusi &bull; Rangkuman Otomatis</p>
+                <p class="text-[14px] uppercase font-bold text-black/90">Laporan Diskusi Risalah</p>
             </div>
 
             <!-- Title of Memo -->
@@ -288,7 +288,7 @@
                 <div class="space-y-20">
                     <p class="text-black/80">Mengetahui,<br><strong class="text-black">Koordinator Tim</strong></p>
                     <div>
-                        <p class="font-bold underline text-black">Pengguna Utama</p>
+                        <p class="font-bold underline text-black">Peserta 1</p>
                         <p class="text-[12px] text-black/60 font-mono mt-0.5">Penanggung Jawab</p>
                     </div>
                 </div>
@@ -296,7 +296,7 @@
                 <div class="space-y-20">
                     <p class="text-black/80">07 Oktober 2026<br><strong class="text-black">Pencatat Notulensi</strong></p>
                     <div>
-                        <p class="font-bold underline text-black">Pengguna Notulis</p>
+                        <p class="font-bold underline text-black">Peserta 2</p>
                         <p class="text-[12px] text-black/60 font-mono mt-0.5">Notulis Sesi</p>
                     </div>
                 </div>

@@ -37,7 +37,7 @@
          x-transition:leave-end="opacity-0 translate-y-3"
          class="fixed bottom-8 right-8 z-50 bg-black text-white border border-[#d9d9d9]/40 rounded-full px-6 py-3 flex items-center space-x-3 text-[14px] font-medium"
          style="display: none;">
-        <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
+        <div class="w-2.5 h-2.5 rounded-full bg-[#ff5347]"></div>
         <span x-text="toastMessage"></span>
     </div>
 
@@ -306,7 +306,7 @@
                                 <p class="text-[12px] text-black/50">Sinkronkan jadwal dan agenda rapat secara otomatis.</p>
                             </div>
                         </div>
-                        <span class="text-[12px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
+                        <span class="text-[12px] font-medium text-gray-600 bg-transparent border border-[#d9d9d9] px-3 py-1 rounded-full">
                             Tersambung
                         </span>
                     </div>

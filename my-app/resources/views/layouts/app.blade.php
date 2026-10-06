@@ -146,17 +146,8 @@
         </main>
 
         <!-- Minimalist Editorial Footer (100% Full Width) -->
-        <footer class="w-full px-6 sm:px-10 lg:px-14 py-8 border-t border-[#d9d9d9]/60 text-[12px] text-black/45 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="flex items-center space-x-3">
-                <span class="font-bold text-black tracking-tighter text-[13px]">Nome.</span>
-                <span>&mdash;</span>
-                <span>Notulensi Rapat Otomatis & Catatan Ringkas</span>
-            </div>
-            <div class="flex items-center space-x-4">
-                <span>Dibuat untuk Produktivitas Tim</span>
-                <span>&bull;</span>
-                <span>Cepat & Praktis</span>
-            </div>
+        <footer class="w-full px-6 sm:px-10 lg:px-14 py-8 border-t border-[#d9d9d9]/60 text-[12px] text-black/45 flex items-center justify-between">
+            <span class="font-bold text-black tracking-tight text-[13px]">Nome.</span>
         </footer>
     </div>
 </body>
