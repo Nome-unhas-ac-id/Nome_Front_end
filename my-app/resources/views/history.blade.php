@@ -9,87 +9,87 @@
         memos: [
             {
                 id: 'NOME-MEMO-001',
-                letterNo: '085/UN4.6.1/PL/2026',
-                title: 'Rapat Pleno Penyusunan Rencana Strategis Rekayasa Perangkat Lunak 2026',
-                category: 'senat',
-                categoryLabel: 'Senat & Pimpinan',
-                date: '06 Okt 2026 &bull; 09:00 WITA',
-                location: 'Ruang Senat Rektorat Lt. 2',
-                leader: 'Dr. Eng. Ir. Arman, M.T.',
-                attendeesCount: 18,
+                letterNo: '085/NOT-TIM/2026',
+                title: 'Sinkronisasi Target Kuartal & Roadmap Fitur',
+                category: 'produk',
+                categoryLabel: 'Produk & Rencana',
+                date: '06 Okt 2026 &bull; 09:00 WIB',
+                location: 'Ruang Rapat Tim',
+                leader: 'Pengguna Utama',
+                attendeesCount: 8,
                 status: 'completed',
-                statusLabel: 'Siap Ekspor',
-                summary: 'Penetapan target publikasi internasional bereputasi, integrasi platform AI meeting transcription, dan pengadaan infrastruktur server komputasi awan.'
+                statusLabel: 'Selesai',
+                summary: 'Penyelarasan target kuartal dan pembagian prioritas pengerjaan fitur baru untuk seluruh tim.'
             },
             {
                 id: 'NOME-MEMO-002',
-                letterNo: '079/UN4.6.1/TU/2026',
-                title: 'Sinkronisasi Kurikulum MBKM & Kemitraan Industri Digital',
-                category: 'kurikulum',
-                categoryLabel: 'Kurikulum & MBKM',
-                date: '03 Okt 2026 &bull; 13:30 WITA',
-                location: 'Lab Rekayasa Perangkat Lunak',
-                leader: 'Ketua Departemen Informatika',
-                attendeesCount: 12,
+                letterNo: '079/NOT-TIM/2026',
+                title: 'Diskusi Alur Pengguna & Uji Coba Tampilan Baru',
+                category: 'desain',
+                categoryLabel: 'Desain & Riset',
+                date: '03 Okt 2026 &bull; 13:30 WIB',
+                location: 'Google Meet',
+                leader: 'Tim Desain',
+                attendeesCount: 5,
                 status: 'completed',
-                statusLabel: 'Siap Ekspor',
-                summary: 'Persetujuan kurikulum magang mandiri bersama 5 mitra industri software nasional. Kesepakatan penyetaraan 20 SKS mata kuliah vokasi.'
+                statusLabel: 'Selesai',
+                summary: 'Evaluasi alur pengguna pada dashboard baru dan peningkatan keterbacaan tipografi antarmuka.'
             },
             {
                 id: 'NOME-MEMO-003',
-                letterNo: '075/UN4.6.1/KEU/2026',
-                title: 'Rapat Alokasi Anggaran Belanja Operasional Laboratorium 2027',
-                category: 'anggaran',
-                categoryLabel: 'Anggaran & Sarana',
-                date: '28 Sep 2026 &bull; 10:00 WITA',
-                location: 'Ruang Dekanat Lt. 1',
-                leader: 'Wakil Dekan Bidang Keuangan',
-                attendeesCount: 9,
+                letterNo: '075/NOT-TIM/2026',
+                title: 'Review Mingguan & Pembagian Prioritas Tugas',
+                category: 'teknis',
+                categoryLabel: 'Teknis & Operasional',
+                date: '28 Sep 2026 &bull; 10:00 WIB',
+                location: 'Ruang Diskusi',
+                leader: 'Tim Pengembang',
+                attendeesCount: 6,
                 status: 'review',
-                statusLabel: 'Verifikasi Notulis',
-                summary: 'Pemaparan rincian kebutuhan pengadaan GPU server untuk pemrosesan AI lokal serta pemeliharaan ruang data center fakultas.'
+                statusLabel: 'Perlu Cek',
+                summary: 'Pemaparan progres mingguan serta alokasi tugas pengembangan untuk integrasi sistem otomatis.'
             },
             {
                 id: 'NOME-MEMO-004',
-                letterNo: '071/UN4.6.1/AKD/2026',
-                title: 'Sidang Yudisium & Penentuan Lulusan Terbaik Periode Wisuda I',
-                category: 'senat',
-                categoryLabel: 'Senat & Pimpinan',
-                date: '20 Sep 2026 &bull; 08:30 WITA',
-                location: 'Aula Prof. Fachruddin',
-                leader: 'Dekan Fakultas Teknik',
-                attendeesCount: 35,
+                letterNo: '071/NOT-TIM/2026',
+                title: 'Sesi Evaluasi Akhir Sprint & Perayaan Capaian Tim',
+                category: 'produk',
+                categoryLabel: 'Produk & Rencana',
+                date: '20 Sep 2026 &bull; 14:00 WIB',
+                location: 'Ruang Serbaguna',
+                leader: 'Pengguna Utama',
+                attendeesCount: 14,
                 status: 'completed',
-                statusLabel: 'Siap Ekspor',
-                summary: 'Penetapan 48 lulusan sarjana teknik informatika dengan predikat kelulusan kehormatan dan pengesahan berita acara yudisium.'
+                statusLabel: 'Selesai',
+                summary: 'Penetapan rilis versi terbaru dan apresiasi kinerja tim atas pencapaian target sprint tepat waktu.'
             },
             {
                 id: 'NOME-MEMO-005',
-                letterNo: '068/UN4.6.1/PPM/2026',
-                title: 'Rapat Persiapan Hibah Pengabdian Masyarakat KKN Tematik Digital',
-                category: 'hibah',
-                categoryLabel: 'Hibah & Pengabdian',
-                date: '14 Sep 2026 &bull; 14:00 WITA',
-                location: 'Ruang Seminar Departemen',
-                leader: 'Koordinator Pengabdian Masyarakat',
-                attendeesCount: 15,
+                letterNo: '068/NOT-TIM/2026',
+                title: 'Brainstorming Ide Fitur & Eksplorasi Desain Interaksi',
+                category: 'eksplorasi',
+                categoryLabel: 'Eksplorasi Ide',
+                date: '14 Sep 2026 &bull; 11:00 WIB',
+                location: 'Online Call',
+                leader: 'Tim Produk',
+                attendeesCount: 7,
                 status: 'draft',
-                statusLabel: 'Draf Mentah',
-                summary: 'Sosialisasi program kerja digitalisasi layanan kelurahan dan pembuatan prototipe administrasi persuratan warga berbasis cloud.'
+                statusLabel: 'Draf',
+                summary: 'Pengumpulan ide inovatif untuk meningkatkan kenyamanan pengguna saat merekam percakapan rapat.'
             },
             {
                 id: 'NOME-MEMO-006',
-                letterNo: '062/UN4.6.1/PEN/2026',
-                title: 'FGD Evaluasi Capaian Publikasi Jurnal Terindeks Scopus Q1/Q2',
-                category: 'hibah',
-                categoryLabel: 'Hibah & Pengabdian',
-                date: '05 Sep 2026 &bull; 09:00 WITA',
-                location: 'Ruang Senat Lt. 2',
-                leader: 'Ketua LP2M',
-                attendeesCount: 22,
+                letterNo: '062/NOT-TIM/2026',
+                title: 'Rapat Sinkronisasi Layanan Pengguna & Dukungan Teknis',
+                category: 'teknis',
+                categoryLabel: 'Teknis & Operasional',
+                date: '05 Sep 2026 &bull; 09:30 WIB',
+                location: 'Ruang Diskusi',
+                leader: 'Tim Operasional',
+                attendeesCount: 9,
                 status: 'completed',
-                statusLabel: 'Siap Ekspor',
-                summary: 'Pemberian insentif penulisan jurnal internasional bereputasi dan pembentukan tim pendampingan penulisan manuskrip ilmiah.'
+                statusLabel: 'Selesai',
+                summary: 'Peningkatan kecepatan respon bantuan pengguna dan pemeliharaan performa sistem.'
             }
         ],
         get filteredMemos() {
@@ -106,24 +106,24 @@
     <!-- 1. MACRO-TYPOGRAPHY HEADER -->
     <div class="space-y-4 pt-4 border-b border-[#d9d9d9]/60 pb-8">
         <div class="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-white border border-[#d9d9d9]/80 text-[12px] font-medium text-black/60">
-            <span>Arsip Risalah Resmi</span>
+            <span>Arsip Catatan Rapat</span>
             <span>&bull;</span>
-            <span class="text-black font-semibold" x-text="filteredMemos.length + ' Dokumen Tersimpan'"></span>
+            <span class="text-black font-semibold" x-text="filteredMemos.length + ' Catatan Tersimpan'"></span>
         </div>
 
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
                 <h1 class="text-[44px] sm:text-[56px] lg:text-[68px] font-black tracking-tighter text-black leading-[1.05]">
-                    Arsip Risalah Rapat.
+                    Arsip Catatan Rapat.
                 </h1>
                 <p class="text-[17px] text-black/55 mt-2 max-w-2xl font-normal leading-relaxed">
-                    Koleksi lengkap seluruh notulensi, transkrip rekaman, dan ketetapan dinas yang telah tersusun secara terstruktur.
+                    Koleksi lengkap seluruh catatan rapat, transkrip obrolan, dan rangkuman tugas tim yang tersimpan secara terstruktur.
                 </p>
             </div>
 
-            <a href="{{ url('/add-memo') }}" class="inline-flex items-center space-x-2 bg-black text-white hover:bg-black/85 rounded-full px-6 py-3 text-[14px] font-semibold transition-transform active:scale-95 shrink-0 self-start md:self-auto">
+            <a href="{{ url('/add-memo') }}" class="inline-flex items-center space-x-2 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-6 py-3 text-[14px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 shrink-0 self-start md:self-auto">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                <span>Buat Rapat Baru</span>
+                <span>Mulai Rapat Baru</span>
             </a>
         </div>
     </div>
@@ -146,28 +146,28 @@
             <div class="flex flex-wrap items-center gap-1.5">
                 <button @click="selectedCategory = 'all'" 
                         :class="selectedCategory === 'all' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-colors">
+                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
                     Semua
                 </button>
-                <button @click="selectedCategory = 'senat'" 
-                        :class="selectedCategory === 'senat' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-colors">
-                    Senat
+                <button @click="selectedCategory = 'produk'" 
+                        :class="selectedCategory === 'produk' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
+                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                    Produk
                 </button>
-                <button @click="selectedCategory = 'kurikulum'" 
-                        :class="selectedCategory === 'kurikulum' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-colors">
-                    Kurikulum
+                <button @click="selectedCategory = 'desain'" 
+                        :class="selectedCategory === 'desain' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
+                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                    Desain
                 </button>
-                <button @click="selectedCategory = 'anggaran'" 
-                        :class="selectedCategory === 'anggaran' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-colors">
-                    Anggaran
+                <button @click="selectedCategory = 'teknis'" 
+                        :class="selectedCategory === 'teknis' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
+                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                    Teknis
                 </button>
-                <button @click="selectedCategory = 'hibah'" 
-                        :class="selectedCategory === 'hibah' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-colors">
-                    Hibah
+                <button @click="selectedCategory = 'eksplorasi'" 
+                        :class="selectedCategory === 'eksplorasi' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
+                        class="px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                    Eksplorasi
                 </button>
             </div>
 
@@ -190,7 +190,7 @@
     <!-- 3. GALLERY VIEW (Wide Cards with Dominant Whitespace & Rounded-3xl) -->
     <div x-show="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <template x-for="memo in filteredMemos" :key="memo.id">
-            <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between hover:border-black/40 transition-all space-y-6">
+            <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between hover:border-black/40 hover:scale-[1.02] transition-all duration-300 space-y-6">
                 <div class="space-y-4">
                     <!-- Top metadata row -->
                     <div class="flex items-center justify-between text-[12px]">
@@ -221,10 +221,10 @@
                     </div>
 
                     <div class="flex items-center space-x-2 pt-1">
-                        <a href="{{ url('/preview') }}" class="flex-1 text-center rounded-full border border-[#d9d9d9] font-medium text-[13px] py-2 text-black/80 hover:bg-black hover:text-white transition-colors">
-                            Buka Risalah
+                        <a href="{{ url('/preview') }}" class="flex-1 text-center rounded-full border border-[#d9d9d9] font-medium text-[13px] py-2 text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                            Buka Catatan
                         </a>
-                        <a href="{{ url('/preview') }}" class="flex-1 text-center rounded-full bg-black text-white font-medium text-[13px] py-2 hover:bg-black/85 transition-colors">
+                        <a href="{{ url('/preview') }}" class="flex-1 text-center rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white font-medium text-[13px] py-2 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
                             Ekspor PDF
                         </a>
                     </div>
@@ -258,10 +258,10 @@
                 </div>
 
                 <div class="flex items-center space-x-3 shrink-0">
-                    <a href="{{ url('/preview') }}" class="px-5 py-2 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-colors">
+                    <a href="{{ url('/preview') }}" class="px-5 py-2 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
                         Buka
                     </a>
-                    <a href="{{ url('/preview') }}" class="px-5 py-2 rounded-full bg-black text-white text-[13px] font-medium hover:bg-black/85 transition-colors">
+                    <a href="{{ url('/preview') }}" class="px-5 py-2 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
                         Ekspor
                     </a>
                 </div>
@@ -278,9 +278,9 @@
             <circle cx="58" cy="48" r="2" fill="currentColor"/>
             <path d="M43 65 Q50 58 57 65" stroke-width="2"/>
         </svg>
-        <h3 class="text-[22px] font-bold tracking-tight text-black">Tidak Ada Risalah Ditemukan</h3>
+        <h3 class="text-[22px] font-bold tracking-tight text-black">Tidak Ada Catatan Ditemukan</h3>
         <p class="text-[14px] text-black/55">Coba gunakan kata kunci pencarian lain atau pilih kategori yang berbeda.</p>
-        <button @click="searchQuery = ''; selectedCategory = 'all'" class="mt-2 px-5 py-2 rounded-full bg-black text-white text-[13px] font-medium">
+        <button @click="searchQuery = ''; selectedCategory = 'all'" class="mt-2 px-5 py-2 rounded-full bg-black text-white text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
             Reset Filter
         </button>
     </div>

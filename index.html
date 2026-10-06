@@ -46,12 +46,28 @@
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-        /* Strict Design Constraint: ZERO Drop-Shadows (exempting floating glass pill) */
-        *:not(.floating-glass-pill):not(.floating-glass-pill *) {
+        /* Strict Design Constraint: ZERO Drop-Shadows (exempting floating glass pill and interactive hover) */
+        *:not(.floating-glass-pill):not(.floating-glass-pill *):not(button:hover):not(a:hover) {
             box-shadow: none !important;
         }
         .floating-glass-pill {
             box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04) !important;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-fade-in-up-delay {
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
         }
         /* Hide scrollbars for clean aesthetic */
         .no-scrollbar::-webkit-scrollbar {
@@ -115,20 +131,56 @@
                 <span class="text-[18px] sm:text-[19px] font-black tracking-tight text-black leading-none">Nome.</span>
             </button>
 
-            <!-- Center: Simple navigation links (Text only, black, small font size) -->
-            <nav class="hidden md:flex items-center space-x-7 text-[13px] font-medium text-black">
-                <button @click="currentView = 'dashboard'" :class="currentView === 'dashboard' ? 'font-bold text-black' : 'text-black/60 hover:text-black'" class="transition-colors">Workspace</button>
-                <button @click="currentView = 'add-memo'" :class="currentView === 'add-memo' ? 'font-bold text-black' : 'text-black/60 hover:text-black'" class="transition-colors">Buat Risalah</button>
-                <button @click="currentView = 'history'" :class="currentView === 'history' ? 'font-bold text-black' : 'text-black/60 hover:text-black'" class="transition-colors">Arsip</button>
-                <button @click="currentView = 'preview'" :class="currentView === 'preview' ? 'font-bold text-black' : 'text-black/60 hover:text-black'" class="transition-colors">Editor AI</button>
+            <!-- Center: Simple navigation links (Only Workspace & Arsip) -->
+            <nav class="hidden md:flex items-center space-x-8 text-[13px] font-medium">
+                <button @click="currentView = 'dashboard'" 
+                        :class="currentView === 'dashboard' ? 'font-bold text-[#ff5347] border-b-2 border-[#ff5347]' : 'text-black/65 hover:text-black'" 
+                        class="transition-colors pb-0.5">
+                    Workspace
+                </button>
+                <button @click="currentView = 'history'" 
+                        :class="currentView === 'history' ? 'font-bold text-[#ff5347] border-b-2 border-[#ff5347]' : 'text-black/65 hover:text-black'" 
+                        class="transition-colors pb-0.5">
+                    Arsip
+                </button>
             </nav>
 
-            <!-- Right: A solid black pill-shaped button for primary action -->
-            <div class="flex items-center space-x-2 shrink-0">
-                <button @click="currentView = 'add-memo'" class="inline-flex items-center space-x-2 bg-black text-white hover:bg-neutral-800 rounded-full px-5 py-2 text-[13px] font-semibold transition-transform active:scale-95">
+            <!-- Right: Primary Action Button (#ff5347) & Simple Account Dropdown -->
+            <div class="flex items-center space-x-3 shrink-0">
+                <button @click="currentView = 'add-memo'" 
+                        class="inline-flex items-center space-x-2 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-5 py-2 text-[13px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
                     <span>Mulai Rapat</span>
                 </button>
+
+                <!-- Account Menu Dropdown -->
+                <div class="relative" x-data="{ open: false }">
+                    <button @click="open = !open" 
+                            @click.outside="open = false" 
+                            type="button" 
+                            class="flex items-center focus:outline-none transition-transform duration-300 ease-out hover:scale-105" 
+                            title="Menu Pengguna">
+                        <div class="w-8 h-8 rounded-full bg-[#ff5347] cursor-pointer"></div>
+                    </button>
+
+                    <!-- Dropdown Menu Card -->
+                    <div x-show="open" 
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 scale-95 -translate-y-2"
+                         x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                         x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
+                         class="absolute right-0 mt-3 w-44 bg-white border border-[#d9d9d9] rounded-2xl p-2 z-50 floating-glass-pill space-y-1">
+                        <button @click="currentView = 'dashboard'; open = false" class="w-full text-left flex items-center px-3.5 py-2 rounded-xl text-[13px] font-medium text-black/75 hover:text-black hover:bg-black/[0.04] transition-colors">
+                            Settings
+                        </button>
+                        <div class="h-px bg-[#d9d9d9]/60 my-1"></div>
+                        <button @click="triggerToast('Silakan login ke akun Anda'); open = false" class="w-full text-left flex items-center px-3.5 py-2 rounded-xl text-[13px] font-medium text-black/75 hover:text-black hover:bg-black/[0.04] transition-colors">
+                            Login/Signup
+                        </button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -142,37 +194,31 @@
                         <!-- Left Column (Typography & CTA) -->
                         <div class="lg:col-span-6 space-y-8">
                             <div class="space-y-4">
-                                <div class="text-[12px] font-semibold tracking-wider uppercase text-black/50">
-                                    Platform Transkripsi & Risalah AI
+                                <div class="inline-flex items-center space-x-2 text-[12px] font-semibold tracking-wider uppercase text-black/50">
+                                    <span>Notulensi Otomatis</span>
                                 </div>
-                                <h1 class="text-[44px] sm:text-[56px] lg:text-[62px] font-black tracking-tighter text-black leading-[1.05]">
-                                    1,090 Risalah dibuat untuk <span class="relative inline-block text-black">Notulensi<span class="absolute left-0 bottom-1 sm:bottom-2 w-full h-3 sm:h-3.5 bg-[#FFD027] -z-10 rounded-xs"></span></span> otomatis
+                                <h1 class="text-[44px] sm:text-[56px] lg:text-[62px] font-black tracking-tighter text-black leading-[1.05] animate-fade-in-up">
+                                    1,090 Rapat Dirangkum <span class="relative inline-block text-black">Tanpa Ribet.<span class="absolute left-0 bottom-1 sm:bottom-2 w-full h-3 sm:h-3.5 bg-[#FFD027] -z-10 rounded-xs"></span></span>
                                 </h1>
-                                <p class="text-[17px] text-gray-500 font-normal leading-relaxed max-w-lg">
-                                    Masuki era baru perumusan risalah sidang dinas menggunakan transkripsi suara monokromatik dan ringkasan berbasis AI.
+                                <p class="text-[17px] text-gray-500 font-normal leading-relaxed max-w-lg animate-fade-in-up-delay">
+                                    Rekam obrolan, biarkan sistem yang menulis catatan dan kesimpulannya untukmu.
                                 </p>
                             </div>
 
-                            <div>
-                                <button @click="currentView = 'add-memo'" class="inline-flex items-center space-x-2.5 bg-black text-white hover:bg-black/85 rounded-xl px-8 py-4 text-[15px] font-bold transition-transform active:scale-95">
-                                    <span>Mulai Notulensi Sekarang</span>
+                            <div class="animate-fade-in-up-delay">
+                                <button @click="currentView = 'add-memo'" class="inline-flex items-center space-x-2.5 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-xl px-8 py-4 text-[15px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 shadow-none">
+                                    <span>Mulai Rapat Sekarang</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                 </button>
                             </div>
 
-                            <div class="pt-6 border-t border-[#d9d9d9]/60 flex flex-col sm:flex-row sm:items-center gap-5">
-                                <div id="hero-illustration-bottom-left" class="w-20 h-20 sm:w-24 sm:h-24 shrink-0 bg-[#F8F7F3] rounded-2xl border border-[#d9d9d9]/70 flex items-center justify-center p-2 relative overflow-hidden">
-                                    <svg class="w-full h-full text-black" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="50" cy="50" r="38" stroke-dasharray="2 2" stroke-width="1"/>
-                                        <rect x="28" y="24" width="40" height="52" rx="4" fill="white"/>
-                                        <path d="M36 36h14M36 46h24M36 56h18"/>
-                                        <path d="M60 34l4 4 10-10" stroke-width="2.2"/>
-                                    </svg>
-                                </div>
+                            <div class="pt-8 border-t border-[#d9d9d9]/60 flex items-center gap-5 hover:scale-[1.02] transition-transform duration-300">
+                                <!-- Universal Icon Placeholder -->
+                                <div id="hero-illustration-bottom-left" class="w-12 h-12 rounded-full bg-[#ff5347]/20 border border-[#ff5347] shrink-0"></div>
                                 <div class="space-y-1">
-                                    <h4 class="text-[14px] font-bold text-black tracking-tight">Alur Kerja Terintegrasi</h4>
+                                    <h4 class="text-[16px] font-bold text-black tracking-tight">Kerja Lebih Cepat</h4>
                                     <p class="text-[13px] text-gray-500 leading-relaxed max-w-sm">
-                                        Diarisasi pembicara otomatis, ringkasan keputusan dinas, dan ekspor instan tanpa rekap manual.
+                                        Otomatis kenali siapa yang bicara dan ubah suara jadi teks dalam hitungan menit.
                                     </p>
                                 </div>
                             </div>
@@ -235,163 +281,192 @@
                 <div class="bg-[#F8F7F3] p-8 sm:p-12 lg:p-14 space-y-16">
                     <!-- Macro Greeting -->
                     <div class="space-y-3 pt-2">
-                        <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white border border-[#d9d9d9] text-[12px] font-medium text-black/60">
-                            <span>Fakultas Teknik &bull; Universitas Hasanuddin</span>
+                        <div class="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-white border border-[#d9d9d9]/80 text-[12px] font-medium text-black/60">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            <span>Ruang Catatan Rapat &bull; Rabu, 07 Okt 2026</span>
                         </div>
                         <h2 class="text-[40px] sm:text-[52px] lg:text-[60px] font-black tracking-tighter text-black leading-[1.05]">
                             Ruang Kerja Notulensi.
                         </h2>
                         <p class="text-[17px] text-black/55 max-w-2xl font-normal leading-relaxed">
-                            Sistem notulensi rapat cerdas berbasis kecerdasan buatan. Mengubah diskusi sidang menjadi transkrip terverifikasi dan risalah keputusan dinas.
+                            Fokus pada obrolan rapat. Biarkan sistem mencatat poin penting, mengenali pembicara, dan merapikan kesimpulan secara otomatis.
                         </p>
                     </div>
 
-                <!-- Pastel Workspace Folders -->
-                <div class="space-y-6">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-[20px] font-bold tracking-tight text-black">Ruang Kerja & Kluster Risalah</h2>
-                        <span class="text-[13px] text-black/45">4 Direktori Aktif</span>
+                    <!-- Pastel Workspace Folders -->
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2.5">
+                                <h3 class="text-[20px] font-bold tracking-tight text-black">Folder Ruang Kerja</h3>
+                                <span class="text-[11px] font-mono text-black/40 bg-white border border-[#d9d9d9]/70 px-2 py-0.5 rounded-full">4 Kategori</span>
+                            </div>
+                            <button @click="currentView = 'history'" class="text-[13px] font-medium text-black/60 hover:text-[#ff5347] transition-colors">
+                                Kelola Semua Folder &rarr;
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div @click="currentView = 'history'" class="bg-[#F0EEFF] rounded-3xl p-6 flex flex-col justify-between h-44 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[12px] font-bold tracking-wider uppercase text-[#5B21B6]">Tim Mingguan</span>
+                                    <span class="text-[11px] font-mono font-medium text-black/50 bg-white/60 px-2.5 py-0.5 rounded-full">12 Catatan</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-[18px] font-bold text-black tracking-tight">Diskusi Tim Mingguan</h3>
+                                    <p class="text-[13px] text-black/60 mt-1">Update progres dan koordinasi</p>
+                                </div>
+                            </div>
+
+                            <div @click="currentView = 'history'" class="bg-[#EAF4FE] rounded-3xl p-6 flex flex-col justify-between h-44 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[12px] font-bold tracking-wider uppercase text-[#1E40AF]">Produk</span>
+                                    <span class="text-[11px] font-mono font-medium text-black/50 bg-white/60 px-2.5 py-0.5 rounded-full">8 Catatan</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-[18px] font-bold text-black tracking-tight">Rencana & Desain Produk</h3>
+                                    <p class="text-[13px] text-black/60 mt-1">Roadmap fitur dan riset</p>
+                                </div>
+                            </div>
+
+                            <div @click="currentView = 'history'" class="bg-[#FEF6EC] rounded-3xl p-6 flex flex-col justify-between h-44 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[12px] font-bold tracking-wider uppercase text-[#9A3412]">Laporan</span>
+                                    <span class="text-[11px] font-mono font-medium text-black/50 bg-white/60 px-2.5 py-0.5 rounded-full">5 Catatan</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-[18px] font-bold text-black tracking-tight">Evaluasi & Laporan</h3>
+                                    <p class="text-[13px] text-black/60 mt-1">Review capaian dan kendala</p>
+                                </div>
+                            </div>
+
+                            <div @click="currentView = 'history'" class="bg-[#EDF7EE] rounded-3xl p-6 flex flex-col justify-between h-44 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[12px] font-bold tracking-wider uppercase text-[#166534]">Eksplorasi</span>
+                                    <span class="text-[11px] font-mono font-medium text-black/50 bg-white/60 px-2.5 py-0.5 rounded-full">3 Catatan</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-[18px] font-bold text-black tracking-tight">Eksplorasi Ide Baru</h3>
+                                    <p class="text-[13px] text-black/60 mt-1">Brainstorming gagasan tim</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div class="bg-[#F0EEFF] rounded-3xl p-6 flex flex-col justify-between h-44 hover:opacity-95 transition-opacity cursor-pointer">
-                            <span class="text-[12px] font-bold tracking-wider uppercase text-[#5B21B6]">Senat & Pimpinan</span>
-                            <div>
-                                <h3 class="text-[18px] font-bold text-black tracking-tight">Rapat Pleno & Dekanat</h3>
-                                <p class="text-[13px] text-black/60 mt-1">14 Risalah Tersimpan</p>
+                    <!-- High Emphasis Contrast Card + Line Art Doodle -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- High-Emphasis Black Card -->
+                        <div class="lg:col-span-2 bg-black text-white rounded-3xl p-10 sm:p-12 flex flex-col justify-between space-y-8 hover:scale-[1.02] transition-transform duration-300">
+                            <div class="space-y-4">
+                                <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white/10 text-white text-[12px] font-semibold border border-white/20">
+                                    <span>Pencatatan Cepat</span>
+                                </div>
+                                <h2 class="text-[32px] sm:text-[40px] font-black tracking-tight leading-tight">
+                                    Mulai Rapat Baru.
+                                </h2>
+                                <p class="text-[16px] text-white/70 max-w-xl leading-relaxed">
+                                    Mulai obrolan langsung lewat browser atau unggah rekaman audio. Sistem otomatis merangkum poin penting dan pembagian tugas untuk timmu.
+                                </p>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-4">
+                                <button @click="currentView = 'add-memo'" class="bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-8 py-3.5 text-[14px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">
+                                    Coba Sekarang
+                                </button>
+                                <button @click="currentView = 'history'" class="border border-white/30 text-white hover:bg-white/10 rounded-full px-6 py-3.5 text-[14px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                                    Lihat Arsip Rapat
+                                </button>
                             </div>
                         </div>
 
-                        <div class="bg-[#EAF4FE] rounded-3xl p-6 flex flex-col justify-between h-44 hover:opacity-95 transition-opacity cursor-pointer">
-                            <span class="text-[12px] font-bold tracking-wider uppercase text-[#1E40AF]">Kurikulum</span>
-                            <div>
-                                <h3 class="text-[18px] font-bold text-black tracking-tight">MBKM & Penyetaraan</h3>
-                                <p class="text-[13px] text-black/60 mt-1">8 Risalah Tersimpan</p>
+                        <!-- Monochromatic Line-Art Doodle Card -->
+                        <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between items-center text-center space-y-6 hover:scale-[1.02] transition-transform duration-300">
+                            <div class="w-full pt-4">
+                                <svg class="w-36 h-36 mx-auto text-black/80" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                                    <circle cx="50" cy="50" r="40" stroke-width="2" stroke-dasharray="3 3"/>
+                                    <path d="M35 30 L65 30 L65 70 L35 70 Z" stroke-width="2"/>
+                                    <line x1="42" y1="40" x2="58" y2="40" stroke-width="2"/>
+                                    <line x1="42" y1="50" x2="58" y2="50" stroke-width="2"/>
+                                    <line x1="42" y1="60" x2="52" y2="60" stroke-width="2"/>
+                                    <path d="M60 60 Q75 60 75 75 Q60 85 50 75" stroke-width="1.5"/>
+                                </svg>
                             </div>
-                        </div>
-
-                        <div class="bg-[#FEF6EC] rounded-3xl p-6 flex flex-col justify-between h-44 hover:opacity-95 transition-opacity cursor-pointer">
-                            <span class="text-[12px] font-bold tracking-wider uppercase text-[#9A3412]">Anggaran</span>
-                            <div>
-                                <h3 class="text-[18px] font-bold text-black tracking-tight">Operasional & Sarana</h3>
-                                <p class="text-[13px] text-black/60 mt-1">11 Risalah Tersimpan</p>
+                            <div class="space-y-1">
+                                <h3 class="text-[17px] font-bold text-black tracking-tight">Catatan Rapi Seketika</h3>
+                                <p class="text-[13px] text-black/55 leading-relaxed">Setiap percakapan langsung tercatat dengan rapi dan siap dibagikan ke seluruh tim.</p>
                             </div>
-                        </div>
-
-                        <div class="bg-[#EDF7EE] rounded-3xl p-6 flex flex-col justify-between h-44 hover:opacity-95 transition-opacity cursor-pointer">
-                            <span class="text-[12px] font-bold tracking-wider uppercase text-[#166534]">Hibah</span>
-                            <div>
-                                <h3 class="text-[18px] font-bold text-black tracking-tight">Penelitian & Pengabdian</h3>
-                                <p class="text-[13px] text-black/60 mt-1">6 Risalah Tersimpan</p>
+                            <div class="pt-2 border-t border-[#d9d9d9]/60 w-full flex items-center justify-between text-[12px] text-black/50">
+                                <span>Proses Cepat & Praktis</span>
+                                <button @click="currentView = 'preview'" class="font-medium text-[#ff5347] hover:underline">Lihat Contoh &rarr;</button>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- High Emphasis Contrast Card + Line Art Doodle -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- High-Emphasis Black Card -->
-                    <div class="lg:col-span-2 bg-black text-white rounded-3xl p-10 sm:p-12 flex flex-col justify-between space-y-8">
+                    <!-- Recent Meeting Rows (Generous Gap, Zero Shadows) -->
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-[20px] font-bold tracking-tight text-black">Rapat Terbaru</h2>
+                            <button @click="currentView = 'history'" class="text-[13px] text-black font-semibold hover:text-[#ff5347] transition-colors">
+                                Semua Rapat &rarr;
+                            </button>
+                        </div>
+
                         <div class="space-y-4">
-                            <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white/10 text-white text-[12px] font-semibold border border-white/20">
-                                <span>Alur Cerdas AI</span>
-                            </div>
-                            <h2 class="text-[32px] sm:text-[40px] font-black tracking-tight leading-tight">
-                                Mulai Sesi Rapat Baru & Transkripsi Audio.
-                            </h2>
-                            <p class="text-[16px] text-white/70 max-w-xl leading-relaxed">
-                                Rekam percakapan sidang secara langsung lewat peramban atau unggah rekaman suara untuk diproses Whisper & PyAnnote.
-                            </p>
-                        </div>
-
-                        <div class="flex flex-wrap items-center gap-4">
-                            <button @click="currentView = 'add-memo'" class="bg-white text-black hover:bg-white/90 rounded-full px-8 py-3.5 text-[14px] font-bold transition-transform active:scale-95">
-                                + Buat Risalah Rapat
-                            </button>
-                            <button @click="currentView = 'history'" class="border border-white/30 text-white hover:bg-white/10 rounded-full px-6 py-3.5 text-[14px] font-medium transition-colors">
-                                Lihat Arsip Rapat
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Monochromatic Line-Art Doodle Card -->
-                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between items-center text-center space-y-6">
-                        <div class="w-full pt-4">
-                            <svg class="w-36 h-36 mx-auto text-black/80" viewBox="0 0 100 100" fill="none" stroke="currentColor">
-                                <circle cx="50" cy="50" r="40" stroke-width="2" stroke-dasharray="3 3"/>
-                                <path d="M35 30 L65 30 L65 70 L35 70 Z" stroke-width="2"/>
-                                <line x1="42" y1="40" x2="58" y2="40" stroke-width="2"/>
-                                <line x1="42" y1="50" x2="58" y2="50" stroke-width="2"/>
-                                <line x1="42" y1="60" x2="52" y2="60" stroke-width="2"/>
-                                <path d="M60 60 Q75 60 75 75 Q60 85 50 75" stroke-width="1.5"/>
-                            </svg>
-                        </div>
-                        <div class="space-y-1">
-                            <h3 class="text-[17px] font-bold text-black tracking-tight">Kerahasiaan Terjamin</h3>
-                            <p class="text-[13px] text-black/55 leading-relaxed">Pemrosesan transkripsi berlangsung di server lokal fakultas.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recent Meeting Rows (Generous Gap, Zero Shadows) -->
-                <div class="space-y-6">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-[20px] font-bold tracking-tight text-black">Rapat Terbaru</h2>
-                        <button @click="currentView = 'history'" class="text-[13px] text-black font-semibold hover:underline">
-                            Semua Rapat &rarr;
-                        </button>
-                    </div>
-
-                    <div class="space-y-4">
-                        <div class="bg-white border border-[#d9d9d9]/70 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-black/40 transition-colors cursor-pointer"
-                             @click="currentView = 'preview'">
-                            <div class="space-y-1 max-w-2xl">
-                                <div class="flex items-center space-x-3 text-[12px] text-black/50">
-                                    <span class="font-mono">085/UN4.6.1/PL/2026</span>
-                                    <span>&bull;</span>
-                                    <span>06 Okt 2026 &bull; 09:00 WITA</span>
+                            <div class="bg-white border border-[#d9d9d9]/70 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-black/40 transition-colors cursor-pointer"
+                                 @click="currentView = 'preview'">
+                                <div class="space-y-1 max-w-2xl">
+                                    <div class="flex items-center space-x-3 text-[12px] text-black/50">
+                                        <span class="font-mono">RPT-2026-003</span>
+                                        <span>&bull;</span>
+                                        <span>06 Okt 2026 &bull; 09:00 WIB</span>
+                                    </div>
+                                    <h3 class="text-[18px] font-bold text-black tracking-tight hover:text-[#ff5347] transition-colors">
+                                        Sinkronisasi Target Kuartal & Roadmap Fitur
+                                    </h3>
+                                    <p class="text-[13px] text-black/60 truncate">
+                                        Penyelenggara: Tim Produk &bull; Ruang Rapat Tim &bull; 8 Orang Hadir
+                                    </p>
                                 </div>
-                                <h3 class="text-[18px] font-bold text-black tracking-tight hover:text-[#ff5347] transition-colors">
-                                    Rapat Pleno Penyusunan Rencana Strategis Rekayasa Perangkat Lunak 2026
-                                </h3>
-                                <p class="text-[13px] text-black/60 truncate">
-                                    Pimpinan: Dr. Eng. Ir. Arman, M.T. &bull; 18 Peserta Hadir
-                                </p>
-                            </div>
 
-                            <div class="flex items-center space-x-3 shrink-0">
-                                <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
-                                    Siap Ekspor
-                                </span>
-                                <button class="px-5 py-2 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors">
-                                    Buka Risalah
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="bg-white border border-[#d9d9d9]/70 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-black/40 transition-colors cursor-pointer"
-                             @click="currentView = 'preview'">
-                            <div class="space-y-1 max-w-2xl">
-                                <div class="flex items-center space-x-3 text-[12px] text-black/50">
-                                    <span class="font-mono">079/UN4.6.1/TU/2026</span>
-                                    <span>&bull;</span>
-                                    <span>03 Okt 2026 &bull; 13:30 WITA</span>
+                                <div class="flex items-center space-x-3 shrink-0">
+                                    <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                                        Selesai
+                                    </span>
+                                    <button class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                                        Pratinjau
+                                    </button>
+                                    <button class="px-5 py-2.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                                        Ekspor PDF
+                                    </button>
                                 </div>
-                                <h3 class="text-[18px] font-bold text-black tracking-tight hover:text-[#ff5347] transition-colors">
-                                    Sinkronisasi Kurikulum MBKM & Kemitraan Industri Digital
-                                </h3>
-                                <p class="text-[13px] text-black/60 truncate">
-                                    Pimpinan: Ketua Departemen Informatika &bull; 12 Peserta Hadir
-                                </p>
                             </div>
 
-                            <div class="flex items-center space-x-3 shrink-0">
-                                <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
-                                    Siap Ekspor
-                                </span>
-                                <button class="px-5 py-2 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors">
-                                    Buka Risalah
-                                </button>
+                            <div class="bg-white border border-[#d9d9d9]/70 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-black/40 transition-colors cursor-pointer"
+                                 @click="currentView = 'preview'">
+                                <div class="space-y-1 max-w-2xl">
+                                    <div class="flex items-center space-x-3 text-[12px] text-black/50">
+                                        <span class="font-mono">RPT-2026-002</span>
+                                        <span>&bull;</span>
+                                        <span>03 Okt 2026 &bull; 13:30 WIB</span>
+                                    </div>
+                                    <h3 class="text-[18px] font-bold text-black tracking-tight hover:text-[#ff5347] transition-colors">
+                                        Diskusi Alur Pengguna & Uji Coba Tampilan Baru
+                                    </h3>
+                                    <p class="text-[13px] text-black/60 truncate">
+                                        Penyelenggara: Tim Desain &bull; Google Meet &bull; 5 Orang Hadir
+                                    </p>
+                                </div>
+
+                                <div class="flex items-center space-x-3 shrink-0">
+                                    <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                                        Selesai
+                                    </span>
+                                    <button class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                                        Pratinjau
+                                    </button>
+                                    <button class="px-5 py-2.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                                        Ekspor PDF
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -458,8 +533,8 @@
 
                 <!-- Submit Action -->
                 <div class="pt-8 border-t border-[#d9d9d9]/60 flex items-center justify-end space-x-4">
-                    <button @click="currentView = 'dashboard'" class="px-6 py-3 rounded-full border border-[#d9d9d9] text-[14px] font-medium text-black">Batal</button>
-                    <button @click="currentView = 'preview'; triggerToast('Notulensi berhasil diproses AI!')" class="px-8 py-3.5 rounded-full bg-black text-white text-[15px] font-bold hover:bg-black/85">
+                    <button @click="currentView = 'dashboard'" class="px-6 py-3 rounded-full border border-[#d9d9d9] text-[14px] font-medium text-black hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Batal</button>
+                    <button @click="currentView = 'preview'; triggerToast('Notulensi berhasil diproses!')" class="px-8 py-3.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[15px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">
                         Transkripsikan & Buka Pratinjau &rarr;
                     </button>
                 </div>
@@ -469,59 +544,59 @@
             <div x-show="currentView === 'history'" class="space-y-12 max-w-6xl mx-auto pt-28 pb-20 px-6 sm:px-10">
                 <div class="space-y-4 pt-2 border-b border-[#d9d9d9]/60 pb-8">
                     <h1 class="text-[48px] sm:text-[64px] font-black tracking-tighter text-black leading-tight">
-                        Arsip Risalah Rapat.
+                        Arsip Catatan Rapat.
                     </h1>
                     <p class="text-[17px] text-black/55 font-normal">
-                        Koleksi lengkap seluruh notulensi dan transkrip hasil olahan AI Nome.
+                        Koleksi lengkap seluruh catatan rapat dan transkrip hasil olahan Nome.
                     </p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 transition-colors">
+                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 hover:scale-[1.02] transition-all duration-300">
                         <div class="space-y-3">
-                            <span class="text-[12px] font-mono text-black/45">085/UN4.6.1/PL/2026</span>
-                            <h2 class="text-[20px] font-extrabold text-black tracking-tight leading-snug cursor-pointer" @click="currentView = 'preview'">
-                                Rapat Pleno Rencana Strategis Rekayasa Perangkat Lunak 2026
+                            <span class="text-[12px] font-mono text-black/45">RPT-2026-003</span>
+                            <h2 class="text-[20px] font-extrabold text-black tracking-tight leading-snug cursor-pointer hover:text-[#ff5347] transition-colors" @click="currentView = 'preview'">
+                                Sinkronisasi Target Kuartal & Roadmap Fitur
                             </h2>
                             <p class="text-[13px] text-black/60 leading-relaxed">
-                                Integrasi platform AI meeting transcription Nome dan pengadaan infrastruktur server komputasi awan.
+                                Penyelarasan target kuartal dan pembagian prioritas pengerjaan fitur baru untuk seluruh tim.
                             </p>
                         </div>
                         <div class="pt-4 border-t border-[#d9d9d9]/60 flex items-center justify-between">
                             <span class="text-[12px] text-black/50">06 Okt 2026</span>
-                            <button @click="currentView = 'preview'" class="px-4 py-1.5 rounded-full bg-black text-white text-[12px] font-medium">Buka</button>
+                            <button @click="currentView = 'preview'" class="px-4 py-1.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[12px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Buka</button>
                         </div>
                     </div>
 
-                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 transition-colors">
+                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 hover:scale-[1.02] transition-all duration-300">
                         <div class="space-y-3">
-                            <span class="text-[12px] font-mono text-black/45">079/UN4.6.1/TU/2026</span>
-                            <h2 class="text-[20px] font-extrabold text-black tracking-tight leading-snug cursor-pointer" @click="currentView = 'preview'">
-                                Sinkronisasi Kurikulum MBKM & Kemitraan Industri Digital
+                            <span class="text-[12px] font-mono text-black/45">RPT-2026-002</span>
+                            <h2 class="text-[20px] font-extrabold text-black tracking-tight leading-snug cursor-pointer hover:text-[#ff5347] transition-colors" @click="currentView = 'preview'">
+                                Diskusi Alur Pengguna & Uji Coba Tampilan Baru
                             </h2>
                             <p class="text-[13px] text-black/60 leading-relaxed">
-                                Persetujuan kurikulum magang mandiri bersama mitra industri software nasional.
+                                Evaluasi alur pengguna pada dashboard baru dan peningkatan keterbacaan tipografi antarmuka.
                             </p>
                         </div>
                         <div class="pt-4 border-t border-[#d9d9d9]/60 flex items-center justify-between">
                             <span class="text-[12px] text-black/50">03 Okt 2026</span>
-                            <button @click="currentView = 'preview'" class="px-4 py-1.5 rounded-full bg-black text-white text-[12px] font-medium">Buka</button>
+                            <button @click="currentView = 'preview'" class="px-4 py-1.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[12px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Buka</button>
                         </div>
                     </div>
 
-                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 transition-colors">
+                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 hover:scale-[1.02] transition-all duration-300">
                         <div class="space-y-3">
-                            <span class="text-[12px] font-mono text-black/45">075/UN4.6.1/KEU/2026</span>
-                            <h2 class="text-[20px] font-extrabold text-black tracking-tight leading-snug cursor-pointer" @click="currentView = 'preview'">
-                                Rapat Alokasi Anggaran Belanja Operasional Laboratorium 2027
+                            <span class="text-[12px] font-mono text-black/45">RPT-2026-001</span>
+                            <h2 class="text-[20px] font-extrabold text-black tracking-tight leading-snug cursor-pointer hover:text-[#ff5347] transition-colors" @click="currentView = 'preview'">
+                                Review Mingguan & Pembagian Prioritas Tugas
                             </h2>
                             <p class="text-[13px] text-black/60 leading-relaxed">
-                                Pemaparan kebutuhan pengadaan GPU server untuk pemrosesan AI lokal.
+                                Pemaparan progres mingguan serta alokasi tugas pengembangan untuk integrasi sistem otomatis.
                             </p>
                         </div>
                         <div class="pt-4 border-t border-[#d9d9d9]/60 flex items-center justify-between">
                             <span class="text-[12px] text-black/50">28 Sep 2026</span>
-                            <button @click="currentView = 'preview'" class="px-4 py-1.5 rounded-full bg-black text-white text-[12px] font-medium">Buka</button>
+                            <button @click="currentView = 'preview'" class="px-4 py-1.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[12px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Buka</button>
                         </div>
                     </div>
                 </div>
@@ -532,53 +607,53 @@
                 <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#d9d9d9]/60 pb-6">
                     <div>
                         <h1 class="text-[44px] font-black tracking-tighter text-black leading-tight">
-                            Pratinjau Risalah.
+                            Pratinjau Catatan.
                         </h1>
-                        <p class="text-[15px] text-black/55 mt-1">Lembaran dokumen editorial resmi hasil ekstraksi AI.</p>
+                        <p class="text-[15px] text-black/55 mt-1">Dokumen catatan rapi hasil rangkuman otomatis.</p>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button onclick="window.print()" class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium hover:bg-black hover:text-white transition-colors">Cetak</button>
-                        <button @click="triggerToast('Berkas PDF Resmi berhasil diunduh!')" class="px-6 py-2.5 rounded-full bg-black text-white text-[13px] font-semibold hover:bg-black/85">Ekspor PDF</button>
+                        <button onclick="window.print()" class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Cetak</button>
+                        <button @click="triggerToast('Berkas PDF berhasil diunduh!')" class="px-6 py-2.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">Ekspor PDF</button>
                     </div>
                 </div>
 
                 <!-- Grand Paper Sheet -->
                 <div class="bg-white border border-[#d9d9d9]/80 rounded-3xl p-10 sm:p-16 space-y-10 text-black font-sans" contenteditable="true">
                     <div class="text-center border-b-2 border-black pb-6 space-y-1">
-                        <p class="text-[12px] uppercase tracking-widest font-semibold text-black/70">Kementerian Pendidikan Tinggi, Sains, dan Teknologi</p>
-                        <p class="text-[20px] uppercase tracking-wide font-black text-black">Universitas Hasanuddin</p>
-                        <p class="text-[14px] uppercase font-bold text-black/90">Fakultas Teknik &bull; Departemen Teknik Informatika</p>
+                        <p class="text-[12px] uppercase tracking-widest font-semibold text-black/70">Dokumen Catatan Rapat</p>
+                        <p class="text-[20px] uppercase tracking-wide font-black text-black">Ruang Kerja Notulensi</p>
+                        <p class="text-[14px] uppercase font-bold text-black/90">Laporan Diskusi &bull; Rangkuman Otomatis</p>
                     </div>
 
                     <div class="text-center space-y-1">
-                        <h2 class="text-[22px] font-extrabold uppercase underline tracking-tight">Notulensi & Risalah Rapat Dinas</h2>
-                        <p class="text-[13px] font-mono text-black/70">Nomor: 085/UN4.6.1/PL/2026</p>
+                        <h2 class="text-[22px] font-extrabold uppercase underline tracking-tight">Notulensi Catatan Rapat</h2>
+                        <p class="text-[13px] font-mono text-black/70">Nomor: 085/NOT-TIM/2026</p>
                     </div>
 
                     <div class="space-y-3">
                         <h3 class="text-[15px] font-bold uppercase border-b border-[#d9d9d9] pb-1">I. Keterangan Rapat</h3>
-                        <p class="text-[15px]"><strong>Agenda:</strong> Rapat Koordinasi Evaluasi Pembelajaran & Transkripsi Digital</p>
-                        <p class="text-[15px]"><strong>Hari/Tanggal:</strong> Rabu, 07 Oktober 2026 &bull; 09:00 - 11:45 WITA</p>
-                        <p class="text-[15px]"><strong>Pimpinan:</strong> Dr. Eng. Ir. Arman, M.T.</p>
+                        <p class="text-[15px]"><strong>Agenda:</strong> Rapat Sinkronisasi Rencana Kerja & Roadmap Fitur</p>
+                        <p class="text-[15px]"><strong>Hari/Tanggal:</strong> Rabu, 07 Oktober 2026 &bull; 09:00 - 11:45 WIB</p>
+                        <p class="text-[15px]"><strong>Koordinator:</strong> Pengguna Utama</p>
                     </div>
 
                     <div class="space-y-3">
-                        <h3 class="text-[15px] font-bold uppercase border-b border-[#d9d9d9] pb-1">II. Rumusan Keputusan AI</h3>
+                        <h3 class="text-[15px] font-bold uppercase border-b border-[#d9d9d9] pb-1">II. Poin Kesepakatan</h3>
                         <ul class="list-disc ml-6 space-y-2 text-[15px] leading-relaxed text-black/90">
-                            <li>Menyetujui adopsi platform Nome untuk pencatatan risalah seluruh rapat dinas di lingkungan Fakultas Teknik.</li>
-                            <li>Pembagian akun resmi untuk 14 program studi dan departemen paling lambat 15 Oktober 2026.</li>
-                            <li>Integrasi server GPU lokal untuk memproses data audio sensitif secara on-premise.</li>
+                            <li>Menyetujui ringkasan rencana kerja dan prioritas tugas untuk kuartal ini.</li>
+                            <li>Pembagian penanggung jawab fitur diselesaikan paling lambat minggu depan.</li>
+                            <li>Menggunakan sistem pencatatan otomatis untuk seluruh agenda diskusi tim.</li>
                         </ul>
                     </div>
 
                     <div class="pt-8 grid grid-cols-2 gap-8 text-[14px] text-center">
                         <div class="space-y-16">
-                            <p class="text-black/80">Mengetahui,<br><strong class="text-black">Pimpinan Rapat</strong></p>
-                            <p class="font-bold underline">Dr. Eng. Ir. Arman, M.T.</p>
+                            <p class="text-black/80">Mengetahui,<br><strong class="text-black">Koordinator Tim</strong></p>
+                            <p class="font-bold underline">Pengguna Utama</p>
                         </div>
                         <div class="space-y-16">
-                            <p class="text-black/80">Makassar, 07 Oktober 2026<br><strong class="text-black">Notulis Resmi</strong></p>
-                            <p class="font-bold underline">Andi Muhammad Abigail</p>
+                            <p class="text-black/80">07 Oktober 2026<br><strong class="text-black">Pencatat Notulensi</strong></p>
+                            <p class="font-bold underline">Pengguna Notulis</p>
                         </div>
                     </div>
                 </div>

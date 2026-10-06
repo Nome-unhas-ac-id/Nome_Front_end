@@ -5,28 +5,28 @@
      x-data="{
         activeSection: 'rapat',
         meetingInfo: {
-            name: 'Rapat Pleno Koordinasi Pengembangan Sistem Akademik Unhas',
+            name: 'Rapat Koordinasi Perencanaan dan Strategi Tim',
             date: '2026-10-07',
             timeStart: '09:00',
             timeEnd: '12:00',
-            location: 'Ruang Senat Rektorat Lt. 2 / Hybrid Zoom',
-            leader: 'Dr. Eng. Ir. Arman, M.T.',
-            notetaker: 'Andi Muhammad Abigail (Notulis Resmi)'
+            location: 'Ruang Rapat Utama / Hybrid Video Call',
+            leader: 'Pengguna Utama',
+            notetaker: 'Pengguna (Notulis)'
         },
         letterInfo: {
-            letterNumber: '085/UN4.6.1/PL/2026',
-            subject: 'Undangan Koordinasi Teknis Transkripsi & Notulensi Digital',
-            destination: 'Seluruh Ketua Departemen & Kepala Laboratorium Fakultas Teknik',
-            openingParagraph: 'Sehubungan dengan implementasi otomatisasi tata kelola administrasi akademik dan perumusan dokumen memo dinas terintegrasi berbasis AI, bersama ini kami mengundang Bapak/Ibu untuk hadir pada rapat koordinasi yang dilaksanakan pada:'
+            letterNumber: '085/NOT-TIM/2026',
+            subject: 'Undangan Koordinasi Teknis dan Notulensi Otomatis',
+            destination: 'Seluruh Anggota Tim dan Penanggung Jawab Proyek',
+            openingParagraph: 'Untuk menyelaraskan rencana kerja dan target tim ke depan, kami mengundang rekan-rekan untuk hadir pada sesi diskusi koordinasi yang dilaksanakan pada:'
         },
         newAttendeeName: '',
         newAttendeeRole: '',
         attendees: [
-            { name: 'Dr. Eng. Ir. Arman, M.T.', role: 'Wakil Dekan Bidang Akademik', initial: 'AR', bg: 'bg-[#EAF4FE] text-[#1E40AF]' },
-            { name: 'Prof. Dr. Ir. Indrabayu, S.T., M.T.', role: 'Ketua Departemen Informatika', initial: 'IB', bg: 'bg-[#F0EEFF] text-[#5B21B6]' },
-            { name: 'Dr. Amil Ahmad Ilham, S.T., M.IT.', role: 'Dosen Pembina Kurikulum', initial: 'AI', bg: 'bg-[#FEF6EC] text-[#9A3412]' },
-            { name: 'Dr. Ing. Farida Patittingi, M.Hum.', role: 'Tim Penjaminan Mutu', initial: 'FP', bg: 'bg-[#EDF7EE] text-[#166534]' },
-            { name: 'Andi Muhammad Abigail', role: 'Notulis Utama Sistem Nome', initial: 'AM', bg: 'bg-black text-white' }
+            { name: 'Pengguna Utama', role: 'Koordinator Tim', initial: 'PU', bg: 'bg-[#EAF4FE] text-[#1E40AF]' },
+            { name: 'Rian Pratama', role: 'Manajer Produk', initial: 'RP', bg: 'bg-[#F0EEFF] text-[#5B21B6]' },
+            { name: 'Siti Sarah', role: 'Desainer UI/UX', initial: 'SS', bg: 'bg-[#FEF6EC] text-[#9A3412]' },
+            { name: 'Budi Santoso', role: 'Pengembang Web', initial: 'BS', bg: 'bg-[#EDF7EE] text-[#166534]' },
+            { name: 'Pengguna Notulis', role: 'Pencatat Notulensi', initial: 'PN', bg: 'bg-black text-white' }
         ],
         addAttendee() {
             if (this.newAttendeeName.trim()) {
@@ -171,19 +171,19 @@
                     Notulensi Baru.
                 </h1>
                 <p class="text-[17px] text-black/55 mt-2 max-w-2xl font-normal leading-relaxed">
-                    Isian mengalir bebas di atas kanvas. Masukkan data agenda, surat dinas, daftar kehadiran, lalu biarkan sistem AI Nome memproses transkrip rekaman suara rapat.
+                    Isian mengalir bebas di atas kanvas. Masukkan agenda, catatan undangan, daftar peserta, lalu biarkan sistem Nome merangkum suara rekaman secara otomatis.
                 </p>
             </div>
 
             <div class="flex items-center space-x-2 shrink-0 self-start md:self-auto">
-                <a href="{{ url('/dashboard') }}" class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/70 hover:bg-black hover:text-white transition-colors">
+                <a href="{{ url('/dashboard') }}" class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/70 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
                     Batal
                 </a>
                 <button type="button" 
                         @click="submitAndProceed()"
                         :disabled="isTranscribing"
-                        class="px-6 py-2.5 rounded-full bg-black text-white text-[13px] font-semibold hover:bg-black/85 transition-transform active:scale-95 inline-flex items-center space-x-2">
-                    <span x-text="isTranscribing ? 'Memproses AI...' : 'Proses Notulensi'"></span>
+                        class="px-6 py-2.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 inline-flex items-center space-x-2">
+                    <span x-text="isTranscribing ? 'Memproses Rangkuman...' : 'Proses Notulensi'"></span>
                     <svg x-show="!isTranscribing" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </button>
             </div>
@@ -302,7 +302,7 @@
                     </label>
                     <input type="text" 
                            x-model="meetingInfo.notetaker"
-                           placeholder="Nama Pencatat Risalah"
+                           placeholder="Nama Pencatat Notulensi"
                            class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-3.5 text-[15px] text-black font-medium placeholder-black/30 focus:outline-none focus:border-black transition-colors">
                 </div>
             </div>
@@ -363,7 +363,7 @@
                 </label>
                 <textarea rows="4" 
                           x-model="letterInfo.openingParagraph"
-                          placeholder="Tuliskan narasi pembuka risalah dinas..."
+                          placeholder="Tuliskan narasi pembuka catatan rapat..."
                           class="w-full bg-white border border-[#d9d9d9] rounded-2xl p-5 text-[15px] text-black leading-relaxed placeholder-black/30 focus:outline-none focus:border-black transition-colors"></textarea>
                 <p class="text-[12px] text-black/45">Teks ini akan dicantumkan pada mukadimah dokumen berita acara ekspor PDF.</p>
             </div>
@@ -382,7 +382,7 @@
                     <h2 class="text-[26px] sm:text-[32px] font-black tracking-tight text-black">
                         Daftar Kehadiran Peserta
                     </h2>
-                    <p class="text-[14px] text-black/55">Peserta yang tercatat dalam risalah dan verifikasi kuorum rapat.</p>
+                    <p class="text-[14px] text-black/55">Peserta yang hadir dalam sesi rapat.</p>
                 </div>
             </div>
 
@@ -613,23 +613,23 @@
         </div>
 
         <div class="flex items-center space-x-3">
-            <a href="{{ url('/dashboard') }}" class="px-6 py-3 rounded-full border border-[#d9d9d9] text-[14px] font-medium text-black/70 hover:bg-black hover:text-white transition-colors">
+            <a href="{{ url('/dashboard') }}" class="px-6 py-3 rounded-full border border-[#d9d9d9] text-[14px] font-medium text-black/70 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
                 Kembali ke Beranda
             </a>
             <button type="button" 
                     @click="submitAndProceed()"
                     :disabled="isTranscribing"
-                    class="px-8 py-3.5 rounded-full bg-black text-white text-[15px] font-bold hover:bg-black/85 transition-transform active:scale-95 inline-flex items-center space-x-2.5">
+                    class="px-8 py-3.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[15px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 inline-flex items-center space-x-2.5">
                 <template x-if="!isTranscribing">
                     <div class="flex items-center space-x-2">
-                        <span>Mulai Transkripsi & Ekspor AI</span>
+                        <span>Mulai Rangkum Catatan</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </div>
                 </template>
                 <template x-if="isTranscribing">
                     <div class="flex items-center space-x-2">
                         <span class="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
-                        <span>Memproses Whisper & PyAnnote...</span>
+                        <span>Merapikan Catatan & Audio...</span>
                     </div>
                 </template>
             </button>

@@ -9,55 +9,55 @@
         showToast: false,
         toastMessage: '',
         memoData: {
-            letterNumber: '085/UN4.6.1/PL/2026',
-            title: 'Rapat Koordinasi Evaluasi Pembelajaran & Transkripsi Digital',
+            letterNumber: '085/NOT-TIM/2026',
+            title: 'Rapat Sinkronisasi Rencana Kerja & Roadmap Fitur',
             date: 'Rabu, 07 Oktober 2026',
-            time: '09:00 - 11:45 WITA',
-            location: 'Ruang Senat Lt. 2 Rektorat Unhas / Hybrid Zoom',
-            leader: 'Dr. Eng. Ir. Arman, M.T. (Wakil Dekan Bidang Akademik)',
-            notetaker: 'Andi Muhammad Abigail (Notulis Resmi)',
-            agenda: 'Penyelarasan kurikulum vokasi, adopsi modul AI meeting transcription Nome, dan penetapan jadwal magang mandiri MBKM.',
+            time: '09:00 - 11:45 WIB',
+            location: 'Ruang Rapat Utama / Hybrid Video Call',
+            leader: 'Pengguna Utama (Koordinator Tim)',
+            notetaker: 'Pengguna Notulis',
+            agenda: 'Penyelarasan target kuartal, pembagian tugas prioritas, dan uji coba sistem pencatatan otomatis.',
             conclusions: [
-                'Menyetujui adopsi platform Nome untuk pencatatan risalah seluruh rapat dinas di lingkungan Fakultas Teknik.',
-                'Pembagian akun resmi untuk 14 program studi dan departemen paling lambat 15 Oktober 2026.',
-                'Integrasi server GPU lokal untuk memproses data audio sensitif secara on-premise.',
-                'Penyusunan format buku pedoman notulensi digital terstandarisasi untuk mahasiswa magang.'
+                'Menyetujui ringkasan rencana kerja dan prioritas tugas untuk kuartal ini.',
+                'Pembagian penanggung jawab fitur diselesaikan paling lambat minggu depan.',
+                'Menggunakan sistem pencatatan otomatis untuk seluruh agenda diskusi tim.',
+                'Penyusunan panduan sederhana alur kerja bersama anggota tim baru.'
             ],
             actionItems: [
-                { task: 'Konfigurasi server backend dan instalasi PyAnnote', pic: 'Laboratorium Komputasi Awan', deadline: '12 Okt 2026' },
-                { task: 'Sosialisasi pengisian formulir rapat ke seluruh ketua departemen', pic: 'Subbagian Tata Usaha', deadline: '14 Okt 2026' },
-                { task: 'Uji coba transkripsi live rapat pimpinan dekanat', pic: 'Tim Notulis Nome', deadline: '19 Okt 2026' }
+                { task: 'Menyiapkan draft dokumen panduan tim', pic: 'Tim Produk', deadline: '12 Okt 2026' },
+                { task: 'Membagikan catatan ringkasan ke seluruh peserta', pic: 'Tim Operasional', deadline: '14 Okt 2026' },
+                { task: 'Uji coba alur kerja pada sesi evaluasi berikutnya', pic: 'Tim Pengembang', deadline: '19 Okt 2026' }
             ]
         },
         aiJsonOutput: {
             version: '2.4.0',
-            engine: 'Whisper-Large-v3 + PyAnnote-3.1',
+            engine: 'Audio Recognition + Smart Summary',
             confidence_score: 0.984,
             meeting_meta: {
                 id: 'NOME-SESS-20261007-01',
-                title: 'Rapat Koordinasi Evaluasi Pembelajaran & Transkripsi Digital',
-                letter_no: '085/UN4.6.1/PL/2026',
+                title: 'Rapat Sinkronisasi Rencana Kerja & Roadmap Fitur',
+                letter_no: '085/NOT-TIM/2026',
                 timestamp: '2026-10-07T09:00:00+08:00',
                 duration_seconds: 9912,
-                room: 'Ruang Senat Lt. 2 Rektorat'
+                room: 'Ruang Rapat Utama'
             },
             speakers: [
-                { id: 'SPK_01', name: 'Dr. Eng. Ir. Arman, M.T.', role: 'Pimpinan Rapat' },
-                { id: 'SPK_02', name: 'Prof. Dr. Ir. Indrabayu, S.T., M.T.', role: 'Ketua Departemen Informatika' },
-                { id: 'SPK_03', name: 'Andi Muhammad Abigail', role: 'Notulis' }
+                { id: 'SPK_01', name: 'Pengguna Utama', role: 'Koordinator Tim' },
+                { id: 'SPK_02', name: 'Rian Pratama', role: 'Manajer Produk' },
+                { id: 'SPK_03', name: 'Pengguna Notulis', role: 'Notulis' }
             ],
             summary_bullets: [
-                'Persetujuan resmi adopsi sistem notulensi cerdas Nome.',
-                'Pengadaan server GPU lokal untuk menjamin kerahasiaan data rapat.',
-                'Penetapan batas akhir pembagian akun dan sosialisasi unit pada 15 Oktober 2026.'
+                'Persetujuan ringkasan rencana kerja dan target kuartal.',
+                'Penyelarasan penanggung jawab masing-masing tugas prioritas.',
+                'Penggunaan sistem pencatatan otomatis untuk diskusi berikutnya.'
             ]
         },
         transcriptSegments: [
-            { time: '00:01:15', speaker: 'Dr. Eng. Ir. Arman, M.T.', role: 'Pimpinan Rapat', badge: 'bg-[#EAF4FE] text-[#1E40AF]', text: 'Selamat pagi bapak ibu sekalian. Terima kasih telah hadir tepat waktu pada rapat koordinasi teknis pagi hari ini. Kita akan fokus pada dua agenda: evaluasi kurikulum dan peresmian sistem notulensi rapat otomatis Nome.' },
-            { time: '00:03:40', speaker: 'Prof. Dr. Ir. Indrabayu, S.T., M.T.', role: 'Ketua Departemen Informatika', badge: 'bg-[#F0EEFF] text-[#5B21B6]', text: 'Terima kasih Pak Wadek. Dari pihak Departemen Informatika, kami telah menyiapkan infrastruktur dasar dan model audio transkripsi dengan akurasi 98% untuk perbendaharaan kata istilah teknis bahasa Indonesia.' },
-            { time: '00:08:22', speaker: 'Dr. Eng. Ir. Arman, M.T.', role: 'Pimpinan Rapat', badge: 'bg-[#EAF4FE] text-[#1E40AF]', text: 'Sangat baik. Bagaimana dengan aspek kerahasiaan pembicaraan rapat? Apakah data audio dikirimkan ke cloud pihak ketiga atau berjalan lokal?' },
-            { time: '00:10:05', speaker: 'Prof. Dr. Ir. Indrabayu, S.T., M.T.', role: 'Ketua Departemen Informatika', badge: 'bg-[#F0EEFF] text-[#5B21B6]', text: 'Sistem dirancang on-premise. Seluruh rekaman suara dan transkrip dienkripsi secara lokal di server universitas tanpa ketergantungan API pihak eksternal.' },
-            { time: '00:14:50', speaker: 'Andi Muhammad Abigail', role: 'Notulis Utama', badge: 'bg-black text-white', text: 'Notulis mencatat kesepakatan bahwa integrasi server GPU akan diselesaikan paling lambat 12 Oktober 2026 sebelum disosialisasikan ke unit lain.' }
+            { time: '00:01:15', speaker: 'Pengguna Utama', role: 'Koordinator Tim', badge: 'bg-[#EAF4FE] text-[#1E40AF]', text: 'Selamat pagi rekan-rekan sekalian. Terima kasih telah hadir tepat waktu pada sesi diskusi hari ini. Kita akan fokus pada sinkronisasi rencana kerja dan pembagian tugas utama.' },
+            { time: '00:03:40', speaker: 'Rian Pratama', role: 'Manajer Produk', badge: 'bg-[#F0EEFF] text-[#5B21B6]', text: 'Dari tim produk, kami sudah merapikan daftar prioritas fitur dan timeline pengerjaan agar seluruh anggota tim memiliki acuan yang jelas.' },
+            { time: '00:08:22', speaker: 'Pengguna Utama', role: 'Koordinator Tim', badge: 'bg-[#EAF4FE] text-[#1E40AF]', text: 'Sangat baik. Bagaimana dengan alur pencatatan dan dokumentasi hasil diskusi kita?' },
+            { time: '00:10:05', speaker: 'Rian Pratama', role: 'Manajer Produk', badge: 'bg-[#F0EEFF] text-[#5B21B6]', text: 'Sistem pencatatan otomatis langsung merekam poin penting, mengenali pembicara, dan merangkum kesimpulan dengan rapi.' },
+            { time: '00:14:50', speaker: 'Pengguna Notulis', role: 'Notulis', badge: 'bg-black text-white', text: 'Catatan poin kesepakatan sudah dirangkum dan siap ditinjau oleh seluruh tim.' }
         ],
 
         exportPdf() {
@@ -110,14 +110,14 @@
             <div>
                 <div class="flex flex-wrap items-center gap-3 mb-2">
                     <h1 class="text-[44px] sm:text-[56px] lg:text-[68px] font-black tracking-tighter text-black leading-[1.05]">
-                        Pratinjau Risalah.
+                        Pratinjau Catatan.
                     </h1>
                     <span class="px-3.5 py-1 rounded-full text-[12px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60 self-center">
-                        AI Verified 98.4%
+                        Rangkuman Otomatis
                     </span>
                 </div>
                 <p class="text-[17px] text-black/55 max-w-2xl font-normal leading-relaxed">
-                    Dokumen hasil ekstraksi AI disajikan menyerupai lembaran kertas kerja editorial. Anda dapat menyunting isi risalah secara langsung sebelum mengunduh.
+                    Dokumen hasil pencatatan disajikan dalam format yang bersih dan rapi. Anda dapat langsung mengedit catatan sebelum mengunduh atau membagikannya.
                 </p>
             </div>
 
@@ -125,7 +125,7 @@
             <div class="flex flex-wrap items-center gap-3 shrink-0 self-start lg:self-auto">
                 <button type="button" 
                         @click="window.print()" 
-                        class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-colors flex items-center space-x-2">
+                        class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm flex items-center space-x-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                     <span>Cetak Lembar</span>
                 </button>
@@ -133,7 +133,7 @@
                 <button type="button" 
                         @click="exportDocx()" 
                         :disabled="isExportingDocx"
-                        class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-colors flex items-center space-x-2">
+                        class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm flex items-center space-x-2">
                     <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     <span x-text="isExportingDocx ? 'Membuat...' : 'Ekspor Docx'"></span>
                 </button>
@@ -141,9 +141,9 @@
                 <button type="button" 
                         @click="exportPdf()" 
                         :disabled="isExportingPdf"
-                        class="px-6 py-2.5 rounded-full bg-black text-white text-[13px] font-semibold hover:bg-black/85 transition-transform active:scale-95 flex items-center space-x-2">
+                        class="px-6 py-2.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 flex items-center space-x-2">
                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    <span x-text="isExportingPdf ? 'Menyiapkan...' : 'Ekspor PDF Resmi'"></span>
+                    <span x-text="isExportingPdf ? 'Menyiapkan...' : 'Ekspor PDF'"></span>
                 </button>
             </div>
         </div>
@@ -172,7 +172,7 @@
                 :class="activeTab === 'json' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
                 class="px-5 py-2 rounded-full text-[13px] font-medium transition-colors flex items-center space-x-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-            <span>Skema JSON (Whisper)</span>
+            <span>Skema Data (JSON)</span>
         </button>
     </div>
 
@@ -199,18 +199,17 @@
 
         <!-- The Grand Paper Sheet (Maximized Whitespace, High Readability) -->
         <div class="bg-white border border-[#d9d9d9]/80 rounded-3xl p-10 sm:p-16 lg:p-20 max-w-4xl mx-auto space-y-12 font-sans text-black" contenteditable="true">
-            <!-- Kop Surat Resmi -->
+            <!-- Kop Catatan Resmi -->
             <div class="text-center border-b-2 border-black pb-6 space-y-1.5">
-                <p class="text-[12px] uppercase tracking-widest font-semibold text-black/70">Kementerian Pendidikan Tinggi, Sains, dan Teknologi</p>
-                <p class="text-[20px] sm:text-[22px] uppercase tracking-wide font-black text-black">Universitas Hasanuddin</p>
-                <p class="text-[14px] uppercase font-bold text-black/90">Fakultas Teknik &bull; Departemen Teknik Informatika</p>
-                <p class="text-[12px] text-black/50">Jl. Poros Malino Km. 6, Bontomarannu, Gowa, Sulawesi Selatan 92171 | laman: unhas.ac.id</p>
+                <p class="text-[12px] uppercase tracking-widest font-semibold text-black/70">Dokumen Catatan Rapat</p>
+                <p class="text-[20px] sm:text-[22px] uppercase tracking-wide font-black text-black">Ruang Kerja Notulensi</p>
+                <p class="text-[14px] uppercase font-bold text-black/90">Laporan Diskusi &bull; Rangkuman Otomatis</p>
             </div>
 
             <!-- Title of Memo -->
             <div class="text-center space-y-2">
                 <h2 class="text-[22px] sm:text-[26px] font-extrabold tracking-tight uppercase underline text-black">
-                    Notulensi & Risalah Rapat Dinas
+                    Notulensi Catatan Rapat
                 </h2>
                 <p class="text-[14px] font-mono text-black/75">
                     Nomor: <span x-text="memoData.letterNumber"></span>
@@ -235,10 +234,10 @@
                     <span class="text-black/55">Tempat</span>
                     <span class="sm:col-span-3 text-black" x-text="memoData.location"></span>
 
-                    <span class="text-black/55">Pimpinan Rapat</span>
+                    <span class="text-black/55">Koordinator Rapat</span>
                     <span class="sm:col-span-3 font-semibold text-black" x-text="memoData.leader"></span>
 
-                    <span class="text-black/55">Notulis Risalah</span>
+                    <span class="text-black/55">Pencatat Notulensi</span>
                     <span class="sm:col-span-3 font-semibold text-black" x-text="memoData.notetaker"></span>
                 </div>
             </div>
@@ -251,10 +250,10 @@
                 <p class="text-[15px] leading-relaxed text-black/90" x-text="memoData.agenda"></p>
             </div>
 
-            <!-- Bagian III: Kesimpulan AI -->
+            <!-- Bagian III: Kesimpulan -->
             <div class="space-y-4">
                 <h3 class="text-[16px] font-bold tracking-tight uppercase border-b border-[#d9d9d9] pb-2 text-black">
-                    III. Kesimpulan & Rumusan Keputusan AI
+                    III. Kesimpulan & Poin Kesepakatan
                 </h3>
                 <ul class="list-disc list-outside ml-6 space-y-2.5 text-[15px] leading-relaxed text-black/90">
                     <template x-for="(concl, i) in memoData.conclusions" :key="i">
@@ -295,18 +294,18 @@
             <!-- Bagian V: Pengesahan Tanda Tangan -->
             <div class="pt-10 grid grid-cols-2 gap-8 text-[14px] text-center">
                 <div class="space-y-20">
-                    <p class="text-black/80">Mengetahui,<br><strong class="text-black">Pimpinan Rapat</strong></p>
+                    <p class="text-black/80">Mengetahui,<br><strong class="text-black">Koordinator Tim</strong></p>
                     <div>
-                        <p class="font-bold underline text-black">Dr. Eng. Ir. Arman, M.T.</p>
-                        <p class="text-[12px] text-black/60 font-mono mt-0.5">NIP. 197405102000031001</p>
+                        <p class="font-bold underline text-black">Pengguna Utama</p>
+                        <p class="text-[12px] text-black/60 font-mono mt-0.5">Penanggung Jawab</p>
                     </div>
                 </div>
 
                 <div class="space-y-20">
-                    <p class="text-black/80">Makassar, 07 Oktober 2026<br><strong class="text-black">Notulis Resmi</strong></p>
+                    <p class="text-black/80">07 Oktober 2026<br><strong class="text-black">Pencatat Notulensi</strong></p>
                     <div>
-                        <p class="font-bold underline text-black">Andi Muhammad Abigail</p>
-                        <p class="text-[12px] text-black/60 font-mono mt-0.5">NIM / ID. D121211018</p>
+                        <p class="font-bold underline text-black">Pengguna Notulis</p>
+                        <p class="text-[12px] text-black/60 font-mono mt-0.5">Notulis Sesi</p>
                     </div>
                 </div>
             </div>
@@ -317,8 +316,8 @@
     <div x-show="activeTab === 'transcript'" class="space-y-6 max-w-4xl mx-auto">
         <div class="flex items-center justify-between pb-2 border-b border-[#d9d9d9]/60">
             <div>
-                <h2 class="text-[24px] font-bold tracking-tight text-black">Transkrip Lengkap Percakapan & Diarisasi</h2>
-                <p class="text-[14px] text-black/55">Pemisahan pembicara berbasis model PyAnnote dengan akurasi stempel waktu.</p>
+                <h2 class="text-[24px] font-bold tracking-tight text-black">Transkrip Lengkap Percakapan & Pembicara</h2>
+                <p class="text-[14px] text-black/55">Pemisahan pembicara otomatis dengan penanda waktu yang akurat.</p>
             </div>
             <span class="px-4 py-1.5 rounded-full bg-white border border-[#d9d9d9] text-[12px] font-semibold text-black">
                 5 Segmen Suara
@@ -347,8 +346,8 @@
     <div x-show="activeTab === 'json'" class="space-y-6 max-w-4xl mx-auto">
         <div class="flex items-center justify-between pb-2 border-b border-[#d9d9d9]/60">
             <div>
-                <h2 class="text-[24px] font-bold tracking-tight text-black">AI Output Schema (JSON)</h2>
-                <p class="text-[14px] text-black/55">Data mentah hasil ekstraksi speech-to-text Whisper dan summarizer.</p>
+                <h2 class="text-[24px] font-bold tracking-tight text-black">Data Hasil Rangkuman (JSON)</h2>
+                <p class="text-[14px] text-black/55">Data hasil ringkasan dan transkrip otomatis.</p>
             </div>
             <button type="button" 
                     @click="navigator.clipboard.writeText(JSON.stringify(aiJsonOutput, null, 2)); triggerToast('JSON berhasil disalin ke clipboard!');"
