@@ -13,11 +13,6 @@
             <!-- LEFT COLUMN (Typography, Subtle Yellow Accent, & CTA) -->
             <div class="lg:col-span-6 space-y-8">
                 <div class="space-y-4">
-                    <!-- Eyebrow label -->
-                    <div class="inline-flex items-center space-x-2 text-[12px] font-semibold tracking-wider uppercase text-black/50">
-                        <span>Notulensi Otomatis</span>
-                    </div>
-
                     <!-- Very large, bold headline with thick yellow underline accent -->
                     <h1 class="text-[44px] sm:text-[56px] lg:text-[64px] font-black tracking-tighter text-black leading-[1.05] animate-fade-in-up">
                         1,090 Rapat Dirangkum <span class="relative inline-block text-black">Tanpa Ribet.<span class="absolute left-0 bottom-1 sm:bottom-2 w-full h-3 sm:h-3.5 bg-[#FFD027] -z-10 rounded-xs"></span></span>
@@ -179,11 +174,6 @@
             
             <!-- A. MACRO-TYPOGRAPHY GREETING & STATUS -->
             <div class="space-y-4">
-                <div class="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-white border border-[#d9d9d9]/80 text-[12px] font-medium text-black/60">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                    <span>Ruang Catatan Rapat &bull; Rabu, 07 Okt 2026</span>
-                </div>
-
                 <h2 class="text-[40px] sm:text-[52px] lg:text-[60px] font-black tracking-tighter text-black leading-[1.05]">
                     Ruang Kerja Notulensi.
                 </h2>
@@ -200,14 +190,14 @@
                         <h3 class="text-[20px] font-bold tracking-tight text-black">Folder Ruang Kerja</h3>
                         <span class="text-[11px] font-mono text-black/40 bg-white border border-[#d9d9d9]/70 px-2 py-0.5 rounded-full">4 Kategori</span>
                     </div>
-                    <a href="{{ url('/history') }}" class="text-[13px] font-medium text-black/60 hover:text-[#ff5347] transition-colors">
+                    <a href="{{ url('/memo') }}" class="text-[13px] font-medium text-black/60 hover:text-[#ff5347] transition-colors">
                         Kelola Semua Folder &rarr;
                     </a>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                     <!-- Folder 1: Lavender Pastel -->
-                    <a href="{{ url('/history') }}" class="group block bg-[#F0EEFF] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
+                    <a href="{{ url('/memo') }}" class="group block bg-[#F0EEFF] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
                         <div class="flex items-center justify-between mb-8">
                             <span class="w-10 h-10 rounded-2xl bg-white/80 flex items-center justify-center text-black">
                                 <svg class="w-5 h-5 text-indigo-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
@@ -225,7 +215,7 @@
                     </a>
 
                     <!-- Folder 2: Sky Blue Pastel -->
-                    <a href="{{ url('/history') }}" class="group block bg-[#EAF4FE] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
+                    <a href="{{ url('/memo') }}" class="group block bg-[#EAF4FE] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
                         <div class="flex items-center justify-between mb-8">
                             <span class="w-10 h-10 rounded-2xl bg-white/80 flex items-center justify-center text-black">
                                 <svg class="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
@@ -243,7 +233,7 @@
                     </a>
 
                     <!-- Folder 3: Warm Peach / Cream Pastel -->
-                    <a href="{{ url('/history') }}" class="group block bg-[#FEF6EC] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
+                    <a href="{{ url('/memo') }}" class="group block bg-[#FEF6EC] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
                         <div class="flex items-center justify-between mb-8">
                             <span class="w-10 h-10 rounded-2xl bg-white/80 flex items-center justify-center text-black">
                                 <svg class="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
@@ -261,7 +251,7 @@
                     </a>
 
                     <!-- Folder 4: Soft Mint Pastel -->
-                    <a href="{{ url('/history') }}" class="group block bg-[#EDF7EE] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
+                    <a href="{{ url('/memo') }}" class="group block bg-[#EDF7EE] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
                         <div class="flex items-center justify-between mb-8">
                             <span class="w-10 h-10 rounded-2xl bg-white/80 flex items-center justify-center text-black">
                                 <svg class="w-5 h-5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>

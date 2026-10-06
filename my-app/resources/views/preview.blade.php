@@ -96,16 +96,8 @@
         <span x-text="toastMessage"></span>
     </div>
 
-    <!-- 1. MACRO-TYPOGRAPHY HEADER -->
-    <div class="space-y-4 pt-4 border-b border-[#d9d9d9]/60 pb-8">
-        <div class="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-white border border-[#d9d9d9]/80 text-[12px] font-medium text-black/60">
-            <a href="{{ url('/dashboard') }}" class="hover:text-black transition-colors">Workspace</a>
-            <span>&bull;</span>
-            <a href="{{ url('/history') }}" class="hover:text-black transition-colors">Arsip</a>
-            <span>&bull;</span>
-            <span class="text-black font-semibold">Pratinjau Hasil</span>
-        </div>
-
+    <!-- 1. MACRO-TYPOGRAPHY HEADER (Strictly No Decorative Pill, Generous Whitespace) -->
+    <div class="pt-6 border-b border-[#d9d9d9]/60 pb-8">
         <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
             <div>
                 <div class="flex flex-wrap items-center gap-3 mb-2">

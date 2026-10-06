@@ -69,7 +69,6 @@
         .animate-fade-in-up-delay {
             animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
         }
-        /* Hide scrollbars for clean aesthetic */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -91,6 +90,38 @@
              recordTimer: null,
              showToast: false,
              toastMsg: '',
+             settingsTab: 'profil',
+             memoStep: 1,
+             memoTitle: '',
+             memoAgenda: '',
+             memoDate: '2026-10-07',
+             memoTimeStart: '09:00',
+             memoTimeEnd: '11:00',
+             memoLocation: '',
+             memoLeader: 'Pengguna Utama',
+             memoNotetaker: 'Pengguna Notulis',
+             memoAudioMode: 'record',
+             uploadedAudioName: null,
+             attendees: [
+                 { name: 'Pengguna Utama', role: 'Koordinator Tim' },
+                 { name: 'Rian Pratama', role: 'Manajer Produk' },
+                 { name: 'Siti Sarah', role: 'Desainer UI/UX' }
+             ],
+             newAttName: '',
+             newAttRole: '',
+             addAttendee() {
+                 if (this.newAttName.trim()) {
+                     this.attendees.push({
+                         name: this.newAttName.trim(),
+                         role: this.newAttRole.trim() || 'Anggota Rapat'
+                     });
+                     this.newAttName = '';
+                     this.newAttRole = '';
+                 }
+             },
+             removeAttendee(idx) {
+                 this.attendees.splice(idx, 1);
+             },
              triggerToast(m) {
                  this.toastMsg = m;
                  this.showToast = true;
@@ -116,8 +147,9 @@
         <!-- Toast Notification -->
         <div x-show="showToast" 
              x-transition
-             class="fixed bottom-8 right-8 z-50 bg-black text-white border border-[#d9d9d9]/40 rounded-full px-6 py-3 flex items-center space-x-3 text-[14px] font-medium">
-            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+             class="fixed bottom-8 right-8 z-50 bg-black text-white border border-[#d9d9d9]/40 rounded-full px-6 py-3 flex items-center space-x-3 text-[14px] font-medium"
+             style="display: none;">
+            <div class="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
             <span x-text="toastMsg"></span>
         </div>
 
@@ -131,7 +163,7 @@
                 <span class="text-[18px] sm:text-[19px] font-black tracking-tight text-black leading-none">Nome.</span>
             </button>
 
-            <!-- Center: Simple navigation links (Only Workspace & Arsip) -->
+            <!-- Center: Simple navigation links (Only Workspace & Memo) -->
             <nav class="hidden md:flex items-center space-x-8 text-[13px] font-medium">
                 <button @click="currentView = 'dashboard'" 
                         :class="currentView === 'dashboard' ? 'font-bold text-[#ff5347] border-b-2 border-[#ff5347]' : 'text-black/65 hover:text-black'" 
@@ -141,15 +173,14 @@
                 <button @click="currentView = 'history'" 
                         :class="currentView === 'history' ? 'font-bold text-[#ff5347] border-b-2 border-[#ff5347]' : 'text-black/65 hover:text-black'" 
                         class="transition-colors pb-0.5">
-                    Arsip
+                    Memo
                 </button>
             </nav>
 
             <!-- Right: Primary Action Button (#ff5347) & Simple Account Dropdown -->
             <div class="flex items-center space-x-3 shrink-0">
-                <button @click="currentView = 'add-memo'" 
+                <button @click="currentView = 'add-memo'; memoStep = 1; memoTitle = ''" 
                         class="inline-flex items-center space-x-2 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-5 py-2 text-[13px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">
-                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
                     <span>Mulai Rapat</span>
                 </button>
 
@@ -171,8 +202,9 @@
                          x-transition:leave="transition ease-in duration-150"
                          x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                          x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
-                         class="absolute right-0 mt-3 w-44 bg-white border border-[#d9d9d9] rounded-2xl p-2 z-50 floating-glass-pill space-y-1">
-                        <button @click="currentView = 'dashboard'; open = false" class="w-full text-left flex items-center px-3.5 py-2 rounded-xl text-[13px] font-medium text-black/75 hover:text-black hover:bg-black/[0.04] transition-colors">
+                         class="absolute right-0 mt-3 w-44 bg-white border border-[#d9d9d9] rounded-2xl p-2 z-50 floating-glass-pill space-y-1"
+                         style="display: none;">
+                        <button @click="currentView = 'settings'; open = false" class="w-full text-left flex items-center px-3.5 py-2 rounded-xl text-[13px] font-medium text-black/75 hover:text-black hover:bg-black/[0.04] transition-colors">
                             Settings
                         </button>
                         <div class="h-px bg-[#d9d9d9]/60 my-1"></div>
@@ -186,17 +218,17 @@
 
         <!-- FULL VIEWPORT MAIN CONTENT CANVAS (100% Width, No Sidebar) -->
         <main class="w-full flex-1 min-h-screen">
+
+            <!-- ======================================================== -->
             <!-- VIEW 1: DASHBOARD (HERO SECTION + WARM LOWER CANVAS) -->
+            <!-- ======================================================== -->
             <div x-show="currentView === 'dashboard'" class="w-full space-y-0">
                 <!-- TWO-COLUMN HERO SECTION (BG-WHITE) -->
                 <section class="w-full bg-white border-b border-[#d9d9d9]/70 pt-28 sm:pt-36 pb-16 sm:pb-24 px-6 sm:px-10 lg:px-16">
                     <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-                        <!-- Left Column (Typography & CTA) -->
+                        <!-- Left Column (Typography & CTA, No Decorative Pill) -->
                         <div class="lg:col-span-6 space-y-8">
                             <div class="space-y-4">
-                                <div class="inline-flex items-center space-x-2 text-[12px] font-semibold tracking-wider uppercase text-black/50">
-                                    <span>Notulensi Otomatis</span>
-                                </div>
                                 <h1 class="text-[44px] sm:text-[56px] lg:text-[62px] font-black tracking-tighter text-black leading-[1.05] animate-fade-in-up">
                                     1,090 Rapat Dirangkum <span class="relative inline-block text-black">Tanpa Ribet.<span class="absolute left-0 bottom-1 sm:bottom-2 w-full h-3 sm:h-3.5 bg-[#FFD027] -z-10 rounded-xs"></span></span>
                                 </h1>
@@ -206,7 +238,7 @@
                             </div>
 
                             <div class="animate-fade-in-up-delay">
-                                <button @click="currentView = 'add-memo'" class="inline-flex items-center space-x-2.5 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-xl px-8 py-4 text-[15px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 shadow-none">
+                                <button @click="currentView = 'add-memo'; memoStep = 1; memoTitle = ''" class="inline-flex items-center space-x-2.5 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-xl px-8 py-4 text-[15px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 shadow-none">
                                     <span>Mulai Rapat Sekarang</span>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                 </button>
@@ -279,12 +311,8 @@
 
                 <!-- 3. LOWER DASHBOARD UI (WARM CANVAS #F8F7F3) -->
                 <div class="bg-[#F8F7F3] p-8 sm:p-12 lg:p-14 space-y-16">
-                    <!-- Macro Greeting -->
+                    <!-- Macro Greeting (No Decorative Pill) -->
                     <div class="space-y-3 pt-2">
-                        <div class="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-white border border-[#d9d9d9]/80 text-[12px] font-medium text-black/60">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                            <span>Ruang Catatan Rapat &bull; Rabu, 07 Okt 2026</span>
-                        </div>
                         <h2 class="text-[40px] sm:text-[52px] lg:text-[60px] font-black tracking-tighter text-black leading-[1.05]">
                             Ruang Kerja Notulensi.
                         </h2>
@@ -369,11 +397,11 @@
                             </div>
 
                             <div class="flex flex-wrap items-center gap-4">
-                                <button @click="currentView = 'add-memo'" class="bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-8 py-3.5 text-[14px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">
+                                <button @click="currentView = 'add-memo'; memoStep = 1; memoTitle = ''" class="bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-8 py-3.5 text-[14px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">
                                     Coba Sekarang
                                 </button>
                                 <button @click="currentView = 'history'" class="border border-white/30 text-white hover:bg-white/10 rounded-full px-6 py-3.5 text-[14px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
-                                    Lihat Arsip Rapat
+                                    Lihat Memo Rapat
                                 </button>
                             </div>
                         </div>
@@ -406,7 +434,7 @@
                         <div class="flex items-center justify-between">
                             <h2 class="text-[20px] font-bold tracking-tight text-black">Rapat Terbaru</h2>
                             <button @click="currentView = 'history'" class="text-[13px] text-black font-semibold hover:text-[#ff5347] transition-colors">
-                                Semua Rapat &rarr;
+                                Semua Memo &rarr;
                             </button>
                         </div>
 
@@ -473,140 +501,538 @@
                 </div>
             </div>
 
-            <!-- VIEW 2: ADD MEMO (UNBOXED FLOWING CANVAS) -->
-            <div x-show="currentView === 'add-memo'" class="space-y-16 max-w-4xl mx-auto pt-28 pb-20 px-6 sm:px-10">
-                <div class="space-y-4 pt-2 border-b border-[#d9d9d9]/60 pb-8">
-                    <h1 class="text-[48px] sm:text-[64px] font-black tracking-tighter text-black leading-tight">
-                        Notulensi Baru.
-                    </h1>
-                    <p class="text-[17px] text-black/55 font-normal">
-                        Isian mengalir bebas di atas kanvas tanpa kotak tab kaku. Lengkapi data lalu proses rekaman suara AI.
+            <!-- ======================================================== -->
+            <!-- VIEW 2: ADD MEMO (NOTION-STYLE PROGRESSIVE DISCLOSURE) -->
+            <!-- ======================================================== -->
+            <div x-show="currentView === 'add-memo'" 
+                 class="max-w-4xl mx-auto pt-32 pb-24 px-6 sm:px-10 space-y-10 min-h-[75vh]"
+                 style="display: none;">
+                
+                <!-- STEP 1: GIANT BORDERLESS INPUT FOR MEETING TITLE -->
+                <div class="space-y-4 pt-4">
+                    <input type="text" 
+                           x-model="memoTitle"
+                           placeholder="Judul Rapat..." 
+                           @keydown.enter.prevent="if (memoTitle.trim().length > 0) { memoStep = 2; }" 
+                           class="text-4xl sm:text-5xl font-bold w-full bg-transparent border-none outline-none focus:ring-0 placeholder-gray-300 text-black leading-tight tracking-tight">
+
+                    <!-- Muted helper text -->
+                    <p x-show="memoStep === 1" 
+                       x-transition.opacity.duration.300ms
+                       class="text-[15px] text-black/40 font-normal">
+                        Tekan Enter untuk mulai mengatur rapat...
                     </p>
                 </div>
 
-                <!-- Section 01 -->
-                <div class="space-y-8">
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 rounded-full bg-black text-white text-[12px] font-bold flex items-center justify-center">01</span>
-                        <h2 class="text-[26px] font-black tracking-tight text-black">Informasi Rapat & Agenda</h2>
-                    </div>
-                    <div class="space-y-6">
-                        <div>
-                            <label class="block text-[18px] font-bold text-black mb-2">Nama Rapat / Agenda Utama</label>
-                            <input type="text" value="Rapat Koordinasi Evaluasi Pembelajaran & Transkripsi Digital" class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-4 text-[16px] text-black focus:outline-none focus:border-black">
-                        </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-[14px] font-bold text-black mb-2">Tanggal Pelaksanaan</label>
-                                <input type="date" value="2026-10-07" class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-3.5 text-[15px] text-black">
+                <!-- STEP 2 (REVEAL): PROGRESSIVE DISCLOSURE VIA ALPINE TRANSITION -->
+                <div x-show="memoStep === 2" 
+                     x-transition.opacity.duration.500ms
+                     class="space-y-12"
+                     style="display: none;">
+
+                    <!-- 1. PROPERTIES / METADATA TABLE -->
+                    <div class="space-y-6 pt-2 border-t border-[#d9d9d9]/60">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-2">
+                                <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
+                                    Tanggal Pelaksanaan
+                                </label>
+                                <input type="date" 
+                                       x-model="memoDate"
+                                       class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
                             </div>
-                            <div>
-                                <label class="block text-[14px] font-bold text-black mb-2">Ruang / Tautan</label>
-                                <input type="text" value="Ruang Senat Rektorat Lt. 2" class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-3.5 text-[15px] text-black">
+
+                            <div class="space-y-2">
+                                <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
+                                    Waktu (Mulai & Selesai)
+                                </label>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <input type="time" 
+                                           x-model="memoTimeStart"
+                                           class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
+                                    <input type="time" 
+                                           x-model="memoTimeEnd"
+                                           class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
+                                </div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
+                                    Lokasi / Tautan Rapat
+                                </label>
+                                <input type="text" 
+                                       x-model="memoLocation"
+                                       placeholder="Ruang Rapat Utama atau link Google Meet..."
+                                       class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
+                                    Pimpinan & Notulis Rapat
+                                </label>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <input type="text" 
+                                           x-model="memoLeader"
+                                           placeholder="Nama Pimpinan"
+                                           class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
+                                    <input type="text" 
+                                           x-model="memoNotetaker"
+                                           placeholder="Nama Notulis"
+                                           class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="h-px bg-[#d9d9d9]/60"></div>
-
-                <!-- Section 02 -->
-                <div class="space-y-8">
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 rounded-full bg-black text-white text-[12px] font-bold flex items-center justify-center">02</span>
-                        <h2 class="text-[26px] font-black tracking-tight text-black">Rekaman Suara AI</h2>
+                    <!-- 2. AGENDA PEMBAHASAN -->
+                    <div class="space-y-3">
+                        <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
+                            Agenda Pembahasan
+                        </label>
+                        <textarea rows="3" 
+                                  x-model="memoAgenda"
+                                  placeholder="Tuliskan pokok agenda atau tujuan pembahasan rapat di sini..."
+                                  class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[16px] text-black leading-relaxed placeholder-black/30 transition-colors resize-none"></textarea>
                     </div>
 
-                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-10 text-center space-y-6">
-                        <span class="text-[12px] font-semibold text-black/40 uppercase tracking-wider">Durasi Perekaman Studio</span>
-                        <div class="font-mono text-[56px] font-black text-black tracking-tighter" x-text="formatTime(recordTime)"></div>
-                        
-                        <div class="pt-2">
-                            <button @click="toggleRecord()" 
-                                    :class="isRecording ? 'bg-black text-white' : 'bg-[#ff5347] text-white'"
-                                    class="rounded-full px-8 py-3.5 text-[15px] font-bold transition-transform active:scale-95">
-                                <span x-text="isRecording ? 'Hentikan Rekaman' : 'Mulai Perekaman Suara'"></span>
+                    <!-- 3. ATTENDEES (DAFTAR PESERTA) -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
+                                Daftar Peserta Hadir (<span x-text="attendees.length"></span>)
+                            </label>
+                        </div>
+
+                        <!-- Minimal Quick-Add Row -->
+                        <div class="flex flex-col sm:flex-row items-center gap-3">
+                            <input type="text" 
+                                   x-model="newAttName"
+                                   @keydown.enter.prevent="addAttendee()"
+                                   placeholder="Nama peserta..."
+                                   class="flex-1 w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[14px] text-black font-medium placeholder-black/30 transition-colors">
+                            <input type="text" 
+                                   x-model="newAttRole"
+                                   @keydown.enter.prevent="addAttendee()"
+                                   placeholder="Jabatan / Peran..."
+                                   class="w-full sm:w-56 border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[14px] text-black font-medium placeholder-black/30 transition-colors">
+                            <button type="button" 
+                                    @click="addAttendee()"
+                                    class="px-5 py-2 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors shrink-0 self-end sm:self-auto">
+                                + Tambah
+                            </button>
+                        </div>
+
+                        <!-- Tags with Simple Colored Div Placeholder -->
+                        <div class="flex flex-wrap gap-2.5 pt-2">
+                            <template x-for="(att, idx) in attendees" :key="idx">
+                                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full border border-[#d9d9d9] bg-white text-[13px] text-black">
+                                    <div class="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-[10px] font-bold text-black/70"
+                                         x-text="att.name.charAt(0)"></div>
+                                    <span class="font-medium" x-text="att.name"></span>
+                                    <span class="text-black/40 text-[11px]">&bull;</span>
+                                    <span class="text-black/55 text-[11px]" x-text="att.role"></span>
+                                    <button type="button" 
+                                            @click="removeAttendee(idx)"
+                                            class="text-black/40 hover:text-red-500 transition-colors ml-1">
+                                        &times;
+                                    </button>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- 4. AUDIO FILE UPLOAD / RECORD -->
+                    <div class="space-y-4 pt-4 border-t border-[#d9d9d9]/60">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
+                                Suara Rapat & Sumber Audio
+                            </label>
+                            <div class="flex items-center space-x-3 text-[13px]">
+                                <button type="button" 
+                                        @click="memoAudioMode = 'record'"
+                                        :class="memoAudioMode === 'record' ? 'font-bold text-black underline underline-offset-4' : 'text-black/50 hover:text-black'"
+                                        class="transition-colors">
+                                    Rekam Langsung
+                                </button>
+                                <span class="text-black/30">|</span>
+                                <button type="button" 
+                                        @click="memoAudioMode = 'upload'"
+                                        :class="memoAudioMode === 'upload' ? 'font-bold text-black underline underline-offset-4' : 'text-black/50 hover:text-black'"
+                                        class="transition-colors">
+                                    Unggah Berkas
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Live Record -->
+                        <div x-show="memoAudioMode === 'record'" class="py-6 space-y-4">
+                            <div class="flex items-center space-x-5">
+                                <div class="w-12 h-12 rounded-full border border-[#d9d9d9] flex items-center justify-center shrink-0"
+                                     :class="isRecording ? 'bg-[#ff5347]/10 border-[#ff5347]' : 'bg-gray-100'">
+                                    <div class="w-3.5 h-3.5 rounded-full"
+                                         :class="isRecording ? 'bg-[#ff5347] animate-pulse' : 'bg-gray-400'"></div>
+                                </div>
+                                <div>
+                                    <div class="font-mono text-[28px] font-bold text-black tracking-tight" x-text="formatTime(recordTime)"></div>
+                                    <p class="text-[13px] text-black/50" x-text="isRecording ? 'Sedang merekam suara rapat...' : 'Klik tombol di samping untuk mulai merekam.'"></p>
+                                </div>
+                                <div class="pl-4">
+                                    <button type="button" 
+                                            @click="toggleRecord()"
+                                            :class="isRecording ? 'bg-black text-white hover:bg-black/85' : 'bg-[#ff5347] text-white hover:bg-[#e0453a]'"
+                                            class="px-6 py-2.5 rounded-full text-[13px] font-semibold transition-all">
+                                        <span x-text="isRecording ? 'Selesai Rekaman' : 'Mulai Rekam'"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upload Audio -->
+                        <div x-show="memoAudioMode === 'upload'" class="py-4 space-y-3" style="display: none;">
+                            <div class="border border-dashed border-[#d9d9d9] hover:border-black/50 transition-colors rounded-2xl p-8 text-center space-y-3 relative">
+                                <input type="file" 
+                                       @change="uploadedAudioName = $event.target.files[0]?.name"
+                                       accept="audio/*" 
+                                       class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                <div class="w-10 h-10 rounded-full bg-gray-200 mx-auto flex items-center justify-center text-black/50 text-[12px] font-bold">
+                                    AI
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-[14px] font-medium text-black">Klik atau seret berkas audio ke sini</p>
+                                    <p class="text-[12px] text-black/45">Mendukung format MP3, WAV, M4A, AAC</p>
+                                </div>
+                            </div>
+
+                            <div x-show="uploadedAudioName" class="flex items-center justify-between text-[13px] border-b border-[#d9d9d9] py-2">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                                    <span class="font-medium text-black" x-text="uploadedAudioName"></span>
+                                </div>
+                                <span class="text-emerald-700 font-medium">Siap diproses</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5. GENERATIVE CTA ACTION BAR -->
+                    <div class="pt-8 border-t border-[#d9d9d9]/60 flex items-center justify-between gap-4">
+                        <button type="button" 
+                                @click="memoStep = 1"
+                                class="text-[14px] font-medium text-black/55 hover:text-black transition-colors">
+                            &larr; Ubah Judul
+                        </button>
+
+                        <div class="flex items-center space-x-3">
+                            <button @click="currentView = 'dashboard'" class="px-6 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/70 hover:bg-black hover:text-white transition-all">
+                                Batal
+                            </button>
+                            <button @click="currentView = 'preview'; triggerToast('Rangkuman notulensi selesai!')" class="px-7 py-3 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[14px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">
+                                Mulai Rangkum Catatan
                             </button>
                         </div>
                     </div>
-                </div>
 
-                <!-- Submit Action -->
-                <div class="pt-8 border-t border-[#d9d9d9]/60 flex items-center justify-end space-x-4">
-                    <button @click="currentView = 'dashboard'" class="px-6 py-3 rounded-full border border-[#d9d9d9] text-[14px] font-medium text-black hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Batal</button>
-                    <button @click="currentView = 'preview'; triggerToast('Notulensi berhasil diproses!')" class="px-8 py-3.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[15px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">
-                        Transkripsikan & Buka Pratinjau &rarr;
-                    </button>
                 </div>
             </div>
 
-            <!-- VIEW 3: HISTORY ARCHIVE -->
-            <div x-show="currentView === 'history'" class="space-y-12 max-w-6xl mx-auto pt-28 pb-20 px-6 sm:px-10">
-                <div class="space-y-4 pt-2 border-b border-[#d9d9d9]/60 pb-8">
-                    <h1 class="text-[48px] sm:text-[64px] font-black tracking-tighter text-black leading-tight">
-                        Arsip Catatan Rapat.
-                    </h1>
-                    <p class="text-[17px] text-black/55 font-normal">
-                        Koleksi lengkap seluruh catatan rapat dan transkrip hasil olahan Nome.
-                    </p>
+            <!-- ======================================================== -->
+            <!-- VIEW 3: MEMO ARCHIVE (RESTRUCTURED FROM ARSIP) -->
+            <!-- ======================================================== -->
+            <div x-show="currentView === 'history'" 
+                 class="space-y-12 max-w-7xl mx-auto pt-32 pb-24 px-6 sm:px-10"
+                 style="display: none;">
+                
+                <!-- Macro Typography Header (No Decorative Pill) -->
+                <div class="pt-2 border-b border-[#d9d9d9]/60 pb-8">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                        <div>
+                            <h1 class="text-[44px] sm:text-[56px] lg:text-[68px] font-black tracking-tighter text-black leading-tight">
+                                Memo.
+                            </h1>
+                            <p class="text-[17px] text-black/55 mt-2 max-w-2xl font-normal leading-relaxed">
+                                Riwayat seluruh catatan rapat, transkrip obrolan, dan rangkuman tugas tim yang tersimpan secara terstruktur.
+                            </p>
+                        </div>
+
+                        <button @click="currentView = 'add-memo'; memoStep = 1; memoTitle = ''" class="inline-flex items-center space-x-2 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-6 py-3 text-[14px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 shrink-0 self-start md:self-auto">
+                            <span>Buat Catatan Baru</span>
+                        </button>
+                    </div>
                 </div>
 
+                <!-- Clean Cards Grid (Clicking one opens transcript/preview) -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 hover:scale-[1.02] transition-all duration-300">
-                        <div class="space-y-3">
-                            <span class="text-[12px] font-mono text-black/45">RPT-2026-003</span>
-                            <h2 class="text-[20px] font-extrabold text-black tracking-tight leading-snug cursor-pointer hover:text-[#ff5347] transition-colors" @click="currentView = 'preview'">
+                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 hover:scale-[1.01] transition-all duration-300 cursor-pointer" 
+                         @click="currentView = 'preview'">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between text-[12px]">
+                                <span class="font-mono text-black/45">RPT-2026-003</span>
+                                <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">Selesai</span>
+                            </div>
+                            <h2 class="text-[22px] font-extrabold text-black tracking-tight leading-snug hover:text-[#ff5347] transition-colors">
                                 Sinkronisasi Target Kuartal & Roadmap Fitur
                             </h2>
-                            <p class="text-[13px] text-black/60 leading-relaxed">
+                            <p class="text-[14px] text-black/60 leading-relaxed line-clamp-3">
                                 Penyelarasan target kuartal dan pembagian prioritas pengerjaan fitur baru untuk seluruh tim.
                             </p>
                         </div>
-                        <div class="pt-4 border-t border-[#d9d9d9]/60 flex items-center justify-between">
-                            <span class="text-[12px] text-black/50">06 Okt 2026</span>
-                            <button @click="currentView = 'preview'" class="px-4 py-1.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[12px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Buka</button>
+                        <div class="pt-6 border-t border-[#d9d9d9]/60 flex items-center justify-between text-[12px]">
+                            <span class="text-black/50">06 Okt 2026 &bull; 8 Hadir</span>
+                            <span class="font-semibold text-black hover:text-[#ff5347]">Buka Transkrip &rarr;</span>
                         </div>
                     </div>
 
-                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 hover:scale-[1.02] transition-all duration-300">
-                        <div class="space-y-3">
-                            <span class="text-[12px] font-mono text-black/45">RPT-2026-002</span>
-                            <h2 class="text-[20px] font-extrabold text-black tracking-tight leading-snug cursor-pointer hover:text-[#ff5347] transition-colors" @click="currentView = 'preview'">
+                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 hover:scale-[1.01] transition-all duration-300 cursor-pointer" 
+                         @click="currentView = 'preview'">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between text-[12px]">
+                                <span class="font-mono text-black/45">RPT-2026-002</span>
+                                <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">Selesai</span>
+                            </div>
+                            <h2 class="text-[22px] font-extrabold text-black tracking-tight leading-snug hover:text-[#ff5347] transition-colors">
                                 Diskusi Alur Pengguna & Uji Coba Tampilan Baru
                             </h2>
-                            <p class="text-[13px] text-black/60 leading-relaxed">
+                            <p class="text-[14px] text-black/60 leading-relaxed line-clamp-3">
                                 Evaluasi alur pengguna pada dashboard baru dan peningkatan keterbacaan tipografi antarmuka.
                             </p>
                         </div>
-                        <div class="pt-4 border-t border-[#d9d9d9]/60 flex items-center justify-between">
-                            <span class="text-[12px] text-black/50">03 Okt 2026</span>
-                            <button @click="currentView = 'preview'" class="px-4 py-1.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[12px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Buka</button>
+                        <div class="pt-6 border-t border-[#d9d9d9]/60 flex items-center justify-between text-[12px]">
+                            <span class="text-black/50">03 Okt 2026 &bull; 5 Hadir</span>
+                            <span class="font-semibold text-black hover:text-[#ff5347]">Buka Transkrip &rarr;</span>
                         </div>
                     </div>
 
-                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 hover:scale-[1.02] transition-all duration-300">
-                        <div class="space-y-3">
-                            <span class="text-[12px] font-mono text-black/45">RPT-2026-001</span>
-                            <h2 class="text-[20px] font-extrabold text-black tracking-tight leading-snug cursor-pointer hover:text-[#ff5347] transition-colors" @click="currentView = 'preview'">
+                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 hover:scale-[1.01] transition-all duration-300 cursor-pointer" 
+                         @click="currentView = 'preview'">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between text-[12px]">
+                                <span class="font-mono text-black/45">RPT-2026-001</span>
+                                <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200/60">Perlu Cek</span>
+                            </div>
+                            <h2 class="text-[22px] font-extrabold text-black tracking-tight leading-snug hover:text-[#ff5347] transition-colors">
                                 Review Mingguan & Pembagian Prioritas Tugas
                             </h2>
-                            <p class="text-[13px] text-black/60 leading-relaxed">
+                            <p class="text-[14px] text-black/60 leading-relaxed line-clamp-3">
                                 Pemaparan progres mingguan serta alokasi tugas pengembangan untuk integrasi sistem otomatis.
                             </p>
                         </div>
-                        <div class="pt-4 border-t border-[#d9d9d9]/60 flex items-center justify-between">
-                            <span class="text-[12px] text-black/50">28 Sep 2026</span>
-                            <button @click="currentView = 'preview'" class="px-4 py-1.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[12px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">Buka</button>
+                        <div class="pt-6 border-t border-[#d9d9d9]/60 flex items-center justify-between text-[12px]">
+                            <span class="text-black/50">28 Sep 2026 &bull; 6 Hadir</span>
+                            <span class="font-semibold text-black hover:text-[#ff5347]">Buka Transkrip &rarr;</span>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Empty State Demo Section (Strict Placeholder Rule) -->
+                <div class="text-center py-20 bg-white border border-[#d9d9d9]/70 rounded-3xl p-12 space-y-4 max-w-lg mx-auto">
+                    <div class="w-12 h-12 rounded-full bg-gray-200 mx-auto flex items-center justify-center text-gray-400 font-bold text-sm">
+                        N
+                    </div>
+                    <div class="space-y-1">
+                        <h3 class="text-[20px] font-bold tracking-tight text-black">Belum Ada Catatan Rapat</h3>
+                        <p class="text-[14px] text-black/55">Mulai rapat baru untuk merekam pembicaraan dan menghasilkan notulensi otomatis.</p>
+                    </div>
+                    <div class="pt-2">
+                        <button @click="currentView = 'add-memo'; memoStep = 1; memoTitle = ''" class="px-6 py-3 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[14px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">
+                            Buat Catatan Baru
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <!-- VIEW 4: PREVIEW & EXPORT (GRAND WHITE PAPER SHEET) -->
-            <div x-show="currentView === 'preview'" class="space-y-10 max-w-4xl mx-auto pt-28 pb-20 px-6 sm:px-10">
+            <!-- ======================================================== -->
+            <!-- VIEW 4: SETTINGS (NOTION-INSPIRED TWO-COLUMN LAYOUT) -->
+            <!-- ======================================================== -->
+            <div x-show="currentView === 'settings'" 
+                 class="max-w-5xl mx-auto pt-32 pb-24 px-6 sm:px-10 space-y-12"
+                 style="display: none;">
+                
+                <!-- Macro Typography Header (No Decorative Pill) -->
+                <div class="pt-2 border-b border-[#d9d9d9]/60 pb-8">
+                    <h1 class="text-[44px] sm:text-[56px] font-black tracking-tighter text-black leading-tight">
+                        Pengaturan.
+                    </h1>
+                    <p class="text-[17px] text-black/55 mt-2 max-w-2xl font-normal leading-relaxed">
+                        Kelola profil pengguna, preferensi transkripsi rapat, kuota AI, serta integrasi kalender dan dokumen.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-14 items-start">
+                    <!-- Narrow Left Sidebar -->
+                    <aside class="md:col-span-3 space-y-1">
+                        <button type="button" 
+                                @click="settingsTab = 'profil'"
+                                :class="settingsTab === 'profil' ? 'font-bold text-black bg-black/[0.04]' : 'text-black/60 hover:text-black hover:bg-black/[0.02]'"
+                                class="w-full text-left px-4 py-3 rounded-xl text-[14px] transition-colors flex items-center justify-between">
+                            <span>Profil</span>
+                            <span x-show="settingsTab === 'profil'" class="w-1.5 h-1.5 rounded-full bg-[#ff5347]"></span>
+                        </button>
+
+                        <button type="button" 
+                                @click="settingsTab = 'preferensi'"
+                                :class="settingsTab === 'preferensi' ? 'font-bold text-black bg-black/[0.04]' : 'text-black/60 hover:text-black hover:bg-black/[0.02]'"
+                                class="w-full text-left px-4 py-3 rounded-xl text-[14px] transition-colors flex items-center justify-between">
+                            <span>Preferensi</span>
+                            <span x-show="settingsTab === 'preferensi'" class="w-1.5 h-1.5 rounded-full bg-[#ff5347]"></span>
+                        </button>
+
+                        <button type="button" 
+                                @click="settingsTab = 'kuota'"
+                                :class="settingsTab === 'kuota' ? 'font-bold text-black bg-black/[0.04]' : 'text-black/60 hover:text-black hover:bg-black/[0.02]'"
+                                class="w-full text-left px-4 py-3 rounded-xl text-[14px] transition-colors flex items-center justify-between">
+                            <span>Kuota AI</span>
+                            <span x-show="settingsTab === 'kuota'" class="w-1.5 h-1.5 rounded-full bg-[#ff5347]"></span>
+                        </button>
+
+                        <button type="button" 
+                                @click="settingsTab = 'integrasi'"
+                                :class="settingsTab === 'integrasi' ? 'font-bold text-black bg-black/[0.04]' : 'text-black/60 hover:text-black hover:bg-black/[0.02]'"
+                                class="w-full text-left px-4 py-3 rounded-xl text-[14px] transition-colors flex items-center justify-between">
+                            <span>Integrasi</span>
+                            <span x-show="settingsTab === 'integrasi'" class="w-1.5 h-1.5 rounded-full bg-[#ff5347]"></span>
+                        </button>
+                    </aside>
+
+                    <!-- Wider Right Area -->
+                    <main class="md:col-span-9">
+                        <!-- Profil Tab -->
+                        <div x-show="settingsTab === 'profil'" class="space-y-8">
+                            <div class="border-b border-[#d9d9d9]/60 pb-3">
+                                <h2 class="text-[22px] font-bold tracking-tight text-black">Profil Pengguna</h2>
+                                <p class="text-[13px] text-black/50 mt-0.5">Informasi akun dan identitas default pada lembar notulensi.</p>
+                            </div>
+
+                            <div class="flex items-center space-x-5">
+                                <div class="w-16 h-16 rounded-full bg-[#ff5347] flex items-center justify-center text-white font-extrabold text-2xl shrink-0">
+                                    A
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-[15px] font-bold text-black">Foto Profil</p>
+                                    <p class="text-[13px] text-black/50">Mendukung file JPG, PNG, atau GIF hingga 2 MB.</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-6 max-w-xl">
+                                <div class="space-y-1.5">
+                                    <label class="block text-[12px] font-bold text-black/50 uppercase tracking-wider">Nama Lengkap</label>
+                                    <input type="text" value="Andi Abi" class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="block text-[12px] font-bold text-black/50 uppercase tracking-wider">Alamat Email</label>
+                                    <input type="email" value="andiabi@unhas.ac.id" class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="block text-[12px] font-bold text-black/50 uppercase tracking-wider">Jabatan / Peran</label>
+                                    <input type="text" value="Koordinator Tim Riset & Inovasi" class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
+                                </div>
+                                <div class="pt-2">
+                                    <button @click="triggerToast('Pengaturan profil disimpan!')" class="px-7 py-3 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[14px] font-semibold transition-all">
+                                        Simpan Perubahan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Preferensi Tab -->
+                        <div x-show="settingsTab === 'preferensi'" class="space-y-8" style="display: none;">
+                            <div class="border-b border-[#d9d9d9]/60 pb-3">
+                                <h2 class="text-[22px] font-bold tracking-tight text-black">Preferensi Notulensi</h2>
+                                <p class="text-[13px] text-black/50 mt-0.5">Konfigurasi bahasa default dan format dokumen.</p>
+                            </div>
+                            <div class="space-y-6 max-w-xl">
+                                <div class="space-y-1.5">
+                                    <label class="block text-[12px] font-bold text-black/50 uppercase tracking-wider">Bahasa Transkripsi Utama</label>
+                                    <select class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors cursor-pointer">
+                                        <option>Bahasa Indonesia (Otomatis)</option>
+                                        <option>English (US/UK)</option>
+                                    </select>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="block text-[12px] font-bold text-black/50 uppercase tracking-wider">Format Ekspor Default</label>
+                                    <select class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors cursor-pointer">
+                                        <option>PDF Berita Acara Rapat Resmi</option>
+                                        <option>Microsoft Word (.docx)</option>
+                                    </select>
+                                </div>
+                                <div class="pt-2">
+                                    <button @click="triggerToast('Preferensi berhasil disimpan!')" class="px-7 py-3 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[14px] font-semibold transition-all">
+                                        Simpan Preferensi
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kuota AI Tab -->
+                        <div x-show="settingsTab === 'kuota'" class="space-y-8" style="display: none;">
+                            <div class="border-b border-[#d9d9d9]/60 pb-3">
+                                <h2 class="text-[22px] font-bold tracking-tight text-black">Kuota Pemrosesan AI</h2>
+                                <p class="text-[13px] text-black/50 mt-0.5">Pemantauan durasi audio rapat dan kuota transkripsi.</p>
+                            </div>
+                            <div class="bg-white border border-[#d9d9d9] rounded-2xl p-6 space-y-4 max-w-xl">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[13px] font-bold uppercase tracking-wider text-black/50">Penggunaan Bulan Ini</span>
+                                    <span class="text-[12px] font-mono text-black/60 bg-black/[0.04] px-2.5 py-1 rounded-full">Paket Akademik</span>
+                                </div>
+                                <div>
+                                    <div class="flex items-baseline space-x-2">
+                                        <span class="text-[36px] font-black text-black tracking-tight">120</span>
+                                        <span class="text-[16px] text-black/45">/ 300 Menit</span>
+                                    </div>
+                                    <p class="text-[13px] text-black/55 mt-1">Tersisa 180 menit untuk periode hingga 31 Oktober 2026.</p>
+                                </div>
+                                <div class="w-full bg-[#d9d9d9]/70 h-2 rounded-full overflow-hidden">
+                                    <div class="bg-[#ff5347] h-full rounded-full" style="width: 40%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Integrasi Tab -->
+                        <div x-show="settingsTab === 'integrasi'" class="space-y-8" style="display: none;">
+                            <div class="border-b border-[#d9d9d9]/60 pb-3">
+                                <h2 class="text-[22px] font-bold tracking-tight text-black">Integrasi Layanan</h2>
+                                <p class="text-[13px] text-black/50 mt-0.5">Hubungkan Nome dengan kalender kerja dan ruang penyimpanan.</p>
+                            </div>
+                            <div class="space-y-4 max-w-xl">
+                                <div class="bg-white border border-[#d9d9d9] rounded-2xl p-5 flex items-center justify-between">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center font-bold text-blue-600 text-sm">
+                                            G
+                                        </div>
+                                        <div>
+                                            <p class="text-[15px] font-bold text-black">Google Calendar</p>
+                                            <p class="text-[12px] text-black/50">Sinkronkan jadwal dan agenda rapat otomatis.</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-[12px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">Tersambung</span>
+                                </div>
+                                <div class="bg-white border border-[#d9d9d9] rounded-2xl p-5 flex items-center justify-between">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center font-bold text-indigo-600 text-sm">
+                                            Z
+                                        </div>
+                                        <div>
+                                            <p class="text-[15px] font-bold text-black">Zoom Meetings</p>
+                                            <p class="text-[12px] text-black/50">Tarik rekaman awan Zoom setelah sesi pertemuan.</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-[13px] font-medium text-black hover:text-[#ff5347] border border-[#d9d9d9] rounded-full px-4 py-1.5 hover:border-black transition-colors">Sambungkan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- VIEW 5: PREVIEW & EXPORT (GRAND WHITE PAPER SHEET) -->
+            <!-- ======================================================== -->
+            <div x-show="currentView === 'preview'" 
+                 class="space-y-10 max-w-4xl mx-auto pt-32 pb-24 px-6 sm:px-10"
+                 style="display: none;">
+                
+                <!-- Macro Typography Header (No Decorative Pill) -->
                 <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#d9d9d9]/60 pb-6">
                     <div>
-                        <h1 class="text-[44px] font-black tracking-tighter text-black leading-tight">
+                        <h1 class="text-[44px] sm:text-[56px] font-black tracking-tighter text-black leading-tight">
                             Pratinjau Catatan.
                         </h1>
                         <p class="text-[15px] text-black/55 mt-1">Dokumen catatan rapi hasil rangkuman otomatis.</p>
@@ -658,6 +1084,7 @@
                     </div>
                 </div>
             </div>
+
         </main>
     </div>
 </body>

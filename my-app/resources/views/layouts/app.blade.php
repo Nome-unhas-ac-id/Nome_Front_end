@@ -87,15 +87,15 @@
             <span class="text-[18px] sm:text-[19px] font-black tracking-tight text-black leading-none">Nome.</span>
         </a>
 
-        <!-- Center: Simple navigation links (Only Workspace & Arsip) -->
+        <!-- Center: Simple navigation links (Only Workspace & Memo) -->
         <nav class="hidden md:flex items-center space-x-8 text-[13px] font-medium">
             <a href="{{ url('/dashboard') }}" 
                class="transition-colors pb-0.5 {{ request()->is('dashboard') || request()->is('/') ? 'font-bold text-[#ff5347] border-b-2 border-[#ff5347]' : 'text-black/65 hover:text-black' }}">
                 Workspace
             </a>
-            <a href="{{ url('/history') }}" 
-               class="transition-colors pb-0.5 {{ request()->is('history*') ? 'font-bold text-[#ff5347] border-b-2 border-[#ff5347]' : 'text-black/65 hover:text-black' }}">
-                Arsip
+            <a href="{{ url('/memo') }}" 
+               class="transition-colors pb-0.5 {{ request()->is('memo*') || request()->is('history*') ? 'font-bold text-[#ff5347] border-b-2 border-[#ff5347]' : 'text-black/65 hover:text-black' }}">
+                Memo
             </a>
         </nav>
 
@@ -126,7 +126,7 @@
                      x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                      x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
                      class="absolute right-0 mt-3 w-44 bg-white border border-[#d9d9d9] rounded-2xl p-2 z-50 floating-glass-pill space-y-1">
-                    <a href="{{ url('/dashboard') }}" class="flex items-center px-3.5 py-2 rounded-xl text-[13px] font-medium text-black/75 hover:text-black hover:bg-black/[0.04] transition-colors">
+                    <a href="{{ url('/settings') }}" class="flex items-center px-3.5 py-2 rounded-xl text-[13px] font-medium text-black/75 hover:text-black hover:bg-black/[0.04] transition-colors">
                         Settings
                     </a>
                     <div class="h-px bg-[#d9d9d9]/60 my-1"></div>

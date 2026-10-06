@@ -15,6 +15,14 @@ Route::get('/history', function () {
     return view('history');
 })->name('history');
 
+Route::get('/memo', function () {
+    return view('history');
+})->name('memo');
+
+Route::get('/settings', function () {
+    return view('settings');
+})->name('settings');
+
 Route::get('/add-memo', function () {
     return view('add-memo');
 })->name('add-memo');
