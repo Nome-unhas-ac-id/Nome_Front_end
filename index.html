@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nome - Transkripsi & Notulensi Rapat AI</title>
-    <meta name="description" content="Nome - Platform cerdas pencatatan, transkripsi real-time, dan perumusan notulensi rapat otomatis berbasis kecerdasan buatan.">
+    <title>Nome — Sistem Notulensi Rapat AI</title>
+    <meta name="description" content="Nome - Platform transkripsi rapat berbasis AI dengan arsitektur desain airy, minimalis, dan makro-tipografi.">
 
     <!-- Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,16 +19,13 @@
                 extend: {
                     colors: {
                         canvas: '#F8F7F3',
-                        primary: {
-                            DEFAULT: '#ff5347',
-                            hover: '#e0453a',
-                            accent: '#ff5347'
-                        },
-                        border: {
-                            muted: '#d9d9d9'
-                        },
-                        surface: {
-                            card: '#ffffff'
+                        primary: '#ff5347',
+                        borderMuted: '#d9d9d9',
+                        folder: {
+                            purple: '#F0EEFF',
+                            blue: '#EAF4FE',
+                            peach: '#FEF6EC',
+                            green: '#EDF7EE'
                         }
                     },
                     fontFamily: {
@@ -41,310 +38,504 @@
     <style>
         :root {
             --bg-canvas: #F8F7F3;
-            --primary-accent: #ff5347;
             --border-muted: #d9d9d9;
-            --surface-card: #ffffff;
-            --text-main: #000000;
         }
         body {
             background-color: #F8F7F3;
-            color: rgba(0,0,0,0.95);
+            color: #000000;
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-        * {
+        /* Strict Design Constraint: ZERO Drop-Shadows */
+        *, *::before, *::after {
             box-shadow: none !important;
+        }
+        /* Hide scrollbars for clean aesthetic */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
     <!-- Alpine.js CDN -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="bg-[#F8F7F3] text-black/95 font-sans antialiased selection:bg-[#ff5347]/20 selection:text-black">
-    <div class="min-h-screen bg-[#F8F7F3] text-black/95 font-sans flex flex-col justify-between" 
+<body class="bg-[#F8F7F3] text-black font-sans antialiased selection:bg-[#ff5347]/20 selection:text-black">
+    <div class="min-h-screen flex" 
          x-data="{ 
-             currentView: 'dashboard', 
-             mobileMenuOpen: false,
-             userMenuOpen: false,
-             toastVisible: false,
+             currentView: 'dashboard',
+             searchQuery: '',
+             isRecording: false,
+             recordTime: 0,
+             recordTimer: null,
+             showToast: false,
              toastMsg: '',
-             showToast(m) {
+             triggerToast(m) {
                  this.toastMsg = m;
-                 this.toastVisible = true;
-                 setTimeout(() => { this.toastVisible = false; }, 3000);
+                 this.showToast = true;
+                 setTimeout(() => { this.showToast = false; }, 3500);
+             },
+             formatTime(sec) {
+                 const m = Math.floor(sec / 60).toString().padStart(2, '0');
+                 const s = (sec % 60).toString().padStart(2, '0');
+                 return `00:${m}:${s}`;
+             },
+             toggleRecord() {
+                 if (!this.isRecording) {
+                     this.isRecording = true;
+                     this.recordTimer = setInterval(() => { this.recordTime++; }, 1000);
+                 } else {
+                     clearInterval(this.recordTimer);
+                     this.isRecording = false;
+                     this.triggerToast('Rekaman suara berhasil disimpan!');
+                 }
              }
          }">
 
-        <!-- Notification Toast -->
-        <div x-show="toastVisible" 
+        <!-- Toast Notification -->
+        <div x-show="showToast" 
              x-transition
-             class="fixed bottom-6 right-6 z-50 bg-black text-white border border-[#d9d9d9] rounded-[8px] px-4 py-3 text-[14px] flex items-center space-x-2">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+             class="fixed bottom-8 right-8 z-50 bg-black text-white border border-[#d9d9d9]/40 rounded-full px-6 py-3 flex items-center space-x-3 text-[14px] font-medium">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
             <span x-text="toastMsg"></span>
         </div>
 
-        <!-- Header / Navigation Bar -->
-        <header class="border-b border-[#d9d9d9] bg-[#F8F7F3] sticky top-0 z-30">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    <!-- Brand & Left Nav -->
-                    <div class="flex items-center space-x-8">
-                        <button @click="currentView = 'dashboard'" class="flex items-center space-x-2.5 group text-left">
-                            <span class="w-8 h-8 rounded-[8px] bg-[#ff5347] flex items-center justify-center text-white font-bold text-lg tracking-tight transition-transform group-hover:scale-105">
-                                N
-                            </span>
-                            <div class="flex flex-col">
-                                <span class="text-[20px] font-bold tracking-tight text-black leading-none">Nome</span>
-                                <span class="text-[10px] uppercase font-semibold tracking-wider text-black/60 mt-0.5">Notulensi AI</span>
-                            </div>
-                        </button>
+        <!-- 1. LEFT VERTICAL FIXED SIDEBAR (Pure White, Soft Pill Active Status) -->
+        <aside class="w-64 bg-white border-r border-[#d9d9d9] fixed inset-y-0 left-0 z-40 flex flex-col justify-between p-6">
+            <div class="space-y-8">
+                <!-- Brand Identity -->
+                <div class="flex items-center space-x-3 px-2">
+                    <span class="w-9 h-9 rounded-full bg-black text-white font-black text-xl flex items-center justify-center tracking-tighter">
+                        N
+                    </span>
+                    <div>
+                        <span class="text-[20px] font-extrabold tracking-tight text-black block leading-none">Nome</span>
+                        <span class="text-[11px] font-medium text-black/45 tracking-wide uppercase mt-0.5 block">Notulensi AI</span>
+                    </div>
+                </div>
 
-                        <!-- Desktop Navigation -->
-                        <nav class="hidden md:flex items-center space-x-1">
-                            <button @click="currentView = 'dashboard'" 
-                                    :class="currentView === 'dashboard' ? 'bg-white border border-[#d9d9d9] text-black font-semibold' : 'text-black/70 hover:text-black hover:bg-black/5'"
-                                    class="px-3.5 py-1.5 rounded-[8px] text-[14px] font-medium transition-colors">
-                                Dashboard
-                            </button>
-                            <button @click="currentView = 'history'" 
-                                    :class="currentView === 'history' ? 'bg-white border border-[#d9d9d9] text-black font-semibold' : 'text-black/70 hover:text-black hover:bg-black/5'"
-                                    class="px-3.5 py-1.5 rounded-[8px] text-[14px] font-medium transition-colors">
-                                Riwayat Memo
-                            </button>
-                            <button @click="currentView = 'add-memo'" 
-                                    :class="currentView === 'add-memo' ? 'bg-white border border-[#d9d9d9] text-black font-semibold' : 'text-black/70 hover:text-black hover:bg-black/5'"
-                                    class="px-3.5 py-1.5 rounded-[8px] text-[14px] font-medium transition-colors">
-                                Buat Rapat Baru
-                            </button>
-                            <button @click="currentView = 'preview'" 
-                                    :class="currentView === 'preview' ? 'bg-white border border-[#d9d9d9] text-black font-semibold' : 'text-black/70 hover:text-black hover:bg-black/5'"
-                                    class="px-3.5 py-1.5 rounded-[8px] text-[14px] font-medium transition-colors">
-                                Preview Editor
-                            </button>
-                        </nav>
+                <!-- Navigation Links -->
+                <nav class="space-y-1.5">
+                    <button @click="currentView = 'dashboard'" 
+                            :class="currentView === 'dashboard' ? 'bg-black/[0.06] text-black font-bold' : 'text-black/60 hover:text-black hover:bg-black/[0.03] font-medium'"
+                            class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-full text-[14px] transition-colors text-left">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                        <span>Workspace</span>
+                    </button>
+
+                    <button @click="currentView = 'add-memo'" 
+                            :class="currentView === 'add-memo' ? 'bg-black/[0.06] text-black font-bold' : 'text-black/60 hover:text-black hover:bg-black/[0.03] font-medium'"
+                            class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-full text-[14px] transition-colors text-left">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        <span>Buat Risalah</span>
+                    </button>
+
+                    <button @click="currentView = 'history'" 
+                            :class="currentView === 'history' ? 'bg-black/[0.06] text-black font-bold' : 'text-black/60 hover:text-black hover:bg-black/[0.03] font-medium'"
+                            class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-full text-[14px] transition-colors text-left">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                        <span>Arsip Rapat</span>
+                    </button>
+
+                    <button @click="currentView = 'preview'" 
+                            :class="currentView === 'preview' ? 'bg-black/[0.06] text-black font-bold' : 'text-black/60 hover:text-black hover:bg-black/[0.03] font-medium'"
+                            class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-full text-[14px] transition-colors text-left">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span>Pratinjau Editor</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Profile & Status -->
+            <div class="pt-6 border-t border-[#d9d9d9]/70 space-y-4">
+                <div class="flex items-center space-x-3 px-2">
+                    <span class="w-9 h-9 rounded-full bg-black text-white font-bold text-xs flex items-center justify-center">
+                        AA
+                    </span>
+                    <div class="min-w-0">
+                        <p class="text-[13px] font-bold text-black truncate leading-tight">Andi Abigail</p>
+                        <p class="text-[11px] text-black/50 truncate">Notulis Resmi Unhas</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 2. MAIN CONTENT CANVAS (Extreme Whitespace, p-8 to p-12) -->
+        <main class="flex-1 ml-64 min-h-screen p-8 sm:p-12 lg:p-14 space-y-12">
+            <!-- Global Minimalist Top Header (Subtle Search Bar) -->
+            <div class="flex items-center justify-between gap-6 pb-2">
+                <div class="relative w-full max-w-md">
+                    <input type="text" 
+                           x-model="searchQuery"
+                           placeholder="Cari agenda rapat, notulensi, atau topik... (⌘K)" 
+                           class="w-full bg-white border border-[#d9d9d9] rounded-full pl-11 pr-4 py-2.5 text-[14px] text-black placeholder-black/40 focus:outline-none focus:border-black transition-colors">
+                    <svg class="w-4 h-4 text-black/40 absolute left-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white border border-[#d9d9d9] text-[12px] font-semibold text-black">
+                        Whisper AI On-Premise
+                    </span>
+                </div>
+            </div>
+
+            <!-- VIEW 1: DASHBOARD -->
+            <div x-show="currentView === 'dashboard'" class="space-y-16">
+                <!-- Macro Greeting -->
+                <div class="space-y-3 pt-2">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white border border-[#d9d9d9] text-[12px] font-medium text-black/60">
+                        <span>Fakultas Teknik &bull; Universitas Hasanuddin</span>
+                    </div>
+                    <h1 class="text-[48px] sm:text-[64px] lg:text-[76px] font-black tracking-tighter text-black leading-[1.05]">
+                        Ruang Kerja Notulensi.
+                    </h1>
+                    <p class="text-[18px] text-black/55 max-w-2xl font-normal leading-relaxed">
+                        Sistem notulensi rapat cerdas berbasis kecerdasan buatan. Mengubah diskusi sidang menjadi transkrip terverifikasi dan risalah keputusan dinas.
+                    </p>
+                </div>
+
+                <!-- Pastel Workspace Folders -->
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-[20px] font-bold tracking-tight text-black">Ruang Kerja & Kluster Risalah</h2>
+                        <span class="text-[13px] text-black/45">4 Direktori Aktif</span>
                     </div>
 
-                    <!-- Right Nav: Status & CTA -->
-                    <div class="hidden sm:flex items-center space-x-3.5">
-                        <div class="flex items-center space-x-2 px-3 py-1 rounded-full border border-[#d9d9d9] bg-white text-[12px] font-medium text-black/70">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span>Whisper AI: Siap</span>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-[#F0EEFF] rounded-3xl p-6 flex flex-col justify-between h-44 hover:opacity-95 transition-opacity cursor-pointer">
+                            <span class="text-[12px] font-bold tracking-wider uppercase text-[#5B21B6]">Senat & Pimpinan</span>
+                            <div>
+                                <h3 class="text-[18px] font-bold text-black tracking-tight">Rapat Pleno & Dekanat</h3>
+                                <p class="text-[13px] text-black/60 mt-1">14 Risalah Tersimpan</p>
+                            </div>
                         </div>
 
-                        <button @click="currentView = 'add-memo'" class="inline-flex items-center space-x-1.5 bg-[#ff5347] text-white font-medium text-[14px] rounded-[8px] px-4 py-2 hover:bg-[#e0453a] transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                            <span>Rekam Rapat</span>
-                        </button>
+                        <div class="bg-[#EAF4FE] rounded-3xl p-6 flex flex-col justify-between h-44 hover:opacity-95 transition-opacity cursor-pointer">
+                            <span class="text-[12px] font-bold tracking-wider uppercase text-[#1E40AF]">Kurikulum</span>
+                            <div>
+                                <h3 class="text-[18px] font-bold text-black tracking-tight">MBKM & Penyetaraan</h3>
+                                <p class="text-[13px] text-black/60 mt-1">8 Risalah Tersimpan</p>
+                            </div>
+                        </div>
 
-                        <div class="relative">
-                            <button @click="userMenuOpen = !userMenuOpen" class="flex items-center space-x-2 border border-[#d9d9d9] rounded-[8px] bg-white px-2.5 py-1.5 hover:bg-black/5 transition-colors">
-                                <div class="w-6 h-6 rounded-full bg-black/10 text-black/80 font-bold text-[11px] flex items-center justify-center">
-                                    AG
-                                </div>
-                                <span class="text-[13px] font-medium text-black/90">Andi Ghalib</span>
-                            </button>
+                        <div class="bg-[#FEF6EC] rounded-3xl p-6 flex flex-col justify-between h-44 hover:opacity-95 transition-opacity cursor-pointer">
+                            <span class="text-[12px] font-bold tracking-wider uppercase text-[#9A3412]">Anggaran</span>
+                            <div>
+                                <h3 class="text-[18px] font-bold text-black tracking-tight">Operasional & Sarana</h3>
+                                <p class="text-[13px] text-black/60 mt-1">11 Risalah Tersimpan</p>
+                            </div>
+                        </div>
 
-                            <div x-show="userMenuOpen" @click.away="userMenuOpen = false" 
-                                 class="absolute right-0 mt-2 w-48 bg-white border border-[#d9d9d9] rounded-[12px] py-1.5 z-50">
-                                <div class="px-3.5 py-2 border-b border-[#d9d9d9] text-[12px]">
-                                    <p class="font-semibold text-black">Notulis Resmi</p>
-                                    <p class="text-black/60 truncate">andiabi4925@unhas.ac.id</p>
-                                </div>
-                                <button @click="currentView = 'login'; userMenuOpen = false" class="w-full text-left px-3.5 py-1.5 text-[13px] text-black/80 hover:bg-[#F8F7F3]">Login</button>
-                                <button @click="currentView = 'signup'; userMenuOpen = false" class="w-full text-left px-3.5 py-1.5 text-[13px] text-black/80 hover:bg-[#F8F7F3]">Daftar Akun Baru</button>
+                        <div class="bg-[#EDF7EE] rounded-3xl p-6 flex flex-col justify-between h-44 hover:opacity-95 transition-opacity cursor-pointer">
+                            <span class="text-[12px] font-bold tracking-wider uppercase text-[#166534]">Hibah</span>
+                            <div>
+                                <h3 class="text-[18px] font-bold text-black tracking-tight">Penelitian & Pengabdian</h3>
+                                <p class="text-[13px] text-black/60 mt-1">6 Risalah Tersimpan</p>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Mobile Menu Button -->
-                    <div class="flex items-center md:hidden">
-                        <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 rounded-[8px] border border-[#d9d9d9] bg-white text-black/80">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                <!-- High Emphasis Contrast Card + Line Art Doodle -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- High-Emphasis Black Card -->
+                    <div class="lg:col-span-2 bg-black text-white rounded-3xl p-10 sm:p-12 flex flex-col justify-between space-y-8">
+                        <div class="space-y-4">
+                            <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white/10 text-white text-[12px] font-semibold border border-white/20">
+                                <span>Alur Cerdas AI</span>
+                            </div>
+                            <h2 class="text-[32px] sm:text-[40px] font-black tracking-tight leading-tight">
+                                Mulai Sesi Rapat Baru & Transkripsi Audio.
+                            </h2>
+                            <p class="text-[16px] text-white/70 max-w-xl leading-relaxed">
+                                Rekam percakapan sidang secara langsung lewat peramban atau unggah rekaman suara untuk diproses Whisper & PyAnnote.
+                            </p>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-4">
+                            <button @click="currentView = 'add-memo'" class="bg-white text-black hover:bg-white/90 rounded-full px-8 py-3.5 text-[14px] font-bold transition-transform active:scale-95">
+                                + Buat Risalah Rapat
+                            </button>
+                            <button @click="currentView = 'history'" class="border border-white/30 text-white hover:bg-white/10 rounded-full px-6 py-3.5 text-[14px] font-medium transition-colors">
+                                Lihat Arsip Rapat
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Monochromatic Line-Art Doodle Card -->
+                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between items-center text-center space-y-6">
+                        <div class="w-full pt-4">
+                            <svg class="w-36 h-36 mx-auto text-black/80" viewBox="0 0 100 100" fill="none" stroke="currentColor">
+                                <circle cx="50" cy="50" r="40" stroke-width="2" stroke-dasharray="3 3"/>
+                                <path d="M35 30 L65 30 L65 70 L35 70 Z" stroke-width="2"/>
+                                <line x1="42" y1="40" x2="58" y2="40" stroke-width="2"/>
+                                <line x1="42" y1="50" x2="58" y2="50" stroke-width="2"/>
+                                <line x1="42" y1="60" x2="52" y2="60" stroke-width="2"/>
+                                <path d="M60 60 Q75 60 75 75 Q60 85 50 75" stroke-width="1.5"/>
+                            </svg>
+                        </div>
+                        <div class="space-y-1">
+                            <h3 class="text-[17px] font-bold text-black tracking-tight">Kerahasiaan Terjamin</h3>
+                            <p class="text-[13px] text-black/55 leading-relaxed">Pemrosesan transkripsi berlangsung di server lokal fakultas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Meeting Rows (Generous Gap, Zero Shadows) -->
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-[20px] font-bold tracking-tight text-black">Rapat Terbaru</h2>
+                        <button @click="currentView = 'history'" class="text-[13px] text-black font-semibold hover:underline">
+                            Semua Rapat &rarr;
                         </button>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-white border border-[#d9d9d9]/70 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-black/40 transition-colors cursor-pointer"
+                             @click="currentView = 'preview'">
+                            <div class="space-y-1 max-w-2xl">
+                                <div class="flex items-center space-x-3 text-[12px] text-black/50">
+                                    <span class="font-mono">085/UN4.6.1/PL/2026</span>
+                                    <span>&bull;</span>
+                                    <span>06 Okt 2026 &bull; 09:00 WITA</span>
+                                </div>
+                                <h3 class="text-[18px] font-bold text-black tracking-tight hover:text-[#ff5347] transition-colors">
+                                    Rapat Pleno Penyusunan Rencana Strategis Rekayasa Perangkat Lunak 2026
+                                </h3>
+                                <p class="text-[13px] text-black/60 truncate">
+                                    Pimpinan: Dr. Eng. Ir. Arman, M.T. &bull; 18 Peserta Hadir
+                                </p>
+                            </div>
+
+                            <div class="flex items-center space-x-3 shrink-0">
+                                <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                                    Siap Ekspor
+                                </span>
+                                <button class="px-5 py-2 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors">
+                                    Buka Risalah
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-[#d9d9d9]/70 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-black/40 transition-colors cursor-pointer"
+                             @click="currentView = 'preview'">
+                            <div class="space-y-1 max-w-2xl">
+                                <div class="flex items-center space-x-3 text-[12px] text-black/50">
+                                    <span class="font-mono">079/UN4.6.1/TU/2026</span>
+                                    <span>&bull;</span>
+                                    <span>03 Okt 2026 &bull; 13:30 WITA</span>
+                                </div>
+                                <h3 class="text-[18px] font-bold text-black tracking-tight hover:text-[#ff5347] transition-colors">
+                                    Sinkronisasi Kurikulum MBKM & Kemitraan Industri Digital
+                                </h3>
+                                <p class="text-[13px] text-black/60 truncate">
+                                    Pimpinan: Ketua Departemen Informatika &bull; 12 Peserta Hadir
+                                </p>
+                            </div>
+
+                            <div class="flex items-center space-x-3 shrink-0">
+                                <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                                    Siap Ekspor
+                                </span>
+                                <button class="px-5 py-2 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors">
+                                    Buka Risalah
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Mobile Dropdown -->
-            <div x-show="mobileMenuOpen" class="md:hidden border-t border-[#d9d9d9] bg-white px-4 pt-2 pb-4 space-y-1">
-                <button @click="currentView = 'dashboard'; mobileMenuOpen = false" class="w-full text-left px-3 py-2 rounded-[8px] text-[14px]" :class="currentView === 'dashboard' ? 'bg-[#F8F7F3] font-bold' : ''">Dashboard</button>
-                <button @click="currentView = 'history'; mobileMenuOpen = false" class="w-full text-left px-3 py-2 rounded-[8px] text-[14px]" :class="currentView === 'history' ? 'bg-[#F8F7F3] font-bold' : ''">Riwayat Memo</button>
-                <button @click="currentView = 'add-memo'; mobileMenuOpen = false" class="w-full text-left px-3 py-2 rounded-[8px] text-[14px]" :class="currentView === 'add-memo' ? 'bg-[#F8F7F3] font-bold' : ''">Buat Rapat Baru</button>
-                <button @click="currentView = 'preview'; mobileMenuOpen = false" class="w-full text-left px-3 py-2 rounded-[8px] text-[14px]" :class="currentView === 'preview' ? 'bg-[#F8F7F3] font-bold' : ''">Preview Editor</button>
-            </div>
-        </header>
+            <!-- VIEW 2: ADD MEMO (UNBOXED FLOWING CANVAS) -->
+            <div x-show="currentView === 'add-memo'" class="space-y-16 max-w-4xl mx-auto">
+                <div class="space-y-4 pt-2 border-b border-[#d9d9d9]/60 pb-8">
+                    <h1 class="text-[48px] sm:text-[64px] font-black tracking-tighter text-black leading-tight">
+                        Notulensi Baru.
+                    </h1>
+                    <p class="text-[17px] text-black/55 font-normal">
+                        Isian mengalir bebas di atas kanvas tanpa kotak tab kaku. Lengkapi data lalu proses rekaman suara AI.
+                    </p>
+                </div>
 
-        <!-- Main Workspace Body -->
-        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <!-- 1. DASHBOARD VIEW -->
-            <div x-show="currentView === 'dashboard'" class="space-y-8">
-                <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2 border-b border-[#d9d9d9]">
-                    <div>
-                        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full border border-[#d9d9d9] bg-white text-[12px] font-medium text-black/70 mb-3">
-                            <span class="w-2 h-2 rounded-full bg-[#ff5347]"></span>
-                            <span>Ruang Kerja Notulensi Digital</span>
-                        </div>
-                        <h1 class="text-[32px] md:text-[38px] font-bold tracking-tight text-black leading-tight">
-                            Ringkasan Transkripsi & Memo
-                        </h1>
-                        <p class="text-[15px] text-black/60 mt-1 max-w-2xl">
-                            Pantau proses transkripsi otomatis berbasis AI, rangkuman eksekutif, serta arsip notulensi rapat dinas Anda.
-                        </p>
-                    </div>
-
+                <!-- Section 01 -->
+                <div class="space-y-8">
                     <div class="flex items-center space-x-3">
-                        <button @click="currentView = 'history'" class="bg-transparent text-black/90 border border-[#d9d9d9] font-medium text-[14px] rounded-[8px] px-4 py-2 hover:bg-black/5 transition-colors">
-                            Buka Semua Arsip
-                        </button>
-                        <button @click="currentView = 'add-memo'" class="inline-flex items-center space-x-2 bg-[#ff5347] text-white font-medium text-[14px] rounded-[8px] px-5 py-2 hover:bg-[#e0453a] transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                            <span>Mulai Rapat Baru</span>
-                        </button>
+                        <span class="w-8 h-8 rounded-full bg-black text-white text-[12px] font-bold flex items-center justify-center">01</span>
+                        <h2 class="text-[26px] font-black tracking-tight text-black">Informasi Rapat & Agenda</h2>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-[18px] font-bold text-black mb-2">Nama Rapat / Agenda Utama</label>
+                            <input type="text" value="Rapat Koordinasi Evaluasi Pembelajaran & Transkripsi Digital" class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-4 text-[16px] text-black focus:outline-none focus:border-black">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[14px] font-bold text-black mb-2">Tanggal Pelaksanaan</label>
+                                <input type="date" value="2026-10-07" class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-3.5 text-[15px] text-black">
+                            </div>
+                            <div>
+                                <label class="block text-[14px] font-bold text-black mb-2">Ruang / Tautan</label>
+                                <input type="text" value="Ruang Senat Rektorat Lt. 2" class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-3.5 text-[15px] text-black">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Stats Feature Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-5">
-                        <span class="text-[12px] font-semibold uppercase tracking-wider text-black/60">Total Memo Tercatat</span>
-                        <div class="flex items-baseline justify-between mt-2">
-                            <span class="text-[32px] font-bold tracking-tight text-black">28</span>
-                            <span class="text-[12px] font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">+4 minggu ini</span>
-                        </div>
-                        <p class="text-[13px] text-black/50 mt-1">Seluruh notulensi tervalidasi</p>
+                <div class="h-px bg-[#d9d9d9]/60"></div>
+
+                <!-- Section 02 -->
+                <div class="space-y-8">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-8 h-8 rounded-full bg-black text-white text-[12px] font-bold flex items-center justify-center">02</span>
+                        <h2 class="text-[26px] font-black tracking-tight text-black">Rekaman Suara AI</h2>
                     </div>
 
-                    <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-5">
-                        <span class="text-[12px] font-semibold uppercase tracking-wider text-black/60">Durasi Suara Diproses</span>
-                        <div class="flex items-baseline justify-between mt-2">
-                            <span class="text-[32px] font-bold tracking-tight text-black">42.5<span class="text-[18px] font-normal text-black/60"> jam</span></span>
-                            <span class="text-[12px] font-medium text-[#ff5347] bg-[#ff5347]/10 px-2 py-0.5 rounded-full border border-[#ff5347]/30">Whisper v3</span>
+                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-10 text-center space-y-6">
+                        <span class="text-[12px] font-semibold text-black/40 uppercase tracking-wider">Durasi Perekaman Studio</span>
+                        <div class="font-mono text-[56px] font-black text-black tracking-tighter" x-text="formatTime(recordTime)"></div>
+                        
+                        <div class="pt-2">
+                            <button @click="toggleRecord()" 
+                                    :class="isRecording ? 'bg-black text-white' : 'bg-[#ff5347] text-white'"
+                                    class="rounded-full px-8 py-3.5 text-[15px] font-bold transition-transform active:scale-95">
+                                <span x-text="isRecording ? 'Hentikan Rekaman' : 'Mulai Perekaman Suara'"></span>
+                            </button>
                         </div>
-                        <p class="text-[13px] text-black/50 mt-1">Tingkat akurasi transkrip 98.2%</p>
-                    </div>
-
-                    <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-5">
-                        <span class="text-[12px] font-semibold uppercase tracking-wider text-black/60">Diarisasi Pembicara</span>
-                        <div class="flex items-baseline justify-between mt-2">
-                            <span class="text-[32px] font-bold tracking-tight text-black">94<span class="text-[18px] font-normal text-black/60"> orang</span></span>
-                            <span class="text-[12px] font-medium text-black/70 bg-black/5 px-2 py-0.5 rounded-full border border-[#d9d9d9]">Teridentifikasi</span>
-                        </div>
-                        <p class="text-[13px] text-black/50 mt-1">Pemisahan suara otomatis</p>
-                    </div>
-
-                    <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-5">
-                        <span class="text-[12px] font-semibold uppercase tracking-wider text-black/60">Status Mesin AI</span>
-                        <div class="flex items-center space-x-2 mt-3">
-                            <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span class="text-[18px] font-bold tracking-tight text-black">Normal & Aktif</span>
-                        </div>
-                        <p class="text-[13px] text-black/50 mt-2">Latency: 120ms &bull; GPU Cloud OK</p>
                     </div>
                 </div>
 
-                <!-- Recent Memos Preview -->
-                <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-6 space-y-4">
-                    <h2 class="text-[22px] font-bold tracking-tight text-black">Rapat Koordinasi Evaluasi MBKM 2026</h2>
-                    <p class="text-[14px] text-black/70">Hasil rumusan dan pemisahan suara dari 18 peserta rapat pimpinan dekanat.</p>
-                    <div class="flex items-center space-x-2 pt-2">
-                        <button @click="currentView = 'preview'" class="bg-[#ff5347] text-white font-medium text-[14px] rounded-[8px] px-4 py-2 hover:bg-[#e0453a]">
-                            Buka Preview Dokumen
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. HISTORY VIEW -->
-            <div x-show="currentView === 'history'" class="space-y-6">
-                <div class="flex items-center justify-between pb-4 border-b border-[#d9d9d9]">
-                    <div>
-                        <h1 class="text-[32px] font-bold tracking-tight text-black">Riwayat Notulensi</h1>
-                        <p class="text-[14px] text-black/60">Arsip seluruh risalah hasil transkripsi rapat resmi.</p>
-                    </div>
-                    <button @click="currentView = 'add-memo'" class="bg-[#ff5347] text-white font-medium text-[14px] rounded-[8px] px-4 py-2 hover:bg-[#e0453a]">
-                        + Tambah Memo
+                <!-- Submit Action -->
+                <div class="pt-8 border-t border-[#d9d9d9]/60 flex items-center justify-end space-x-4">
+                    <button @click="currentView = 'dashboard'" class="px-6 py-3 rounded-full border border-[#d9d9d9] text-[14px] font-medium text-black">Batal</button>
+                    <button @click="currentView = 'preview'; triggerToast('Notulensi berhasil diproses AI!')" class="px-8 py-3.5 rounded-full bg-black text-white text-[15px] font-bold hover:bg-black/85">
+                        Transkripsikan & Buka Pratinjau &rarr;
                     </button>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-6 space-y-3">
-                        <span class="text-[11px] font-mono text-black/60">No. 082/UN4.6.1/PL/2026</span>
-                        <h2 class="text-[20px] font-bold text-black">Rapat Pleno Penyusunan Renstra</h2>
-                        <p class="text-[13px] text-black/70">Penetapan target publikasi dan laboratorium komputasi awan.</p>
-                        <button @click="currentView = 'preview'" class="bg-transparent text-black border border-[#d9d9d9] font-medium text-[13px] rounded-[6px] px-3 py-1.5 hover:bg-black/5">
-                            Buka Preview
-                        </button>
+            </div>
+
+            <!-- VIEW 3: HISTORY ARCHIVE -->
+            <div x-show="currentView === 'history'" class="space-y-12 max-w-6xl mx-auto">
+                <div class="space-y-4 pt-2 border-b border-[#d9d9d9]/60 pb-8">
+                    <h1 class="text-[48px] sm:text-[64px] font-black tracking-tighter text-black leading-tight">
+                        Arsip Risalah Rapat.
+                    </h1>
+                    <p class="text-[17px] text-black/55 font-normal">
+                        Koleksi lengkap seluruh notulensi dan transkrip hasil olahan AI Nome.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 transition-colors">
+                        <div class="space-y-3">
+                            <span class="text-[12px] font-mono text-black/45">085/UN4.6.1/PL/2026</span>
+                            <h2 class="text-[20px] font-extrabold text-black tracking-tight leading-snug cursor-pointer" @click="currentView = 'preview'">
+                                Rapat Pleno Rencana Strategis Rekayasa Perangkat Lunak 2026
+                            </h2>
+                            <p class="text-[13px] text-black/60 leading-relaxed">
+                                Integrasi platform AI meeting transcription Nome dan pengadaan infrastruktur server komputasi awan.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-[#d9d9d9]/60 flex items-center justify-between">
+                            <span class="text-[12px] text-black/50">06 Okt 2026</span>
+                            <button @click="currentView = 'preview'" class="px-4 py-1.5 rounded-full bg-black text-white text-[12px] font-medium">Buka</button>
+                        </div>
                     </div>
-                    <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-6 space-y-3">
-                        <span class="text-[11px] font-mono text-black/60">No. 079/UN4.6.1/TU/2026</span>
-                        <h2 class="text-[20px] font-bold text-black">Sinkronisasi Kurikulum MBKM</h2>
-                        <p class="text-[13px] text-black/70">Persetujuan magang mandiri dengan 5 mitra software.</p>
-                        <button @click="currentView = 'preview'" class="bg-transparent text-black border border-[#d9d9d9] font-medium text-[13px] rounded-[6px] px-3 py-1.5 hover:bg-black/5">
-                            Buka Preview
-                        </button>
+
+                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 transition-colors">
+                        <div class="space-y-3">
+                            <span class="text-[12px] font-mono text-black/45">079/UN4.6.1/TU/2026</span>
+                            <h2 class="text-[20px] font-extrabold text-black tracking-tight leading-snug cursor-pointer" @click="currentView = 'preview'">
+                                Sinkronisasi Kurikulum MBKM & Kemitraan Industri Digital
+                            </h2>
+                            <p class="text-[13px] text-black/60 leading-relaxed">
+                                Persetujuan kurikulum magang mandiri bersama mitra industri software nasional.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-[#d9d9d9]/60 flex items-center justify-between">
+                            <span class="text-[12px] text-black/50">03 Okt 2026</span>
+                            <button @click="currentView = 'preview'" class="px-4 py-1.5 rounded-full bg-black text-white text-[12px] font-medium">Buka</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 flex flex-col justify-between space-y-6 hover:border-black/40 transition-colors">
+                        <div class="space-y-3">
+                            <span class="text-[12px] font-mono text-black/45">075/UN4.6.1/KEU/2026</span>
+                            <h2 class="text-[20px] font-extrabold text-black tracking-tight leading-snug cursor-pointer" @click="currentView = 'preview'">
+                                Rapat Alokasi Anggaran Belanja Operasional Laboratorium 2027
+                            </h2>
+                            <p class="text-[13px] text-black/60 leading-relaxed">
+                                Pemaparan kebutuhan pengadaan GPU server untuk pemrosesan AI lokal.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-[#d9d9d9]/60 flex items-center justify-between">
+                            <span class="text-[12px] text-black/50">28 Sep 2026</span>
+                            <button @click="currentView = 'preview'" class="px-4 py-1.5 rounded-full bg-black text-white text-[12px] font-medium">Buka</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 3. ADD MEMO & MEDIA RECORDER VIEW -->
-            <div x-show="currentView === 'add-memo'" class="space-y-6">
-                <div class="pb-4 border-b border-[#d9d9d9]">
-                    <h1 class="text-[32px] font-bold tracking-tight text-black">Buat Memo Rapat Baru</h1>
-                    <p class="text-[14px] text-black/60">Lengkapi data rapat dan rekam suara langsung via browser.</p>
-                </div>
-                <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-6 space-y-4">
-                    <h2 class="text-[22px] font-bold tracking-tight text-black mb-4">Informasi Rapat</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input type="text" placeholder="Nama Agenda Rapat" class="bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] p-2.5 text-[14px]">
-                        <input type="text" placeholder="Pimpinan Rapat" class="bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] p-2.5 text-[14px]">
-                    </div>
-                    <div class="pt-4 flex justify-between">
-                        <button @click="currentView = 'dashboard'" class="bg-transparent text-black/90 border border-[#d9d9d9] font-medium text-[14px] rounded-[4px] px-3 py-1.5">
-                            Batal
-                        </button>
-                        <button @click="currentView = 'preview'" class="bg-[#ff5347] text-white font-medium text-[14px] rounded-[8px] px-4 py-2 hover:bg-[#e0453a] transition-colors">
-                            Simpan & Buka Editor
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. PREVIEW VIEW -->
-            <div x-show="currentView === 'preview'" class="space-y-6">
-                <div class="flex items-center justify-between pb-4 border-b border-[#d9d9d9]">
+            <!-- VIEW 4: PREVIEW & EXPORT (GRAND WHITE PAPER SHEET) -->
+            <div x-show="currentView === 'preview'" class="space-y-10 max-w-4xl mx-auto">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#d9d9d9]/60 pb-6">
                     <div>
-                        <h1 class="text-[32px] font-bold tracking-tight text-black">Preview Editor Dokumen</h1>
-                        <p class="text-[14px] text-black/60">Hasil format resmi notulensi dan transkrip suara AI.</p>
+                        <h1 class="text-[44px] font-black tracking-tighter text-black leading-tight">
+                            Pratinjau Risalah.
+                        </h1>
+                        <p class="text-[15px] text-black/55 mt-1">Lembaran dokumen editorial resmi hasil ekstraksi AI.</p>
                     </div>
-                    <div class="flex space-x-2">
-                        <button @click="showToast('Unduhan PDF Resmi Dimulai!')" class="bg-[#ff5347] text-white font-medium text-[14px] rounded-[8px] px-4 py-2 hover:bg-[#e0453a]">
-                            Export PDF / Docx
-                        </button>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="window.print()" class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium hover:bg-black hover:text-white transition-colors">Cetak</button>
+                        <button @click="triggerToast('Berkas PDF Resmi berhasil diunduh!')" class="px-6 py-2.5 rounded-full bg-black text-white text-[13px] font-semibold hover:bg-black/85">Ekspor PDF</button>
                     </div>
                 </div>
-                <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-8 max-w-3xl mx-auto space-y-4" contenteditable="true">
-                    <div class="text-center border-b pb-4">
-                        <p class="font-bold text-[18px]">UNIVERSITAS HASANUDDIN - FAKULTAS TEKNIK</p>
-                        <p class="text-[14px] font-mono">NOTULENSI RAPAT DINAS (085/UN4.6.1/PL/2026)</p>
-                    </div>
-                    <p class="text-[14px] leading-relaxed"><strong>Agenda:</strong> Evaluasi Kurikulum dan Penerapan Transkripsi AI Nome.</p>
-                    <p class="text-[14px] leading-relaxed"><strong>Keputusan:</strong> Sistem Nome diadopsi untuk seluruh departemen mulai semester gasal.</p>
-                </div>
-            </div>
 
-            <!-- 5. AUTH (LOGIN / SIGNUP) -->
-            <div x-show="currentView === 'login' || currentView === 'signup'" class="max-w-md mx-auto py-8">
-                <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-6 space-y-4">
-                    <h2 class="text-[22px] font-bold text-center" x-text="currentView === 'login' ? 'Masuk ke Nome' : 'Daftar Akun Baru'"></h2>
-                    <input type="email" placeholder="Email" class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] p-2.5 text-[14px]">
-                    <input type="password" placeholder="Password" class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] p-2.5 text-[14px]">
-                    <button @click="currentView = 'dashboard'" class="w-full bg-[#ff5347] text-white rounded-[8px] py-2 font-medium">Lanjutkan</button>
+                <!-- Grand Paper Sheet -->
+                <div class="bg-white border border-[#d9d9d9]/80 rounded-3xl p-10 sm:p-16 space-y-10 text-black font-sans" contenteditable="true">
+                    <div class="text-center border-b-2 border-black pb-6 space-y-1">
+                        <p class="text-[12px] uppercase tracking-widest font-semibold text-black/70">Kementerian Pendidikan Tinggi, Sains, dan Teknologi</p>
+                        <p class="text-[20px] uppercase tracking-wide font-black text-black">Universitas Hasanuddin</p>
+                        <p class="text-[14px] uppercase font-bold text-black/90">Fakultas Teknik &bull; Departemen Teknik Informatika</p>
+                    </div>
+
+                    <div class="text-center space-y-1">
+                        <h2 class="text-[22px] font-extrabold uppercase underline tracking-tight">Notulensi & Risalah Rapat Dinas</h2>
+                        <p class="text-[13px] font-mono text-black/70">Nomor: 085/UN4.6.1/PL/2026</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h3 class="text-[15px] font-bold uppercase border-b border-[#d9d9d9] pb-1">I. Keterangan Rapat</h3>
+                        <p class="text-[15px]"><strong>Agenda:</strong> Rapat Koordinasi Evaluasi Pembelajaran & Transkripsi Digital</p>
+                        <p class="text-[15px]"><strong>Hari/Tanggal:</strong> Rabu, 07 Oktober 2026 &bull; 09:00 - 11:45 WITA</p>
+                        <p class="text-[15px]"><strong>Pimpinan:</strong> Dr. Eng. Ir. Arman, M.T.</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h3 class="text-[15px] font-bold uppercase border-b border-[#d9d9d9] pb-1">II. Rumusan Keputusan AI</h3>
+                        <ul class="list-disc ml-6 space-y-2 text-[15px] leading-relaxed text-black/90">
+                            <li>Menyetujui adopsi platform Nome untuk pencatatan risalah seluruh rapat dinas di lingkungan Fakultas Teknik.</li>
+                            <li>Pembagian akun resmi untuk 14 program studi dan departemen paling lambat 15 Oktober 2026.</li>
+                            <li>Integrasi server GPU lokal untuk memproses data audio sensitif secara on-premise.</li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-8 grid grid-cols-2 gap-8 text-[14px] text-center">
+                        <div class="space-y-16">
+                            <p class="text-black/80">Mengetahui,<br><strong class="text-black">Pimpinan Rapat</strong></p>
+                            <p class="font-bold underline">Dr. Eng. Ir. Arman, M.T.</p>
+                        </div>
+                        <div class="space-y-16">
+                            <p class="text-black/80">Makassar, 07 Oktober 2026<br><strong class="text-black">Notulis Resmi</strong></p>
+                            <p class="font-bold underline">Andi Muhammad Abigail</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
-
-        <!-- Footer -->
-        <footer class="border-t border-[#d9d9d9] bg-[#F8F7F3] py-6 text-center text-[13px] text-black/60">
-            <p><strong>Nome</strong> &mdash; Warm paper notebook under afternoon sun &bull; AI Meeting Transcription</p>
-        </footer>
     </div>
 </body>
 </html>
