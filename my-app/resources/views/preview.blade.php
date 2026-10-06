@@ -104,7 +104,7 @@
                     <h1 class="text-[44px] sm:text-[56px] lg:text-[68px] font-black tracking-tighter text-black leading-[1.05]">
                         Pratinjau Catatan.
                     </h1>
-                    <span class="px-3.5 py-1 rounded-full text-[12px] font-medium bg-transparent text-gray-600 border border-[#d9d9d9] self-center">
+                    <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600 border-none self-center">
                         Rangkuman Otomatis
                     </span>
                 </div>
@@ -113,19 +113,19 @@
                 </p>
             </div>
 
-            <!-- Action Pill Buttons -->
+            <!-- Action Buttons -->
             <div class="flex flex-wrap items-center gap-3 shrink-0 self-start lg:self-auto">
                 <button type="button" 
                         @click="window.print()" 
-                        class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm flex items-center space-x-2">
+                        class="px-5 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm flex items-center space-x-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                     <span>Cetak Lembar</span>
                 </button>
 
                 <button type="button" 
                         @click="exportDocx()" 
-                        :disabled="isExportingDocx"
-                        class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm flex items-center space-x-2">
+                        :disabled="isExportingDocx" 
+                        class="px-5 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm flex items-center space-x-2">
                     <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     <span x-text="isExportingDocx ? 'Membuat...' : 'Ekspor Docx'"></span>
                 </button>
@@ -146,7 +146,7 @@
         <button type="button" 
                 @click="activeTab = 'document'" 
                 :class="activeTab === 'document' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                class="px-5 py-2 rounded-full text-[13px] font-medium transition-colors flex items-center space-x-2">
+                class="px-5 py-2 rounded-lg text-[13px] font-medium transition-colors flex items-center space-x-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
             <span>Lembar Dokumen (WYSIWYG)</span>
         </button>
@@ -154,7 +154,7 @@
         <button type="button" 
                 @click="activeTab = 'transcript'" 
                 :class="activeTab === 'transcript' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                class="px-5 py-2 rounded-full text-[13px] font-medium transition-colors flex items-center space-x-2">
+                class="px-5 py-2 rounded-lg text-[13px] font-medium transition-colors flex items-center space-x-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
             <span>Transkrip Suara & Diarisasi</span>
         </button>
@@ -162,7 +162,7 @@
         <button type="button" 
                 @click="activeTab = 'json'" 
                 :class="activeTab === 'json' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
-                class="px-5 py-2 rounded-full text-[13px] font-medium transition-colors flex items-center space-x-2">
+                class="px-5 py-2 rounded-lg text-[13px] font-medium transition-colors flex items-center space-x-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
             <span>Skema Data (JSON)</span>
         </button>
@@ -311,7 +311,7 @@
                 <h2 class="text-[24px] font-bold tracking-tight text-black">Transkrip Lengkap Percakapan & Pembicara</h2>
                 <p class="text-[14px] text-black/55">Pemisahan pembicara otomatis dengan penanda waktu yang akurat.</p>
             </div>
-            <span class="px-4 py-1.5 rounded-full bg-white border border-[#d9d9d9] text-[12px] font-semibold text-black">
+            <span class="text-sm text-gray-500 font-medium">
                 5 Segmen Suara
             </span>
         </div>
@@ -321,12 +321,12 @@
                 <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-6 sm:p-8 space-y-3 hover:border-black/30 transition-colors">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <span class="px-3 py-1 rounded-full text-[12px] font-semibold"
+                            <span class="px-2.5 py-0.5 rounded-md text-xs font-medium"
                                   :class="seg.badge" 
                                   x-text="seg.role"></span>
                             <span class="text-[15px] font-bold text-black" x-text="seg.speaker"></span>
                         </div>
-                        <span class="font-mono text-[12px] text-black/50 bg-[#F8F7F3] border border-[#d9d9d9] px-3 py-1 rounded-full" x-text="seg.time"></span>
+                        <span class="text-xs text-gray-500 font-medium" x-text="seg.time"></span>
                     </div>
                     <p class="text-[15px] text-black/80 leading-relaxed pt-1" x-text="seg.text"></p>
                 </div>

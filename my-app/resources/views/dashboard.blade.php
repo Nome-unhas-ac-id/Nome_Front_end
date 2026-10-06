@@ -61,7 +61,7 @@
                     <!-- ======================================================== -->
                     <div id="hero-illustration-top-card" 
                          class="absolute top-2 right-6 sm:right-16 z-20 w-44 sm:w-52 bg-white border border-black rounded-2xl p-3 shadow-none hover:rotate-1 transition-transform">
-                        <div class="text-[10px] font-mono text-black/40 border-b border-[#d9d9d9]/60 pb-1 mb-2 flex items-center justify-between">
+                        <div class="text-[10px] text-black/40 border-b border-[#d9d9d9]/60 pb-1 mb-2 flex items-center justify-between">
                             <span>#hero-illustration-top-card</span>
                             <span class="w-2 h-2 rounded-full bg-[#ff5347]"></span>
                         </div>
@@ -88,7 +88,7 @@
                     <!-- ======================================================== -->
                     <div id="hero-illustration-right-card" 
                          class="absolute top-24 sm:top-24 -right-2 sm:right-2 z-30 w-52 sm:w-60 bg-white border border-black rounded-2xl p-3 shadow-none hover:-rotate-1 transition-transform">
-                        <div class="text-[10px] font-mono text-black/40 border-b border-[#d9d9d9]/60 pb-1 mb-2 flex items-center justify-between">
+                        <div class="text-[10px] text-black/40 border-b border-[#d9d9d9]/60 pb-1 mb-2 flex items-center justify-between">
                             <span>#hero-illustration-right-card</span>
                             <span class="w-2 h-2 rounded-full bg-blue-500"></span>
                         </div>
@@ -115,7 +115,7 @@
                     <!-- ======================================================== -->
                     <div id="hero-illustration-main" 
                          class="relative z-20 w-72 sm:w-96 bg-white border border-black rounded-3xl p-5 shadow-none mt-16 sm:mt-20">
-                        <div class="text-[10px] font-mono text-black/40 border-b border-[#d9d9d9]/60 pb-1.5 mb-3 flex items-center justify-between">
+                        <div class="text-[10px] text-black/40 border-b border-[#d9d9d9]/60 pb-1.5 mb-3 flex items-center justify-between">
                             <span>#hero-illustration-main (Pusat Ilustrasi)</span>
                             <span class="w-2 h-2 rounded-full bg-black"></span>
                         </div>
@@ -188,7 +188,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2.5">
                         <h3 class="text-[20px] font-bold tracking-tight text-black">Folder Ruang Kerja</h3>
-                        <span class="text-[11px] font-mono text-black/40 bg-white border border-[#d9d9d9]/70 px-2 py-0.5 rounded-full">4 Kategori</span>
+                        <span class="text-sm text-gray-500 font-medium">4 Kategori</span>
                     </div>
                     <a href="{{ url('/memo') }}" class="text-[13px] font-medium text-black/60 hover:text-[#ff5347] transition-colors">
                         Kelola Semua Folder &rarr;
@@ -202,7 +202,7 @@
                             <span class="w-10 h-10 rounded-2xl bg-white/80 flex items-center justify-center text-black">
                                 <svg class="w-5 h-5 text-indigo-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                             </span>
-                            <span class="text-[12px] font-mono font-medium text-black/50 bg-white/60 px-2.5 py-0.5 rounded-full">12 Catatan</span>
+                            <span class="text-sm text-gray-500 font-medium">12 Catatan</span>
                         </div>
                         <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-indigo-900 transition-colors">
                             Diskusi Tim Mingguan
@@ -220,7 +220,7 @@
                             <span class="w-10 h-10 rounded-2xl bg-white/80 flex items-center justify-center text-black">
                                 <svg class="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                             </span>
-                            <span class="text-[12px] font-mono font-medium text-black/50 bg-white/60 px-2.5 py-0.5 rounded-full">8 Catatan</span>
+                            <span class="text-sm text-gray-500 font-medium">8 Catatan</span>
                         </div>
                         <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-blue-900 transition-colors">
                             Rencana & Desain Produk
@@ -238,7 +238,7 @@
                             <span class="w-10 h-10 rounded-2xl bg-white/80 flex items-center justify-center text-black">
                                 <svg class="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                             </span>
-                            <span class="text-[12px] font-mono font-medium text-black/50 bg-white/60 px-2.5 py-0.5 rounded-full">5 Catatan</span>
+                            <span class="text-sm text-gray-500 font-medium">5 Catatan</span>
                         </div>
                         <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-amber-900 transition-colors">
                             Evaluasi & Laporan
@@ -256,7 +256,7 @@
                             <span class="w-10 h-10 rounded-2xl bg-white/80 flex items-center justify-center text-black">
                                 <svg class="w-5 h-5 text-black/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                             </span>
-                            <span class="text-[12px] font-mono font-medium text-black/50 bg-white/60 px-2.5 py-0.5 rounded-full">3 Catatan</span>
+                            <span class="text-sm text-gray-500 font-medium">3 Catatan</span>
                         </div>
                         <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
                             Eksplorasi Ide Baru
@@ -275,8 +275,8 @@
                 <!-- High-Emphasis Solid Black Card -->
                 <div class="lg:col-span-7 bg-black text-white rounded-3xl p-8 sm:p-10 flex flex-col justify-between space-y-8 hover:scale-[1.02] transition-transform duration-300">
                     <div class="space-y-3">
-                        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 text-white/80 text-[11px] font-mono uppercase tracking-wider">
-                            <span>Pencatatan Cepat</span>
+                        <div class="text-[11px] font-semibold uppercase tracking-wider text-white/70">
+                            Pencatatan Cepat
                         </div>
                         <h3 class="text-[32px] sm:text-[40px] font-extrabold tracking-tighter leading-tight">
                             Mulai Rapat Baru.
@@ -368,7 +368,7 @@
                                 <span class="text-black/30">&bull;</span>
                                 <span class="text-black/55 font-medium">06 Okt 2026 &bull; 09:00 WIB</span>
                                 <span class="text-black/30">&bull;</span>
-                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-transparent text-gray-600 border border-[#d9d9d9]">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-green-100 text-green-800 border-none">
                                     Selesai
                                 </span>
                             </div>
@@ -401,7 +401,7 @@
                                 <span class="text-black/30">&bull;</span>
                                 <span class="text-black/55 font-medium">03 Okt 2026 &bull; 13:30 WIB</span>
                                 <span class="text-black/30">&bull;</span>
-                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-transparent text-gray-600 border border-[#d9d9d9]">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-green-100 text-green-800 border-none">
                                     Selesai
                                 </span>
                             </div>
@@ -434,7 +434,7 @@
                                 <span class="text-black/30">&bull;</span>
                                 <span class="text-black/55 font-medium">28 Sep 2026 &bull; 10:00 WIB</span>
                                 <span class="text-black/30">&bull;</span>
-                                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200/60">
+                                <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-amber-100 text-amber-800 border-none">
                                     Perlu Cek
                                 </span>
                             </div>

@@ -256,7 +256,7 @@
                     <div class="bg-white border border-[#d9d9d9] rounded-2xl p-6 space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="text-[13px] font-bold uppercase tracking-wider text-black/50">Penggunaan Bulan Ini</span>
-                            <span class="text-[12px] font-mono text-black/60 bg-black/[0.04] px-2.5 py-1 rounded-full">Paket Akademik</span>
+                            <span class="text-sm text-gray-500 font-medium">Paket Akademik</span>
                         </div>
                         <div>
                             <div class="flex items-baseline space-x-2">
@@ -278,7 +278,7 @@
                             Hubungi administrator institusi untuk meningkatkan kapasitas transkripsi audio tanpa batas untuk seluruh departemen.
                         </p>
                         <div class="pt-2">
-                            <button type="button" class="px-6 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors">
+                            <button type="button" class="px-6 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors">
                                 Minta Perpanjangan Kuota
                             </button>
                         </div>
@@ -306,7 +306,7 @@
                                 <p class="text-[12px] text-black/50">Sinkronkan jadwal dan agenda rapat secara otomatis.</p>
                             </div>
                         </div>
-                        <span class="text-[12px] font-medium text-gray-600 bg-transparent border border-[#d9d9d9] px-3 py-1 rounded-full">
+                        <span class="px-2.5 py-1 rounded-md text-xs font-medium bg-green-100 text-green-800 border-none">
                             Tersambung
                         </span>
                     </div>
@@ -323,7 +323,7 @@
                                 <p class="text-[12px] text-black/50">Tarik rekaman awan Zoom setelah sesi pertemuan usai.</p>
                             </div>
                         </div>
-                        <button type="button" class="text-[13px] font-medium text-black hover:text-[#ff5347] border border-[#d9d9d9] rounded-full px-4 py-1.5 hover:border-black transition-colors">
+                        <button type="button" class="text-[13px] font-medium text-black hover:text-[#ff5347] border border-[#d9d9d9] rounded-lg px-4 py-1.5 hover:border-black transition-colors">
                             Sambungkan
                         </button>
                     </div>
@@ -340,7 +340,7 @@
                                 <p class="text-[12px] text-black/50">Arsipkan otomatis ekspor PDF berita acara rapat ke folder drive.</p>
                             </div>
                         </div>
-                        <button type="button" class="text-[13px] font-medium text-black hover:text-[#ff5347] border border-[#d9d9d9] rounded-full px-4 py-1.5 hover:border-black transition-colors">
+                        <button type="button" class="text-[13px] font-medium text-black hover:text-[#ff5347] border border-[#d9d9d9] rounded-lg px-4 py-1.5 hover:border-black transition-colors">
                             Sambungkan
                         </button>
                     </div>

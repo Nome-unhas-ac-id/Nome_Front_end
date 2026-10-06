@@ -182,7 +182,7 @@
                        class="w-full sm:w-56 border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[14px] text-black font-medium placeholder-black/30 transition-colors">
                 <button type="button" 
                         @click="addAttendee()"
-                        class="px-5 py-2 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors shrink-0 self-end sm:self-auto">
+                        class="px-5 py-2 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors shrink-0 self-end sm:self-auto">
                     + Tambah
                 </button>
             </div>
@@ -190,7 +190,7 @@
             <!-- Clean Tag Pills of Attendees (Borderless soft gray, no bullets) -->
             <div class="flex flex-wrap gap-2 pt-2">
                 <template x-for="(att, idx) in attendees" :key="idx">
-                    <div class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full border-none bg-gray-100/80 text-sm text-gray-800">
+                    <div class="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border-none bg-gray-100/80 text-sm text-gray-800">
                         <span class="font-medium" x-text="att.name"></span>
                         <span class="text-gray-500" x-text="att.role"></span>
                         <button type="button" 
@@ -294,7 +294,7 @@
             </button>
 
             <div class="flex items-center space-x-3">
-                <a href="{{ url('/dashboard') }}" class="px-6 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/70 hover:bg-black hover:text-white transition-all">
+                <a href="{{ url('/dashboard') }}" class="px-6 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black/70 hover:bg-black hover:text-white transition-all">
                     Batal
                 </a>
                 <button type="button" 
