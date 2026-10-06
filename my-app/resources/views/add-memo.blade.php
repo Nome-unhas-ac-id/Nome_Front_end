@@ -1,10 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-5xl mx-auto space-y-8" 
+<div class="max-w-4xl mx-auto space-y-16 pb-24" 
      x-data="{
-        currentStep: 1,
-        totalSteps: 4,
+        activeSection: 'rapat',
         meetingInfo: {
             name: 'Rapat Pleno Koordinasi Pengembangan Sistem Akademik Unhas',
             date: '2026-10-07',
@@ -23,18 +22,29 @@
         newAttendeeName: '',
         newAttendeeRole: '',
         attendees: [
-            { name: 'Dr. Eng. Ir. Arman, M.T.', role: 'Wakil Dekan Bidang Akademik', status: 'Hadir' },
-            { name: 'Prof. Dr. Ir. Indrabayu, S.T., M.T.', role: 'Ketua Departemen Informatika', status: 'Hadir' },
-            { name: 'Dr. Amil Ahmad Ilham, S.T., M.IT.', role: 'Dosen Pembina Kurikulum', status: 'Hadir' },
-            { name: 'Dr. Ing. Farida Patittingi, M.Hum.', role: 'Tim Penjaminan Mutu', status: 'Hadir' },
-            { name: 'Andi Muhammad Abigail', role: 'Notulis Utama Sistem Nome', status: 'Hadir' }
+            { name: 'Dr. Eng. Ir. Arman, M.T.', role: 'Wakil Dekan Bidang Akademik', initial: 'AR', bg: 'bg-[#EAF4FE] text-[#1E40AF]' },
+            { name: 'Prof. Dr. Ir. Indrabayu, S.T., M.T.', role: 'Ketua Departemen Informatika', initial: 'IB', bg: 'bg-[#F0EEFF] text-[#5B21B6]' },
+            { name: 'Dr. Amil Ahmad Ilham, S.T., M.IT.', role: 'Dosen Pembina Kurikulum', initial: 'AI', bg: 'bg-[#FEF6EC] text-[#9A3412]' },
+            { name: 'Dr. Ing. Farida Patittingi, M.Hum.', role: 'Tim Penjaminan Mutu', initial: 'FP', bg: 'bg-[#EDF7EE] text-[#166534]' },
+            { name: 'Andi Muhammad Abigail', role: 'Notulis Utama Sistem Nome', initial: 'AM', bg: 'bg-black text-white' }
         ],
         addAttendee() {
             if (this.newAttendeeName.trim()) {
+                const colors = [
+                    { bg: 'bg-[#EAF4FE] text-[#1E40AF]' },
+                    { bg: 'bg-[#F0EEFF] text-[#5B21B6]' },
+                    { bg: 'bg-[#FEF6EC] text-[#9A3412]' },
+                    { bg: 'bg-[#EDF7EE] text-[#166534]' }
+                ];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                const words = this.newAttendeeName.trim().split(' ');
+                const initial = words.length > 1 ? (words[0][0] + words[1][0]).toUpperCase() : words[0].slice(0, 2).toUpperCase();
+
                 this.attendees.push({
                     name: this.newAttendeeName.trim(),
                     role: this.newAttendeeRole.trim() || 'Anggota Rapat',
-                    status: 'Hadir'
+                    initial: initial,
+                    bg: randomColor.bg
                 });
                 this.newAttendeeName = '';
                 this.newAttendeeRole = '';
@@ -43,6 +53,7 @@
         removeAttendee(index) {
             this.attendees.splice(index, 1);
         },
+
         // Audio & MediaRecorder state
         audioTab: 'record',
         isRecording: false,
@@ -93,8 +104,9 @@
                     }
                 }, 1000);
             } catch (err) {
-                alert('Izin mikrofon diperlukan untuk melakukan perekaman audio live. Mengaktifkan mode simulasi perekam.');
+                // Fallback / simulation mode
                 this.isRecording = true;
+                this.recordTime = 0;
                 this.recordTimer = setInterval(() => {
                     if (!this.isPaused) {
                         this.recordTime++;
@@ -145,481 +157,482 @@
         }
      }">
 
-    <!-- Page Title & Step Description -->
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-[#d9d9d9]">
-        <div>
-            <div class="inline-flex items-center space-x-2 text-[12px] text-black/60 font-medium mb-2">
-                <a href="{{ url('/dashboard') }}" class="hover:text-black">Dashboard</a>
-                <span>/</span>
-                <span class="text-black font-semibold">Buat Memo Rapat Baru</span>
-            </div>
-            <h1 class="text-[32px] md:text-[38px] font-bold tracking-tight text-black leading-tight">
-                Formulir Notulensi & Rekaman Rapat
-            </h1>
-            <p class="text-[15px] text-black/60 mt-1">
-                Lengkapi rincian rapat dinas, daftar hadir peserta, dan rekam atau unggah audio untuk diproses oleh AI.
-            </p>
+    <!-- 1. MACRO EDITORIAL HEADER -->
+    <div class="space-y-4 pt-4 border-b border-[#d9d9d9]/60 pb-10">
+        <div class="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-white border border-[#d9d9d9]/80 text-[12px] font-medium text-black/60">
+            <a href="{{ url('/dashboard') }}" class="hover:text-black transition-colors">Workspace</a>
+            <span>&bull;</span>
+            <span class="text-black font-semibold">Formulir Alir Bebas</span>
         </div>
 
-        <div class="flex items-center space-x-2 text-[13px] text-black/70 bg-white border border-[#d9d9d9] px-3.5 py-1.5 rounded-[8px]">
-            <span>Langkah:</span>
-            <span class="font-bold text-[#ff5347]" x-text="currentStep"></span>
-            <span>dari</span>
-            <span class="font-bold text-black" x-text="totalSteps"></span>
-        </div>
-    </div>
-
-    <!-- Stepper Navigation Tabs (Tactile Warm Paper Vibe) -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#F8F7F3] p-1 border border-[#d9d9d9] rounded-[12px]">
-        <button @click="currentStep = 1" 
-                class="flex items-center justify-center space-x-2.5 py-2.5 px-3 rounded-[8px] text-[13px] font-medium transition-all"
-                :class="currentStep === 1 ? 'bg-white border border-[#d9d9d9] text-black font-semibold' : 'text-black/60 hover:text-black hover:bg-white/50'">
-            <span class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold"
-                  :class="currentStep === 1 ? 'bg-[#ff5347] text-white' : 'bg-black/10 text-black/70'">1</span>
-            <span class="truncate">Informasi Rapat</span>
-        </button>
-
-        <button @click="currentStep = 2" 
-                class="flex items-center justify-center space-x-2.5 py-2.5 px-3 rounded-[8px] text-[13px] font-medium transition-all"
-                :class="currentStep === 2 ? 'bg-white border border-[#d9d9d9] text-black font-semibold' : 'text-black/60 hover:text-black hover:bg-white/50'">
-            <span class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold"
-                  :class="currentStep === 2 ? 'bg-[#ff5347] text-white' : 'bg-black/10 text-black/70'">2</span>
-            <span class="truncate">Informasi Surat</span>
-        </button>
-
-        <button @click="currentStep = 3" 
-                class="flex items-center justify-center space-x-2.5 py-2.5 px-3 rounded-[8px] text-[13px] font-medium transition-all"
-                :class="currentStep === 3 ? 'bg-white border border-[#d9d9d9] text-black font-semibold' : 'text-black/60 hover:text-black hover:bg-white/50'">
-            <span class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold"
-                  :class="currentStep === 3 ? 'bg-[#ff5347] text-white' : 'bg-black/10 text-black/70'">3</span>
-            <span class="truncate">Daftar Hadir</span>
-        </button>
-
-        <button @click="currentStep = 4" 
-                class="flex items-center justify-center space-x-2.5 py-2.5 px-3 rounded-[8px] text-[13px] font-medium transition-all"
-                :class="currentStep === 4 ? 'bg-white border border-[#d9d9d9] text-black font-semibold' : 'text-black/60 hover:text-black hover:bg-white/50'">
-            <span class="w-5 h-5 rounded-full flex items-center justify-center text-[11px] font-bold"
-                  :class="currentStep === 4 ? 'bg-[#ff5347] text-white' : 'bg-black/10 text-black/70'">4</span>
-            <span class="truncate">Audio & Rekaman</span>
-        </button>
-    </div>
-
-    <!-- Step 1: Informasi Rapat -->
-    <div x-show="currentStep === 1" 
-         x-transition:enter="transition ease-out duration-150"
-         x-transition:enter-start="opacity-0 translate-y-2"
-         x-transition:enter-end="opacity-100 translate-y-0"
-         class="space-y-6">
-        <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-6 sm:p-8 space-y-6">
-            <div class="border-b border-[#d9d9d9] pb-4">
-                <h2 class="text-[22px] font-bold tracking-tight text-black mb-1">Informasi Rapat</h2>
-                <p class="text-[13px] text-black/60">Tentukan nama agenda, jadwal pelaksanaan, lokasi, serta notulis resmi rapat.</p>
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+                <h1 class="text-[44px] sm:text-[56px] lg:text-[68px] font-black tracking-tighter text-black leading-[1.05]">
+                    Notulensi Baru.
+                </h1>
+                <p class="text-[17px] text-black/55 mt-2 max-w-2xl font-normal leading-relaxed">
+                    Isian mengalir bebas di atas kanvas. Masukkan data agenda, surat dinas, daftar kehadiran, lalu biarkan sistem AI Nome memproses transkrip rekaman suara rapat.
+                </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Nama Rapat -->
-                <div class="md:col-span-2">
-                    <label class="block text-[13px] font-semibold text-black mb-1.5">Nama Rapat / Agenda Utama <span class="text-[#ff5347]">*</span></label>
-                    <input type="text" 
-                           x-model="meetingInfo.name"
-                           placeholder="Contoh: Rapat Koordinasi Kurikulum Semester Gasal"
-                           class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] px-3.5 py-2.5 text-[14px] text-black focus:outline-none focus:border-[#ff5347] transition-colors">
-                </div>
-
-                <!-- Tanggal -->
-                <div>
-                    <label class="block text-[13px] font-semibold text-black mb-1.5">Tanggal Pelaksanaan <span class="text-[#ff5347]">*</span></label>
-                    <input type="date" 
-                           x-model="meetingInfo.date"
-                           class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] px-3.5 py-2.5 text-[14px] text-black focus:outline-none focus:border-[#ff5347] transition-colors">
-                </div>
-
-                <!-- Waktu (Start - End) -->
-                <div>
-                    <label class="block text-[13px] font-semibold text-black mb-1.5">Waktu Rapat (Mulai - Selesai) <span class="text-[#ff5347]">*</span></label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="time" 
-                               x-model="meetingInfo.timeStart"
-                               class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] px-3.5 py-2.5 text-[14px] text-black focus:outline-none focus:border-[#ff5347] transition-colors">
-                        <input type="time" 
-                               x-model="meetingInfo.timeEnd"
-                               class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] px-3.5 py-2.5 text-[14px] text-black focus:outline-none focus:border-[#ff5347] transition-colors">
-                    </div>
-                </div>
-
-                <!-- Tempat / Lokasi -->
-                <div class="md:col-span-2">
-                    <label class="block text-[13px] font-semibold text-black mb-1.5">Tempat / Ruang Rapat / Tautan Virtual <span class="text-[#ff5347]">*</span></label>
-                    <input type="text" 
-                           x-model="meetingInfo.location"
-                           placeholder="Contoh: Ruang Senat Fakultas Teknik Lt. 2 / Ruang Zoom ID: 948 2210 112"
-                           class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] px-3.5 py-2.5 text-[14px] text-black focus:outline-none focus:border-[#ff5347] transition-colors">
-                </div>
-
-                <!-- Pimpinan Rapat -->
-                <div>
-                    <label class="block text-[13px] font-semibold text-black mb-1.5">Pimpinan Rapat / Penanggung Jawab <span class="text-[#ff5347]">*</span></label>
-                    <input type="text" 
-                           x-model="meetingInfo.leader"
-                           placeholder="Nama Pimpinan & Gelar"
-                           class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] px-3.5 py-2.5 text-[14px] text-black focus:outline-none focus:border-[#ff5347] transition-colors">
-                </div>
-
-                <!-- Notulis Rapat -->
-                <div>
-                    <label class="block text-[13px] font-semibold text-black mb-1.5">Notulis / Pencatat Risalah <span class="text-[#ff5347]">*</span></label>
-                    <input type="text" 
-                           x-model="meetingInfo.notetaker"
-                           placeholder="Nama Notulis Rapat"
-                           class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] px-3.5 py-2.5 text-[14px] text-black focus:outline-none focus:border-[#ff5347] transition-colors">
-                </div>
-            </div>
-
-            <!-- Card Action Footer -->
-            <div class="flex items-center justify-between pt-6 border-t border-[#d9d9d9]">
-                <a href="{{ url('/dashboard') }}" class="bg-transparent text-black/90 border border-[#d9d9d9] font-medium text-[14px] rounded-[4px] px-4 py-2 hover:bg-black/5 transition-colors">
+            <div class="flex items-center space-x-2 shrink-0 self-start md:self-auto">
+                <a href="{{ url('/dashboard') }}" class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/70 hover:bg-black hover:text-white transition-colors">
                     Batal
                 </a>
-                <button @click="currentStep = 2" class="bg-[#ff5347] text-white font-medium text-[14px] rounded-[8px] px-5 py-2 hover:bg-[#e0453a] transition-colors flex items-center space-x-1.5">
-                    <span>Lanjut: Informasi Surat</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <button type="button" 
+                        @click="submitAndProceed()"
+                        :disabled="isTranscribing"
+                        class="px-6 py-2.5 rounded-full bg-black text-white text-[13px] font-semibold hover:bg-black/85 transition-transform active:scale-95 inline-flex items-center space-x-2">
+                    <span x-text="isTranscribing ? 'Memproses AI...' : 'Proses Notulensi'"></span>
+                    <svg x-show="!isTranscribing" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Step 2: Informasi Surat -->
-    <div x-show="currentStep === 2" 
-         x-transition:enter="transition ease-out duration-150"
-         x-transition:enter-start="opacity-0 translate-y-2"
-         x-transition:enter-end="opacity-100 translate-y-0"
-         class="space-y-6">
-        <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-6 sm:p-8 space-y-6">
-            <div class="border-b border-[#d9d9d9] pb-4">
-                <h2 class="text-[22px] font-bold tracking-tight text-black mb-1">Informasi Surat & Ketetapan Dinas</h2>
-                <p class="text-[13px] text-black/60">Lengkapi nomor tata naskah dinas, perihal, sasaran tujuan surat, dan dasar pertimbangan.</p>
+    <!-- 2. AIRY SECTION NAVIGATION BAR (Minimalist Soft Pills) -->
+    <div class="sticky top-6 z-20 bg-[#F8F7F3]/90 backdrop-blur-md py-2 border-b border-[#d9d9d9]/40">
+        <div class="flex items-center space-x-2 overflow-x-auto no-scrollbar">
+            <a href="#section-rapat" 
+               @click="activeSection = 'rapat'"
+               :class="activeSection === 'rapat' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
+               class="px-5 py-2 rounded-full text-[13px] font-medium transition-colors shrink-0">
+                01 &bull; Informasi Rapat
+            </a>
+            <a href="#section-surat" 
+               @click="activeSection = 'surat'"
+               :class="activeSection === 'surat' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
+               class="px-5 py-2 rounded-full text-[13px] font-medium transition-colors shrink-0">
+                02 &bull; Ketetapan Surat
+            </a>
+            <a href="#section-hadir" 
+               @click="activeSection = 'hadir'"
+               :class="activeSection === 'hadir' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
+               class="px-5 py-2 rounded-full text-[13px] font-medium transition-colors shrink-0">
+                03 &bull; Daftar Hadir (<span x-text="attendees.length"></span>)
+            </a>
+            <a href="#section-audio" 
+               @click="activeSection = 'audio'"
+               :class="activeSection === 'audio' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
+               class="px-5 py-2 rounded-full text-[13px] font-medium transition-colors shrink-0">
+                04 &bull; Rekaman Suara AI
+            </a>
+        </div>
+    </div>
+
+    <!-- 3. UNBOXED FLOWING SECTIONS -->
+
+    <!-- SECTION 01: INFORMASI RAPAT -->
+    <section id="section-rapat" class="space-y-8 scroll-mt-28">
+        <div class="flex items-center space-x-3">
+            <span class="w-8 h-8 rounded-full bg-black text-white text-[12px] font-bold flex items-center justify-center">01</span>
+            <div>
+                <h2 class="text-[26px] sm:text-[32px] font-black tracking-tight text-black">
+                    Informasi Rapat & Agenda
+                </h2>
+                <p class="text-[14px] text-black/55">Agenda utama, jadwal dinas, dan penanggung jawab forum.</p>
+            </div>
+        </div>
+
+        <div class="space-y-8 pt-2">
+            <!-- Nama Rapat (Macro Input) -->
+            <div class="space-y-2">
+                <label class="block text-[18px] sm:text-[20px] font-bold tracking-tight text-black">
+                    Nama Rapat atau Agenda Utama <span class="text-[#ff5347]">*</span>
+                </label>
+                <input type="text" 
+                       x-model="meetingInfo.name"
+                       placeholder="Masukkan judul agenda rapat..."
+                       class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-4 text-[17px] text-black font-medium placeholder-black/30 focus:outline-none focus:border-black transition-colors">
+                <p class="text-[12px] text-black/45">Gunakan penamaan yang deskriptif untuk memudahkan pencarian di kemudian hari.</p>
             </div>
 
+            <!-- Tanggal & Waktu (Spacious Grid) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Nomor Surat -->
-                <div>
-                    <label class="block text-[13px] font-semibold text-black mb-1.5">Nomor Surat / Tata Naskah Dinas <span class="text-[#ff5347]">*</span></label>
+                <div class="space-y-2">
+                    <label class="block text-[15px] font-bold text-black">
+                        Tanggal Pelaksanaan <span class="text-[#ff5347]">*</span>
+                    </label>
+                    <input type="date" 
+                           x-model="meetingInfo.date"
+                           class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-3.5 text-[15px] text-black font-medium focus:outline-none focus:border-black transition-colors">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-[15px] font-bold text-black">
+                        Waktu Pertemuan (Mulai & Selesai) <span class="text-[#ff5347]">*</span>
+                    </label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="time" 
+                               x-model="meetingInfo.timeStart"
+                               class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-4 py-3.5 text-[15px] text-black font-medium focus:outline-none focus:border-black transition-colors">
+                        <input type="time" 
+                               x-model="meetingInfo.timeEnd"
+                               class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-4 py-3.5 text-[15px] text-black font-medium focus:outline-none focus:border-black transition-colors">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tempat / Ruang Rapat -->
+            <div class="space-y-2">
+                <label class="block text-[15px] font-bold text-black">
+                    Tempat, Ruang Rapat, atau Tautan Virtual <span class="text-[#ff5347]">*</span>
+                </label>
+                <input type="text" 
+                       x-model="meetingInfo.location"
+                       placeholder="Contoh: Ruang Senat Rektorat Lt. 2 / Hybrid Zoom Meeting"
+                       class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-4 text-[15px] text-black placeholder-black/30 focus:outline-none focus:border-black transition-colors">
+            </div>
+
+            <!-- Pimpinan & Notulis Rapat -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="block text-[15px] font-bold text-black">
+                        Pimpinan Rapat <span class="text-[#ff5347]">*</span>
+                    </label>
+                    <input type="text" 
+                           x-model="meetingInfo.leader"
+                           placeholder="Nama Pimpinan & Gelar Lengkap"
+                           class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-3.5 text-[15px] text-black font-medium placeholder-black/30 focus:outline-none focus:border-black transition-colors">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-[15px] font-bold text-black">
+                        Notulis Resmi <span class="text-[#ff5347]">*</span>
+                    </label>
+                    <input type="text" 
+                           x-model="meetingInfo.notetaker"
+                           placeholder="Nama Pencatat Risalah"
+                           class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-3.5 text-[15px] text-black font-medium placeholder-black/30 focus:outline-none focus:border-black transition-colors">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DELICATE SECTION SEPARATOR -->
+    <div class="h-px bg-[#d9d9d9]/60"></div>
+
+    <!-- SECTION 02: KETETAPAN SURAT & TATA NASKAH -->
+    <section id="section-surat" class="space-y-8 scroll-mt-28">
+        <div class="flex items-center space-x-3">
+            <span class="w-8 h-8 rounded-full bg-black text-white text-[12px] font-bold flex items-center justify-center">02</span>
+            <div>
+                <h2 class="text-[26px] sm:text-[32px] font-black tracking-tight text-black">
+                    Informasi Surat & Naskah Dinas
+                </h2>
+                <p class="text-[14px] text-black/55">Ketetapan administrasi, nomor persuratan resmi, dan dasar pelaksanaan.</p>
+            </div>
+        </div>
+
+        <div class="space-y-8 pt-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="block text-[15px] font-bold text-black">
+                        Nomor Surat Dinas <span class="text-[#ff5347]">*</span>
+                    </label>
                     <input type="text" 
                            x-model="letterInfo.letterNumber"
-                           placeholder="Contoh: 085/UN4.6.1/PL/2026"
-                           class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] px-3.5 py-2.5 text-[14px] font-mono text-black focus:outline-none focus:border-[#ff5347] transition-colors">
+                           placeholder="085/UN4.6.1/PL/2026"
+                           class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-3.5 text-[15px] font-mono text-black placeholder-black/30 focus:outline-none focus:border-black transition-colors">
                 </div>
 
-                <!-- Perihal -->
-                <div>
-                    <label class="block text-[13px] font-semibold text-black mb-1.5">Perihal / Hal <span class="text-[#ff5347]">*</span></label>
+                <div class="space-y-2">
+                    <label class="block text-[15px] font-bold text-black">
+                        Perihal Surat <span class="text-[#ff5347]">*</span>
+                    </label>
                     <input type="text" 
                            x-model="letterInfo.subject"
-                           placeholder="Contoh: Notulensi Rapat Koordinasi Kurikulum"
-                           class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] px-3.5 py-2.5 text-[14px] text-black focus:outline-none focus:border-[#ff5347] transition-colors">
-                </div>
-
-                <!-- Tujuan / Sasaran -->
-                <div class="md:col-span-2">
-                    <label class="block text-[13px] font-semibold text-black mb-1.5">Tujuan / Ditujukan Kepada <span class="text-[#ff5347]">*</span></label>
-                    <input type="text" 
-                           x-model="letterInfo.destination"
-                           placeholder="Contoh: Para Dosen & Staf Akademik Departemen Informatika"
-                           class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] px-3.5 py-2.5 text-[14px] text-black focus:outline-none focus:border-[#ff5347] transition-colors">
-                </div>
-
-                <!-- Paragraf Pembuka -->
-                <div class="md:col-span-2">
-                    <label class="block text-[13px] font-semibold text-black mb-1.5">Paragraf Pembuka / Dasar Pelaksanaan</label>
-                    <textarea rows="4" 
-                              x-model="letterInfo.openingParagraph"
-                              placeholder="Masukkan narasi pembuka dokumen resmi notulensi..."
-                              class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] px-3.5 py-2.5 text-[14px] text-black leading-relaxed focus:outline-none focus:border-[#ff5347] transition-colors"></textarea>
+                           placeholder="Undangan Koordinasi Teknis"
+                           class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-3.5 text-[15px] text-black placeholder-black/30 focus:outline-none focus:border-black transition-colors">
                 </div>
             </div>
 
-            <!-- Card Action Footer -->
-            <div class="flex items-center justify-between pt-6 border-t border-[#d9d9d9]">
-                <button @click="currentStep = 1" class="bg-transparent text-black/90 border border-[#d9d9d9] font-medium text-[14px] rounded-[4px] px-4 py-2 hover:bg-black/5 transition-colors">
-                    Kembali: Info Rapat
-                </button>
-                <button @click="currentStep = 3" class="bg-[#ff5347] text-white font-medium text-[14px] rounded-[8px] px-5 py-2 hover:bg-[#e0453a] transition-colors flex items-center space-x-1.5">
-                    <span>Lanjut: Daftar Hadir</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                </button>
+            <div class="space-y-2">
+                <label class="block text-[15px] font-bold text-black">
+                    Tujuan / Sasaran Dokumen <span class="text-[#ff5347]">*</span>
+                </label>
+                <input type="text" 
+                       x-model="letterInfo.destination"
+                       placeholder="Seluruh Anggota Komisi Akademik"
+                       class="w-full bg-white border border-[#d9d9d9] rounded-2xl px-5 py-4 text-[15px] text-black placeholder-black/30 focus:outline-none focus:border-black transition-colors">
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-[15px] font-bold text-black">
+                    Paragraf Pembuka / Konsiderans Rapat
+                </label>
+                <textarea rows="4" 
+                          x-model="letterInfo.openingParagraph"
+                          placeholder="Tuliskan narasi pembuka risalah dinas..."
+                          class="w-full bg-white border border-[#d9d9d9] rounded-2xl p-5 text-[15px] text-black leading-relaxed placeholder-black/30 focus:outline-none focus:border-black transition-colors"></textarea>
+                <p class="text-[12px] text-black/45">Teks ini akan dicantumkan pada mukadimah dokumen berita acara ekspor PDF.</p>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Step 3: Daftar Hadir -->
-    <div x-show="currentStep === 3" 
-         x-transition:enter="transition ease-out duration-150"
-         x-transition:enter-start="opacity-0 translate-y-2"
-         x-transition:enter-end="opacity-100 translate-y-0"
-         class="space-y-6">
-        <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-6 sm:p-8 space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#d9d9d9] pb-4">
+    <!-- DELICATE SECTION SEPARATOR -->
+    <div class="h-px bg-[#d9d9d9]/60"></div>
+
+    <!-- SECTION 03: DAFTAR HADIR PESERTA -->
+    <section id="section-hadir" class="space-y-8 scroll-mt-28">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <span class="w-8 h-8 rounded-full bg-black text-white text-[12px] font-bold flex items-center justify-center">03</span>
                 <div>
-                    <h2 class="text-[22px] font-bold tracking-tight text-black mb-1">Daftar Hadir Peserta Rapat</h2>
-                    <p class="text-[13px] text-black/60">Daftar nama dan peranan peserta yang hadir dalam forum pertemuan.</p>
-                </div>
-                <div class="px-3 py-1 rounded-full bg-[#F8F7F3] border border-[#d9d9d9] text-[12px] font-semibold text-black/70 self-start sm:self-auto">
-                    Total: <span x-text="attendees.length" class="text-[#ff5347]"></span> Peserta
+                    <h2 class="text-[26px] sm:text-[32px] font-black tracking-tight text-black">
+                        Daftar Kehadiran Peserta
+                    </h2>
+                    <p class="text-[14px] text-black/55">Peserta yang tercatat dalam risalah dan verifikasi kuorum rapat.</p>
                 </div>
             </div>
 
-            <!-- Input Penambahan Peserta Baru -->
-            <div class="bg-[#F8F7F3] border border-[#d9d9d9] rounded-[8px] p-4 space-y-3">
-                <span class="text-[12px] font-bold uppercase tracking-wider text-black/70">Tambah Peserta Baru</span>
+            <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-white border border-[#d9d9d9] text-[13px] font-semibold text-black self-start sm:self-auto">
+                <span x-text="attendees.length" class="text-[#ff5347] mr-1.5"></span> Peserta Terdaftar
+            </div>
+        </div>
+
+        <div class="space-y-6 pt-2">
+            <!-- Minimalist Quick-Add Input Row -->
+            <div class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-6 sm:p-8 space-y-4">
+                <h3 class="text-[15px] font-bold text-black tracking-tight">Tambah Peserta Baru ke Daftar</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
                     <div class="sm:col-span-6">
                         <input type="text" 
                                x-model="newAttendeeName"
                                @keydown.enter.prevent="addAttendee()"
-                               placeholder="Nama Lengkap & Gelar Peserta..."
-                               class="w-full bg-white border border-[#d9d9d9] rounded-[8px] px-3.5 py-2 text-[14px] text-black focus:outline-none focus:border-[#ff5347]">
+                               placeholder="Nama Lengkap & Gelar..."
+                               class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-full px-4 py-2.5 text-[14px] text-black placeholder-black/40 focus:outline-none focus:border-black transition-colors">
                     </div>
                     <div class="sm:col-span-4">
                         <input type="text" 
                                x-model="newAttendeeRole"
                                @keydown.enter.prevent="addAttendee()"
-                               placeholder="Jabatan / Instansi (Opsional)"
-                               class="w-full bg-white border border-[#d9d9d9] rounded-[8px] px-3.5 py-2 text-[14px] text-black focus:outline-none focus:border-[#ff5347]">
+                               placeholder="Jabatan / Peranan..."
+                               class="w-full bg-[#F8F7F3] border border-[#d9d9d9] rounded-full px-4 py-2.5 text-[14px] text-black placeholder-black/40 focus:outline-none focus:border-black transition-colors">
                     </div>
                     <div class="sm:col-span-2">
                         <button type="button" 
                                 @click="addAttendee()"
-                                class="w-full bg-black text-white font-medium text-[13px] rounded-[8px] py-2 hover:bg-black/80 transition-colors">
+                                class="w-full bg-black text-white rounded-full py-2.5 text-[13px] font-semibold hover:bg-black/85 transition-colors">
                             + Tambah
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Attendees Table -->
-            <div class="border border-[#d9d9d9] rounded-[8px] overflow-hidden">
-                <table class="w-full text-left text-[14px]">
-                    <thead class="bg-[#F8F7F3] border-b border-[#d9d9d9] text-[12px] uppercase tracking-wider text-black/60 font-semibold">
-                        <tr>
-                            <th class="px-4 py-3 w-12 text-center">No</th>
-                            <th class="px-4 py-3">Nama Lengkap</th>
-                            <th class="px-4 py-3">Peranan / Jabatan</th>
-                            <th class="px-4 py-3">Status</th>
-                            <th class="px-4 py-3 text-right">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-[#d9d9d9] bg-white">
-                        <template x-for="(att, idx) in attendees" :key="idx">
-                            <tr class="hover:bg-[#F8F7F3]/40 transition-colors">
-                                <td class="px-4 py-3 text-center text-[12px] text-black/50" x-text="idx + 1"></td>
-                                <td class="px-4 py-3 font-semibold text-black" x-text="att.name"></td>
-                                <td class="px-4 py-3 text-[13px] text-black/70" x-text="att.role"></td>
-                                <td class="px-4 py-3">
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                                        Hadir
-                                    </span>
-                                </td>
-                                <td class="px-4 py-3 text-right">
-                                    <button type="button" 
-                                            @click="removeAttendee(idx)"
-                                            class="text-red-500 hover:text-red-700 text-[12px] font-medium p-1"
-                                            title="Hapus Peserta">
-                                        Hapus
-                                    </button>
-                                </td>
-                            </tr>
-                        </template>
-                    </tbody>
-                </table>
-            </div>
+            <!-- Airy Attendee Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <template x-for="(att, idx) in attendees" :key="idx">
+                    <div class="bg-white border border-[#d9d9d9]/70 rounded-2xl p-4 flex items-center justify-between hover:border-black/30 transition-colors">
+                        <div class="flex items-center space-x-3.5 min-w-0">
+                            <span class="w-10 h-10 rounded-full font-bold text-[13px] flex items-center justify-center shrink-0"
+                                  :class="att.bg" 
+                                  x-text="att.initial"></span>
+                            <div class="min-w-0">
+                                <p class="text-[14px] font-bold text-black truncate" x-text="att.name"></p>
+                                <p class="text-[12px] text-black/55 truncate" x-text="att.role"></p>
+                            </div>
+                        </div>
 
-            <!-- Card Action Footer -->
-            <div class="flex items-center justify-between pt-6 border-t border-[#d9d9d9]">
-                <button @click="currentStep = 2" class="bg-transparent text-black/90 border border-[#d9d9d9] font-medium text-[14px] rounded-[4px] px-4 py-2 hover:bg-black/5 transition-colors">
-                    Kembali: Info Surat
-                </button>
-                <button @click="currentStep = 4" class="bg-[#ff5347] text-white font-medium text-[14px] rounded-[8px] px-5 py-2 hover:bg-[#e0453a] transition-colors flex items-center space-x-1.5">
-                    <span>Lanjut: Rekam / Unggah Suara</span>
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                </button>
+                        <button type="button" 
+                                @click="removeAttendee(idx)"
+                                class="p-2 text-black/30 hover:text-red-500 rounded-full hover:bg-black/5 transition-colors shrink-0"
+                                title="Hapus dari daftar">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                </template>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Step 4: Audio Input & MediaRecorder -->
-    <div x-show="currentStep === 4" 
-         x-transition:enter="transition ease-out duration-150"
-         x-transition:enter-start="opacity-0 translate-y-2"
-         x-transition:enter-end="opacity-100 translate-y-0"
-         class="space-y-6">
-        <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-6 sm:p-8 space-y-6">
-            <div class="border-b border-[#d9d9d9] pb-4">
-                <h2 class="text-[22px] font-bold tracking-tight text-black mb-1">Masukan Audio Rapat</h2>
-                <p class="text-[13px] text-black/60">Gunakan perekam audio langsung via browser atau unggah berkas rekaman suara (.mp3, .wav, .m4a).</p>
+    <!-- DELICATE SECTION SEPARATOR -->
+    <div class="h-px bg-[#d9d9d9]/60"></div>
+
+    <!-- SECTION 04: AUDIO RECORDING & AI UPLOAD -->
+    <section id="section-audio" class="space-y-8 scroll-mt-28">
+        <div class="flex items-center space-x-3">
+            <span class="w-8 h-8 rounded-full bg-black text-white text-[12px] font-bold flex items-center justify-center">04</span>
+            <div>
+                <h2 class="text-[26px] sm:text-[32px] font-black tracking-tight text-black">
+                    Audio & Pemrosesan AI
+                </h2>
+                <p class="text-[14px] text-black/55">Perekaman langsung via browser atau unggah berkas rekaman suara.</p>
             </div>
+        </div>
 
-            <!-- Tab Switcher: Live Record vs Upload -->
-            <div class="flex space-x-2 border-b border-[#d9d9d9] pb-3">
+        <div class="space-y-6 pt-2">
+            <!-- Mode Switcher Pills -->
+            <div class="flex items-center space-x-2">
                 <button type="button" 
                         @click="audioTab = 'record'"
-                        :class="audioTab === 'record' ? 'bg-[#ff5347] text-white font-semibold' : 'bg-white border border-[#d9d9d9] text-black/70 hover:text-black'"
-                        class="px-4 py-2 rounded-[8px] text-[13px] font-medium transition-colors flex items-center space-x-2">
+                        :class="audioTab === 'record' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
+                        class="px-5 py-2 rounded-full text-[13px] font-medium transition-colors flex items-center space-x-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
-                    <span>Perekam Langsung (MediaRecorder)</span>
+                    <span>Perekam Suara Langsung</span>
                 </button>
                 <button type="button" 
                         @click="audioTab = 'upload'"
-                        :class="audioTab === 'upload' ? 'bg-[#ff5347] text-white font-semibold' : 'bg-white border border-[#d9d9d9] text-black/70 hover:text-black'"
-                        class="px-4 py-2 rounded-[8px] text-[13px] font-medium transition-colors flex items-center space-x-2">
+                        :class="audioTab === 'upload' ? 'bg-black text-white' : 'bg-white text-black/60 border border-[#d9d9d9]/70 hover:text-black'"
+                        class="px-5 py-2 rounded-full text-[13px] font-medium transition-colors flex items-center space-x-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                     <span>Unggah Berkas Audio</span>
                 </button>
             </div>
 
-            <!-- Mode 1: Live Audio Recording (Browser MediaRecorder) -->
-            <div x-show="audioTab === 'record'" class="space-y-6">
-                <div class="border border-[#d9d9d9] rounded-[12px] p-6 bg-[#F8F7F3] text-center space-y-4">
-                    <!-- Recording Timer Display -->
-                    <div class="space-y-1">
-                        <span class="text-[12px] font-semibold uppercase tracking-wider text-black/50">Durasi Rekaman Rapat</span>
-                        <div class="font-mono text-[42px] font-bold text-black tracking-tight" x-text="formatTime(recordTime)"></div>
-                    </div>
+            <!-- MODE 1: LIVE AUDIO RECORDER (Editorial Minimalist Studio) -->
+            <div x-show="audioTab === 'record'" class="bg-white border border-[#d9d9d9]/70 rounded-3xl p-8 sm:p-12 text-center space-y-6">
+                <!-- Large Digital Stopwatch -->
+                <div class="space-y-1">
+                    <span class="text-[12px] font-semibold tracking-wider text-black/40 uppercase">Durasi Perekaman</span>
+                    <div class="font-mono text-[56px] sm:text-[68px] font-black text-black tracking-tighter" x-text="formatTime(recordTime)"></div>
+                </div>
 
-                    <!-- Live Pulsing Waveform Simulation -->
-                    <div class="h-14 flex items-center justify-center space-x-1.5 py-2">
-                        <template x-for="i in 24" :key="i">
-                            <span class="w-1.5 rounded-full transition-all duration-150"
-                                  :class="isRecording && !isPaused ? 'bg-[#ff5347]' : 'bg-[#d9d9d9]'"
-                                  :style="isRecording && !isPaused ? `height: ${Math.max(10, Math.sin(i + recordTime) * 36 + 20)}px;` : 'height: 8px;'"></span>
-                        </template>
-                    </div>
+                <!-- Pulsing Waveform Simulation -->
+                <div class="h-16 flex items-center justify-center space-x-1.5 py-2">
+                    <template x-for="i in 32" :key="i">
+                        <span class="w-1.5 rounded-full transition-all duration-150"
+                              :class="isRecording && !isPaused ? 'bg-[#ff5347]' : 'bg-[#d9d9d9]'"
+                              :style="isRecording && !isPaused ? `height: ${Math.max(8, Math.sin(i * 0.4 + recordTime) * 44 + 20)}px;` : 'height: 6px;'"></span>
+                    </template>
+                </div>
 
-                    <!-- Status Text -->
-                    <div class="text-[13px] font-medium">
-                        <template x-if="!isRecording && recordTime === 0">
-                            <span class="text-black/60">Mikrofon siap. Klik tombol "Mulai Perekaman" di bawah saat rapat dibuka.</span>
-                        </template>
-                        <template x-if="isRecording && !isPaused">
-                            <span class="text-[#ff5347] flex items-center justify-center space-x-2">
-                                <span class="w-2.5 h-2.5 rounded-full bg-[#ff5347] animate-ping"></span>
-                                <span>Sedang Merekam Suara Rapat Secara Real-Time...</span>
-                            </span>
-                        </template>
-                        <template x-if="isRecording && isPaused">
-                            <span class="text-amber-600 font-semibold">Perekaman Dijeda Sementara.</span>
-                        </template>
-                        <template x-if="!isRecording && recordTime > 0">
-                            <span class="text-emerald-600 font-semibold">Perekaman Selesai! Berkas suara siap dikonversi ke transkrip AI.</span>
-                        </template>
-                    </div>
+                <!-- Status Feedback Message -->
+                <div class="text-[14px]">
+                    <template x-if="!isRecording && recordTime === 0">
+                        <span class="text-black/55">Mikrofon peramban siap digunakan. Klik "Mulai Rekam" saat sidang dibuka.</span>
+                    </template>
+                    <template x-if="isRecording && !isPaused">
+                        <span class="text-[#ff5347] font-semibold flex items-center justify-center space-x-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-[#ff5347] animate-ping"></span>
+                            <span>Sedang merekam suara rapat secara real-time...</span>
+                        </span>
+                    </template>
+                    <template x-if="isRecording && isPaused">
+                        <span class="text-amber-600 font-semibold">Perekaman dijeda sementara.</span>
+                    </template>
+                    <template x-if="!isRecording && recordTime > 0">
+                        <span class="text-emerald-700 font-semibold">Perekaman selesai! Siap ditranskripsikan oleh modul AI.</span>
+                    </template>
+                </div>
 
-                    <!-- Recording Control Buttons -->
-                    <div class="flex items-center justify-center space-x-3 pt-2">
-                        <!-- Start Button -->
-                        <template x-if="!isRecording && recordTime === 0">
+                <!-- Recorder Controls -->
+                <div class="flex items-center justify-center space-x-3 pt-2">
+                    <template x-if="!isRecording && recordTime === 0">
+                        <button type="button" 
+                                @click="startRecording()"
+                                class="bg-[#ff5347] text-white rounded-full px-8 py-3.5 text-[15px] font-bold hover:bg-[#e0453a] transition-transform active:scale-95 flex items-center space-x-2.5">
+                            <span class="w-3 h-3 rounded-full bg-white animate-pulse"></span>
+                            <span>Mulai Rekam Suara Rapat</span>
+                        </button>
+                    </template>
+
+                    <template x-if="isRecording">
+                        <div class="flex items-center space-x-3">
                             <button type="button" 
-                                    @click="startRecording()"
-                                    class="bg-[#ff5347] text-white font-medium text-[14px] rounded-[8px] px-6 py-2.5 hover:bg-[#e0453a] transition-colors flex items-center space-x-2">
-                                <span class="w-3 h-3 rounded-full bg-white animate-pulse"></span>
-                                <span>Mulai Perekaman Suara</span>
+                                    x-show="!isPaused" 
+                                    @click="pauseRecording()"
+                                    class="bg-white border border-[#d9d9d9] text-black font-medium text-[14px] rounded-full px-6 py-2.5 hover:bg-black/5 transition-colors">
+                                Jeda
                             </button>
-                        </template>
-
-                        <!-- In-recording Controls -->
-                        <template x-if="isRecording">
-                            <div class="flex items-center space-x-3">
-                                <button type="button" 
-                                        x-show="!isPaused" 
-                                        @click="pauseRecording()"
-                                        class="bg-white border border-[#d9d9d9] text-black/90 font-medium text-[14px] rounded-[8px] px-4 py-2 hover:bg-black/5 transition-colors">
-                                    Jeda
-                                </button>
-                                <button type="button" 
-                                        x-show="isPaused" 
-                                        @click="resumeRecording()"
-                                        class="bg-white border border-[#d9d9d9] text-black font-semibold text-[14px] rounded-[8px] px-4 py-2 hover:bg-black/5 transition-colors">
-                                    Lanjutkan
-                                </button>
-                                <button type="button" 
-                                        @click="stopRecording()"
-                                        class="bg-black text-white font-medium text-[14px] rounded-[8px] px-5 py-2 hover:bg-black/80 transition-colors">
-                                    Hentikan & Simpan Audio
-                                </button>
-                            </div>
-                        </template>
-
-                        <!-- Restart Button if completed -->
-                        <template x-if="!isRecording && recordTime > 0">
                             <button type="button" 
-                                    @click="startRecording()"
-                                    class="bg-transparent text-black/90 border border-[#d9d9d9] font-medium text-[13px] rounded-[6px] px-4 py-2 hover:bg-black/5 transition-colors">
-                                Rekam Ulang
+                                    x-show="isPaused" 
+                                    @click="resumeRecording()"
+                                    class="bg-white border border-[#d9d9d9] text-black font-semibold text-[14px] rounded-full px-6 py-2.5 hover:bg-black/5 transition-colors">
+                                Lanjutkan
                             </button>
-                        </template>
-                    </div>
+                            <button type="button" 
+                                    @click="stopRecording()"
+                                    class="bg-black text-white font-medium text-[14px] rounded-full px-6 py-2.5 hover:bg-black/85 transition-colors">
+                                Selesai & Simpan Rekaman
+                            </button>
+                        </div>
+                    </template>
+
+                    <template x-if="!isRecording && recordTime > 0">
+                        <button type="button" 
+                                @click="startRecording()"
+                                class="border border-[#d9d9d9] text-black/75 rounded-full px-5 py-2 text-[13px] font-medium hover:bg-black hover:text-white transition-colors">
+                            Rekam Ulang
+                        </button>
+                    </template>
                 </div>
             </div>
 
-            <!-- Mode 2: Audio File Upload UI -->
+            <!-- MODE 2: AUDIO FILE UPLOAD (Line-Art Doodle Dropzone) -->
             <div x-show="audioTab === 'upload'" class="space-y-4">
-                <div class="border-2 border-dashed border-[#d9d9d9] rounded-[12px] p-8 bg-[#F8F7F3] text-center space-y-3 relative">
+                <div class="border-2 border-dashed border-[#d9d9d9] hover:border-black/50 transition-colors rounded-3xl p-10 sm:p-14 bg-white text-center space-y-4 relative">
                     <input type="file" 
                            @change="handleFileUpload($event)"
                            accept="audio/*" 
                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                    
-                    <div class="w-12 h-12 rounded-full bg-white border border-[#d9d9d9] mx-auto flex items-center justify-center text-black/60">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+
+                    <!-- Monochrome Doodle Line Art -->
+                    <div class="w-24 h-24 mx-auto text-black/40">
+                        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" class="w-full h-full">
+                            <circle cx="50" cy="50" r="38" stroke-width="2" stroke-dasharray="3 3"/>
+                            <rect x="35" y="30" width="30" height="40" rx="6" stroke-width="2"/>
+                            <path d="M42 42h16M42 50h16M42 58h10" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M35 52 Q20 52 20 65 Q20 78 50 78 Q80 78 80 65 Q80 52 65 52" stroke-width="1.5" stroke-dasharray="2 2"/>
+                        </svg>
                     </div>
 
                     <div class="space-y-1">
-                        <p class="text-[15px] font-bold text-black">Tarik & Letakkan Berkas Audio di Sini</p>
-                        <p class="text-[13px] text-black/60">Mendukung format WAV, MP3, M4A, AAC, atau FLAC (Maks. 500 MB)</p>
+                        <h4 class="text-[18px] font-bold text-black">Tarik & Letakkan Berkas Audio di Sini</h4>
+                        <p class="text-[14px] text-black/55">Mendukung MP3, WAV, M4A, AAC, atau FLAC (Hingga 500 MB)</p>
                     </div>
 
-                    <button type="button" class="bg-white border border-[#d9d9d9] text-black/90 font-medium text-[13px] rounded-[8px] px-4 py-1.5 hover:bg-black/5 transition-colors">
-                        Pilih Berkas dari Komputer
+                    <button type="button" class="bg-black text-white rounded-full px-6 py-2.5 text-[13px] font-semibold hover:bg-black/85 transition-colors">
+                        Pilih Berkas Audio dari Komputer
                     </button>
                 </div>
 
-                <!-- Uploaded file display -->
-                <div x-show="uploadedFileName" class="bg-white border border-[#d9d9d9] rounded-[8px] p-3.5 flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 rounded-[6px] bg-[#ff5347]/10 text-[#ff5347] font-bold text-[12px] flex items-center justify-center">AUDIO</span>
+                <!-- Uploaded File Badge -->
+                <div x-show="uploadedFileName" class="bg-white border border-[#d9d9d9]/70 rounded-2xl p-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-10 h-10 rounded-full bg-[#EAF4FE] text-[#1E40AF] font-bold text-[12px] flex items-center justify-center">
+                            MP3
+                        </div>
                         <div>
-                            <p class="text-[13px] font-semibold text-black" x-text="uploadedFileName"></p>
-                            <p class="text-[11px] text-black/50" x-text="uploadedFileSize"></p>
+                            <p class="text-[14px] font-bold text-black" x-text="uploadedFileName"></p>
+                            <p class="text-[12px] text-black/50" x-text="uploadedFileSize"></p>
                         </div>
                     </div>
-                    <span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
-                        Siap Diunggah
+                    <span class="px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/60">
+                        Berkas Siap Diproses
                     </span>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Card Action Footer: Submit & Process AI -->
-            <div class="flex items-center justify-between pt-6 border-t border-[#d9d9d9]">
-                <button @click="currentStep = 3" class="bg-transparent text-black/90 border border-[#d9d9d9] font-medium text-[14px] rounded-[4px] px-4 py-2 hover:bg-black/5 transition-colors">
-                    Kembali: Daftar Hadir
-                </button>
-                
-                <button @click="submitAndProceed()" 
-                        :disabled="isTranscribing"
-                        class="bg-[#ff5347] text-white font-medium text-[14px] rounded-[8px] px-6 py-2.5 hover:bg-[#e0453a] transition-colors flex items-center space-x-2">
-                    <template x-if="!isTranscribing">
-                        <div class="flex items-center space-x-2">
-                            <span>Kirim & Transkripsikan AI</span>
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </div>
-                    </template>
-                    <template x-if="isTranscribing">
-                        <div class="flex items-center space-x-2">
-                            <span class="w-3.5 h-3.5 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
-                            <span>Memproses Whisper & PyAnnote...</span>
-                        </div>
-                    </template>
-                </button>
-            </div>
+    <!-- 4. BOTTOM FLOATING ACTION BAR -->
+    <div class="pt-8 border-t border-[#d9d9d9]/60 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="text-[13px] text-black/50">
+            Pastikan seluruh data dan rekaman telah terverifikasi sebelum mengirim.
+        </div>
+
+        <div class="flex items-center space-x-3">
+            <a href="{{ url('/dashboard') }}" class="px-6 py-3 rounded-full border border-[#d9d9d9] text-[14px] font-medium text-black/70 hover:bg-black hover:text-white transition-colors">
+                Kembali ke Beranda
+            </a>
+            <button type="button" 
+                    @click="submitAndProceed()"
+                    :disabled="isTranscribing"
+                    class="px-8 py-3.5 rounded-full bg-black text-white text-[15px] font-bold hover:bg-black/85 transition-transform active:scale-95 inline-flex items-center space-x-2.5">
+                <template x-if="!isTranscribing">
+                    <div class="flex items-center space-x-2">
+                        <span>Mulai Transkripsi & Ekspor AI</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </div>
+                </template>
+                <template x-if="isTranscribing">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin"></span>
+                        <span>Memproses Whisper & PyAnnote...</span>
+                    </div>
+                </template>
+            </button>
         </div>
     </div>
 </div>
