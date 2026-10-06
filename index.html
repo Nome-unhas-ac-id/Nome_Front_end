@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome - Transkripsi & Notulensi Rapat AI</title>
+    <meta name="description" content="Nome - Platform cerdas pencatatan, transkripsi real-time, dan perumusan notulensi rapat otomatis berbasis kecerdasan buatan.">
+
+    <!-- Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        canvas: '#F8F7F3',
+                        primary: {
+                            DEFAULT: '#ff5347',
+                            hover: '#e0453a',
+                            accent: '#ff5347'
+                        },
+                        border: {
+                            muted: '#d9d9d9'
+                        },
+                        surface: {
+                            card: '#ffffff'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg-canvas: #F8F7F3;
+            --primary-accent: #ff5347;
+            --border-muted: #d9d9d9;
+            --surface-card: #ffffff;
+            --text-main: #000000;
+        }
+        body {
+            background-color: #F8F7F3;
+            color: rgba(0,0,0,0.95);
+            font-family: 'Inter', sans-serif;
+        }
+        /* No shadows rule */
+        * {
+            box-shadow: none !important;
+        }
+    </style>
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-[#F8F7F3] text-black/95 font-sans antialiased selection:bg-[#ff5347]/20 selection:text-black">
+    <!-- App Shell Container -->
+    <div class="min-h-screen bg-[#F8F7F3] text-black/95 font-sans flex flex-col justify-between" 
+         x-data="{ 
+             currentView: 'dashboard', 
+             mobileMenuOpen: false,
+             userMenuOpen: false
+         }">
+
+        <!-- Header / Navigation Bar -->
+        <header class="border-b border-[#d9d9d9] bg-[#F8F7F3] sticky top-0 z-30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <!-- Brand & Left Nav -->
+                    <div class="flex items-center space-x-8">
+                        <button @click="currentView = 'dashboard'" class="flex items-center space-x-2.5 group text-left">
+                            <span class="w-8 h-8 rounded-[8px] bg-[#ff5347] flex items-center justify-center text-white font-bold text-lg tracking-tight transition-transform group-hover:scale-105">
+                                N
+                            </span>
+                            <div class="flex flex-col">
+                                <span class="text-[20px] font-bold tracking-tight text-black leading-none">Nome</span>
+                                <span class="text-[10px] uppercase font-semibold tracking-wider text-black/60 mt-0.5">Notulensi AI</span>
+                            </div>
+                        </button>
+
+                        <!-- Desktop Navigation -->
+                        <nav class="hidden md:flex items-center space-x-1">
+                            <button @click="currentView = 'dashboard'" 
+                                    :class="currentView === 'dashboard' ? 'bg-white border border-[#d9d9d9] text-black font-semibold' : 'text-black/70 hover:text-black hover:bg-black/5'"
+                                    class="px-3.5 py-1.5 rounded-[8px] text-[14px] font-medium transition-colors">
+                                Dashboard
+                            </button>
+                            <button @click="currentView = 'history'" 
+                                    :class="currentView === 'history' ? 'bg-white border border-[#d9d9d9] text-black font-semibold' : 'text-black/70 hover:text-black hover:bg-black/5'"
+                                    class="px-3.5 py-1.5 rounded-[8px] text-[14px] font-medium transition-colors">
+                                Riwayat Memo
+                            </button>
+                            <button @click="currentView = 'add-memo'" 
+                                    :class="currentView === 'add-memo' ? 'bg-white border border-[#d9d9d9] text-black font-semibold' : 'text-black/70 hover:text-black hover:bg-black/5'"
+                                    class="px-3.5 py-1.5 rounded-[8px] text-[14px] font-medium transition-colors">
+                                Buat Rapat Baru
+                            </button>
+                            <button @click="currentView = 'preview'" 
+                                    :class="currentView === 'preview' ? 'bg-white border border-[#d9d9d9] text-black font-semibold' : 'text-black/70 hover:text-black hover:bg-black/5'"
+                                    class="px-3.5 py-1.5 rounded-[8px] text-[14px] font-medium transition-colors">
+                                Preview Editor
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Right Nav: System Status & User Action -->
+                    <div class="hidden sm:flex items-center space-x-3.5">
+                        <div class="flex items-center space-x-2 px-3 py-1 rounded-full border border-[#d9d9d9] bg-white text-[12px] font-medium text-black/70">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span>Whisper AI: Siap</span>
+                        </div>
+
+                        <!-- CTA Button -->
+                        <button @click="currentView = 'add-memo'" class="inline-flex items-center space-x-1.5 bg-[#ff5347] text-white font-medium text-[14px] rounded-[8px] px-4 py-2 hover:bg-[#e0453a] transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                            </svg>
+                            <span>Rekam Rapat</span>
+                        </button>
+
+                        <!-- Profile Dropdown -->
+                        <div class="relative">
+                            <button @click="userMenuOpen = !userMenuOpen" class="flex items-center space-x-2 border border-[#d9d9d9] rounded-[8px] bg-white px-2.5 py-1.5 hover:bg-black/5 transition-colors">
+                                <div class="w-6 h-6 rounded-full bg-black/10 text-black/80 font-bold text-[11px] flex items-center justify-center">
+                                    AG
+                                </div>
+                                <span class="text-[13px] font-medium text-black/90">Andi Ghalib</span>
+                                <svg class="w-3.5 h-3.5 text-black/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+
+                            <div x-show="userMenuOpen" @click.away="userMenuOpen = false" 
+                                 x-transition:enter="transition ease-out duration-100"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 class="absolute right-0 mt-2 w-48 bg-white border border-[#d9d9d9] rounded-[12px] py-1.5 z-50">
+                                <div class="px-3.5 py-2 border-b border-[#d9d9d9] text-[12px]">
+                                    <p class="font-semibold text-black">Notulis Resmi</p>
+                                    <p class="text-black/60 truncate">andiabi4925@unhas.ac.id</p>
+                                </div>
+                                <button @click="currentView = 'login'; userMenuOpen = false" class="w-full text-left px-3.5 py-1.5 text-[13px] text-black/80 hover:bg-[#F8F7F3] transition-colors">Ganti Akun (Login)</button>
+                                <button @click="currentView = 'signup'; userMenuOpen = false" class="w-full text-left px-3.5 py-1.5 text-[13px] text-black/80 hover:bg-[#F8F7F3] transition-colors">Daftar Akun Baru</button>
+                                <div class="border-t border-[#d9d9d9] my-1"></div>
+                                <button @click="currentView = 'login'; userMenuOpen = false" class="w-full text-left px-3.5 py-1.5 text-[13px] text-[#ff5347] font-medium hover:bg-[#F8F7F3] transition-colors">Keluar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <div class="flex items-center md:hidden">
+                        <button @click="mobileMenuOpen = !mobileMenuOpen" class="p-2 rounded-[8px] border border-[#d9d9d9] bg-white text-black/80">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation Panel -->
+            <div x-show="mobileMenuOpen" class="md:hidden border-t border-[#d9d9d9] bg-white px-4 pt-2 pb-4 space-y-1">
+                <button @click="currentView = 'dashboard'; mobileMenuOpen = false" class="w-full text-left px-3 py-2 rounded-[8px] text-[14px] font-medium" :class="currentView === 'dashboard' ? 'bg-[#F8F7F3] text-black font-semibold' : 'text-black/70'">Dashboard</button>
+                <button @click="currentView = 'history'; mobileMenuOpen = false" class="w-full text-left px-3 py-2 rounded-[8px] text-[14px] font-medium" :class="currentView === 'history' ? 'bg-[#F8F7F3] text-black font-semibold' : 'text-black/70'">Riwayat Memo</button>
+                <button @click="currentView = 'add-memo'; mobileMenuOpen = false" class="w-full text-left px-3 py-2 rounded-[8px] text-[14px] font-medium" :class="currentView === 'add-memo' ? 'bg-[#F8F7F3] text-black font-semibold' : 'text-black/70'">Buat Rapat Baru</button>
+                <button @click="currentView = 'preview'; mobileMenuOpen = false" class="w-full text-left px-3 py-2 rounded-[8px] text-[14px] font-medium" :class="currentView === 'preview' ? 'bg-[#F8F7F3] text-black font-semibold' : 'text-black/70'">Preview Editor</button>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Mount Area (Initialized in Step 2) -->
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="bg-white border border-[#d9d9d9] rounded-[12px] p-6 text-center py-12">
+                <h1 class="text-[28px] font-bold tracking-tight text-black mb-2">Base Layout Siap</h1>
+                <p class="text-black/60 text-[15px] max-w-md mx-auto">
+                    App shell dengan warna canvas #F8F7F3, border tactile #d9d9d9, aksen #ff5347, dan sistem navigasi siap digunakan.
+                </p>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-[#d9d9d9] bg-[#F8F7F3] py-6 text-center text-[13px] text-black/60">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-2">
+                    <span class="font-bold text-black tracking-tight">Nome</span>
+                    <span>&mdash;</span>
+                    <span>Pencatat & Perumus Memo Rapat Cerdas</span>
+                </div>
+                <div class="flex items-center space-x-4 text-[12px]">
+                    <span class="inline-flex items-center space-x-1.5 text-black/70">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        <span>Diarization & Whisper API Ready</span>
+                    </span>
+                    <span>&bull;</span>
+                    <span>Vibe: Warm Paper Notebook</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
