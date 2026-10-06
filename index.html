@@ -46,9 +46,12 @@
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-        /* Strict Design Constraint: ZERO Drop-Shadows */
-        *, *::before, *::after {
+        /* Strict Design Constraint: ZERO Drop-Shadows (exempting floating glass pill) */
+        *:not(.floating-glass-pill):not(.floating-glass-pill *) {
             box-shadow: none !important;
+        }
+        .floating-glass-pill {
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.04) !important;
         }
         /* Hide scrollbars for clean aesthetic */
         .no-scrollbar::-webkit-scrollbar {
@@ -63,7 +66,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="bg-[#F8F7F3] text-black font-sans antialiased selection:bg-[#ff5347]/20 selection:text-black">
-    <div class="min-h-screen flex" 
+    <div class="min-h-screen flex flex-col w-full relative bg-[#F8F7F3]" 
          x-data="{ 
              currentView: 'dashboard',
              searchQuery: '',
@@ -102,111 +105,39 @@
             <span x-text="toastMsg"></span>
         </div>
 
-        <!-- 1. LEFT VERTICAL FIXED SIDEBAR (Pure White, Soft Pill Active Status) -->
-        <aside class="w-64 bg-white border-r border-[#d9d9d9] fixed inset-y-0 left-0 z-40 flex flex-col justify-between p-6">
-            <div class="space-y-8">
-                <!-- Brand Identity -->
-                <div class="flex items-center space-x-3 px-2">
-                    <span class="w-9 h-9 rounded-full bg-black text-white font-black text-xl flex items-center justify-center tracking-tighter">
-                        N
-                    </span>
-                    <div>
-                        <span class="text-[20px] font-extrabold tracking-tight text-black block leading-none">Nome</span>
-                        <span class="text-[11px] font-medium text-black/45 tracking-wide uppercase mt-0.5 block">Notulensi AI</span>
-                    </div>
-                </div>
+        <!-- FLOATING LIQUID GLASS PILL NAVBAR (Top Center, Pill-Shaped, Glassmorphism) -->
+        <header class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[92%] sm:w-auto max-w-4xl bg-white/60 backdrop-blur-lg border border-white/40 ring-1 ring-black/[0.08] shadow-sm floating-glass-pill rounded-full px-6 py-3 flex items-center justify-between gap-6 sm:gap-10 transition-all">
+            <!-- Left: Logo text (Black, bold) -->
+            <button @click="currentView = 'dashboard'" class="flex items-center space-x-2.5 group shrink-0">
+                <span class="w-7 h-7 rounded-full bg-black text-white flex items-center justify-center font-black text-xs tracking-tighter transition-transform group-hover:scale-105">
+                    N
+                </span>
+                <span class="text-[18px] sm:text-[19px] font-black tracking-tight text-black leading-none">Nome.</span>
+            </button>
 
-                <!-- Navigation Links -->
-                <nav class="space-y-1.5">
-                    <button @click="currentView = 'dashboard'" 
-                            :class="currentView === 'dashboard' ? 'bg-black/[0.06] text-black font-bold' : 'text-black/60 hover:text-black hover:bg-black/[0.03] font-medium'"
-                            class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-full text-[14px] transition-colors text-left">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                        <span>Workspace</span>
-                    </button>
+            <!-- Center: Simple navigation links (Text only, black, small font size) -->
+            <nav class="hidden md:flex items-center space-x-7 text-[13px] font-medium text-black">
+                <button @click="currentView = 'dashboard'" :class="currentView === 'dashboard' ? 'font-bold text-black' : 'text-black/60 hover:text-black'" class="transition-colors">Workspace</button>
+                <button @click="currentView = 'add-memo'" :class="currentView === 'add-memo' ? 'font-bold text-black' : 'text-black/60 hover:text-black'" class="transition-colors">Buat Risalah</button>
+                <button @click="currentView = 'history'" :class="currentView === 'history' ? 'font-bold text-black' : 'text-black/60 hover:text-black'" class="transition-colors">Arsip</button>
+                <button @click="currentView = 'preview'" :class="currentView === 'preview' ? 'font-bold text-black' : 'text-black/60 hover:text-black'" class="transition-colors">Editor AI</button>
+            </nav>
 
-                    <button @click="currentView = 'add-memo'" 
-                            :class="currentView === 'add-memo' ? 'bg-black/[0.06] text-black font-bold' : 'text-black/60 hover:text-black hover:bg-black/[0.03] font-medium'"
-                            class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-full text-[14px] transition-colors text-left">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                        <span>Buat Risalah</span>
-                    </button>
-
-                    <button @click="currentView = 'history'" 
-                            :class="currentView === 'history' ? 'bg-black/[0.06] text-black font-bold' : 'text-black/60 hover:text-black hover:bg-black/[0.03] font-medium'"
-                            class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-full text-[14px] transition-colors text-left">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                        <span>Arsip Rapat</span>
-                    </button>
-
-                    <button @click="currentView = 'preview'" 
-                            :class="currentView === 'preview' ? 'bg-black/[0.06] text-black font-bold' : 'text-black/60 hover:text-black hover:bg-black/[0.03] font-medium'"
-                            class="w-full flex items-center space-x-3 px-4 py-2.5 rounded-full text-[14px] transition-colors text-left">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        <span>Pratinjau Editor</span>
-                    </button>
-                </nav>
+            <!-- Right: A solid black pill-shaped button for primary action -->
+            <div class="flex items-center space-x-2 shrink-0">
+                <button @click="currentView = 'add-memo'" class="inline-flex items-center space-x-2 bg-black text-white hover:bg-neutral-800 rounded-full px-5 py-2 text-[13px] font-semibold transition-transform active:scale-95">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+                    <span>Mulai Rapat</span>
+                </button>
             </div>
+        </header>
 
-            <!-- Profile & Status -->
-            <div class="pt-6 border-t border-[#d9d9d9]/70 space-y-4">
-                <div class="flex items-center space-x-3 px-2">
-                    <span class="w-9 h-9 rounded-full bg-black text-white font-bold text-xs flex items-center justify-center">
-                        AA
-                    </span>
-                    <div class="min-w-0">
-                        <p class="text-[13px] font-bold text-black truncate leading-tight">Andi Abigail</p>
-                        <p class="text-[11px] text-black/50 truncate">Notulis Resmi Unhas</p>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- 2. MAIN CONTENT CANVAS (Extreme Whitespace, p-8 to p-12) -->
-        <main class="flex-1 ml-64 min-h-screen p-8 sm:p-12 lg:p-14 space-y-12">
-            <!-- Global Minimalist Top Header (Subtle Search Bar) -->
-            <div class="flex items-center justify-between gap-6 pb-2">
-                <div class="relative w-full max-w-md">
-                    <input type="text" 
-                           x-model="searchQuery"
-                           placeholder="Cari agenda rapat, notulensi, atau topik... (⌘K)" 
-                           class="w-full bg-white border border-[#d9d9d9] rounded-full pl-11 pr-4 py-2.5 text-[14px] text-black placeholder-black/40 focus:outline-none focus:border-black transition-colors">
-                    <svg class="w-4 h-4 text-black/40 absolute left-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </div>
-
-                <div class="flex items-center space-x-3">
-                    <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white border border-[#d9d9d9] text-[12px] font-semibold text-black">
-                        Whisper AI On-Premise
-                    </span>
-                </div>
-            </div>
-
+        <!-- FULL VIEWPORT MAIN CONTENT CANVAS (100% Width, No Sidebar) -->
+        <main class="w-full flex-1 min-h-screen">
             <!-- VIEW 1: DASHBOARD (HERO SECTION + WARM LOWER CANVAS) -->
-            <div x-show="currentView === 'dashboard'" class="-m-8 sm:-m-12 lg:-m-14 space-y-0">
-                <!-- 1. TOP NAVBAR -->
-                <header class="bg-white border-b border-[#d9d9d9]/60 px-6 sm:px-10 lg:px-14 py-4 sticky top-0 z-30 flex items-center justify-between gap-4">
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 rounded-xl bg-black text-white flex items-center justify-center font-black text-base tracking-tighter">N</span>
-                        <span class="text-[22px] font-black tracking-tight text-black leading-none">Nome.</span>
-                    </div>
-
-                    <nav class="hidden md:flex items-center space-x-8 text-[13px] font-medium text-black">
-                        <button @click="currentView = 'dashboard'" class="text-black font-semibold hover:text-black/60 transition-colors">Workspace</button>
-                        <button @click="currentView = 'add-memo'" class="text-black/70 hover:text-black transition-colors">Buat Risalah</button>
-                        <button @click="currentView = 'history'" class="text-black/70 hover:text-black transition-colors">Arsip Sidang</button>
-                        <button @click="currentView = 'preview'" class="text-black/70 hover:text-black transition-colors">Editor AI</button>
-                    </nav>
-
-                    <button @click="currentView = 'add-memo'" class="inline-flex items-center space-x-2 bg-black text-white hover:bg-black/85 rounded-full px-5 py-2.5 text-[13px] font-semibold transition-transform active:scale-95">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
-                        <span>Mulai Rapat</span>
-                    </button>
-                </header>
-
-                <!-- 2. TWO-COLUMN HERO SECTION (BG-WHITE) -->
-                <section class="w-full bg-white border-b border-[#d9d9d9]/70 py-16 sm:py-20 px-6 sm:px-10 lg:px-14">
+            <div x-show="currentView === 'dashboard'" class="w-full space-y-0">
+                <!-- TWO-COLUMN HERO SECTION (BG-WHITE) -->
+                <section class="w-full bg-white border-b border-[#d9d9d9]/70 pt-28 sm:pt-36 pb-16 sm:pb-24 px-6 sm:px-10 lg:px-16">
                     <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
                         <!-- Left Column (Typography & CTA) -->
                         <div class="lg:col-span-6 space-y-8">
@@ -468,7 +399,7 @@
             </div>
 
             <!-- VIEW 2: ADD MEMO (UNBOXED FLOWING CANVAS) -->
-            <div x-show="currentView === 'add-memo'" class="space-y-16 max-w-4xl mx-auto">
+            <div x-show="currentView === 'add-memo'" class="space-y-16 max-w-4xl mx-auto pt-28 pb-20 px-6 sm:px-10">
                 <div class="space-y-4 pt-2 border-b border-[#d9d9d9]/60 pb-8">
                     <h1 class="text-[48px] sm:text-[64px] font-black tracking-tighter text-black leading-tight">
                         Notulensi Baru.
@@ -535,7 +466,7 @@
             </div>
 
             <!-- VIEW 3: HISTORY ARCHIVE -->
-            <div x-show="currentView === 'history'" class="space-y-12 max-w-6xl mx-auto">
+            <div x-show="currentView === 'history'" class="space-y-12 max-w-6xl mx-auto pt-28 pb-20 px-6 sm:px-10">
                 <div class="space-y-4 pt-2 border-b border-[#d9d9d9]/60 pb-8">
                     <h1 class="text-[48px] sm:text-[64px] font-black tracking-tighter text-black leading-tight">
                         Arsip Risalah Rapat.
@@ -597,7 +528,7 @@
             </div>
 
             <!-- VIEW 4: PREVIEW & EXPORT (GRAND WHITE PAPER SHEET) -->
-            <div x-show="currentView === 'preview'" class="space-y-10 max-w-4xl mx-auto">
+            <div x-show="currentView === 'preview'" class="space-y-10 max-w-4xl mx-auto pt-28 pb-20 px-6 sm:px-10">
                 <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#d9d9d9]/60 pb-6">
                     <div>
                         <h1 class="text-[44px] font-black tracking-tighter text-black leading-tight">

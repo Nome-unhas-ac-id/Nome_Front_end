@@ -1,50 +1,13 @@
 @extends('layouts.app')
 
-@section('top_navbar')
-<!-- 1. TOP NAVBAR (Transparent/White, Minimalist Links, Black Pill Action) -->
-<header class="bg-white border-b border-[#d9d9d9]/60 px-6 sm:px-10 lg:px-16 py-4 sticky top-0 z-30 flex items-center justify-between gap-4">
-    <!-- Left: Logo text (Black, bold) -->
-    <div class="flex items-center space-x-3">
-        <button @click="sidebarOpen = true" class="md:hidden p-1.5 rounded-lg text-black/60 hover:text-black">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-        </button>
-        <a href="{{ url('/dashboard') }}" class="flex items-center space-x-2.5 group">
-            <span class="w-8 h-8 rounded-xl bg-black text-white flex items-center justify-center font-black text-base tracking-tighter">
-                N
-            </span>
-            <span class="text-[22px] font-black tracking-tight text-black leading-none">Nome.</span>
-        </a>
-    </div>
-
-    <!-- Center: Simple navigation links (Text only, black, small font size) -->
-    <nav class="hidden md:flex items-center space-x-8 text-[13px] font-medium text-black">
-        <a href="{{ url('/dashboard') }}" class="text-black font-semibold hover:text-black/60 transition-colors">Workspace</a>
-        <a href="{{ url('/add-memo') }}" class="hover:text-black/60 transition-colors">Buat Risalah</a>
-        <a href="{{ url('/history') }}" class="hover:text-black/60 transition-colors">Arsip Sidang</a>
-        <a href="{{ url('/preview') }}" class="hover:text-black/60 transition-colors">Editor AI</a>
-    </nav>
-
-    <!-- Right: A solid black pill-shaped button for primary action -->
-    <div class="flex items-center space-x-3">
-        <a href="{{ url('/history') }}" class="hidden sm:inline-flex text-[13px] font-medium text-black/60 hover:text-black transition-colors px-3 py-1.5">
-            Arsip
-        </a>
-        <a href="{{ url('/add-memo') }}" class="inline-flex items-center space-x-2 bg-black text-white hover:bg-black/85 rounded-full px-5 py-2.5 text-[13px] font-semibold transition-transform active:scale-95">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
-            <span>Mulai Rapat</span>
-        </a>
-    </div>
-</header>
-@endsection
-
-@section('main_class', 'flex-1 p-0')
+@section('main_class', 'flex-1 w-full p-0')
 
 @section('content')
 <div class="w-full">
     <!-- ======================================================== -->
     <!-- 2. HERO SECTION LAYOUT (TWO COLUMNS, FULL WIDTH, BG-WHITE) -->
     <!-- ======================================================== -->
-    <section class="w-full bg-white border-b border-[#d9d9d9]/70 py-16 sm:py-20 lg:py-24 px-6 sm:px-10 lg:px-16">
+    <section class="w-full bg-white border-b border-[#d9d9d9]/70 pt-28 sm:pt-36 pb-16 sm:pb-24 px-6 sm:px-10 lg:px-16">
         <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             
             <!-- LEFT COLUMN (Typography, Subtle Yellow Accent, & CTA) -->
