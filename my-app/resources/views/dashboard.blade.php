@@ -12,7 +12,7 @@
             
             <!-- LEFT COLUMN (Typography, Subtle Yellow Accent, & CTA) -->
             <div class="lg:col-span-6 space-y-8">
-                <div class="space-y-4">
+                <div class="space-y-2 sm:space-y-2.5">
                     <!-- Very large, bold headline with thick yellow underline accent -->
                     <h1 class="text-[44px] sm:text-[56px] lg:text-[64px] font-black tracking-tighter text-black leading-[1.05] animate-fade-in-up">
                         1,090 Rapat Dirangkum <span class="relative inline-block text-black">Tanpa Ribet.<span class="absolute left-0 bottom-1 sm:bottom-2 w-full h-3 sm:h-3.5 bg-[#FFD027] -z-10 rounded-xs"></span></span>
@@ -374,16 +374,16 @@
                             </div>
 
                             <h4 class="text-[20px] font-extrabold tracking-tight text-black hover:text-[#ff5347] transition-colors leading-snug">
-                                Sinkronisasi Target Kuartal & Roadmap Fitur
+                                Sinkronisasi Target & Roadmap Proyek
                             </h4>
 
                             <p class="text-[14px] text-black/60 line-clamp-1">
-                                Penyelenggara: Tim Produk &bull; Ruang Rapat Tim &bull; 8 Orang Hadir
+                                Penyelenggara: Tim Kolaborasi &bull; Ruang Diskusi &bull; 8 Orang Hadir
                             </p>
                         </div>
 
                         <div class="flex items-center space-x-3 shrink-0">
-                            <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                            <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
                                 Pratinjau
                             </a>
                             <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
@@ -411,12 +411,12 @@
                             </h4>
 
                             <p class="text-[14px] text-black/60 line-clamp-1">
-                                Penyelenggara: Tim Desain &bull; Google Meet &bull; 5 Orang Hadir
+                                Penyelenggara: Tim Kreatif &bull; Google Meet &bull; 5 Orang Hadir
                             </p>
                         </div>
 
                         <div class="flex items-center space-x-3 shrink-0">
-                            <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                            <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
                                 Pratinjau
                             </a>
                             <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
@@ -440,16 +440,16 @@
                             </div>
 
                             <h4 class="text-[20px] font-extrabold tracking-tight text-black hover:text-[#ff5347] transition-colors leading-snug">
-                                Review Mingguan & Pembagian Prioritas Tugas
+                                Review Mingguan & Sesi Brainstorming
                             </h4>
 
                             <p class="text-[14px] text-black/60 line-clamp-1">
-                                Penyelenggara: Tim Pengembang &bull; Ruang Diskusi &bull; 6 Orang Hadir
+                                Penyelenggara: Komunitas & Freelancer &bull; Ruang Diskusi &bull; 6 Orang Hadir
                             </p>
                         </div>
 
                         <div class="flex items-center space-x-3 shrink-0">
-                            <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-full border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
+                            <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black/80 hover:bg-black hover:text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">
                                 Pratinjau
                             </a>
                             <a href="{{ url('/preview') }}" class="px-5 py-2.5 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[13px] font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm">

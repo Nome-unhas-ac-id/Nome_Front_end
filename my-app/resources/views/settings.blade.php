@@ -9,9 +9,9 @@
         profile: {
             name: 'Andi Abi',
             email: 'andiabi@unhas.ac.id',
-            role: 'Koordinator Tim Riset & Inovasi',
-            department: 'Fakultas Teknik, Universitas Hasanuddin',
-            bio: 'Pengembang dan koordinator riset terapan di bidang rekayasa perangkat lunak.'
+            role: 'Desainer & Kreator Independen',
+            department: 'Komunitas & Studio Kreatif',
+            bio: 'Pengguna aktif notulensi untuk diskusi proyek, sesi brainstorming, dan perkuliahan.'
         },
         preferences: {
             language: 'id',
@@ -47,7 +47,7 @@
             Pengaturan.
         </h1>
         <p class="text-[17px] text-black/55 mt-2 max-w-2xl font-normal leading-relaxed">
-            Kelola profil pengguna, preferensi transkripsi rapat, kuota AI, serta integrasi kalender dan dokumen.
+            Kelola profil pengguna, preferensi transkripsi diskusi & rapat, kuota AI, serta integrasi kalender dan dokumen.
         </p>
     </div>
 
@@ -143,21 +143,21 @@
 
                     <div class="space-y-2">
                         <label class="block text-[12px] font-bold text-black/50 uppercase tracking-wider">
-                            Jabatan / Peran
+                            Peran / Profesi
                         </label>
                         <input type="text" 
                                x-model="profile.role"
-                               placeholder="Jabatan atau fungsi utama..."
+                               placeholder="Peran Anda (Opsional)..."
                                class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[16px] text-black font-medium transition-colors">
                     </div>
 
                     <div class="space-y-2">
                         <label class="block text-[12px] font-bold text-black/50 uppercase tracking-wider">
-                            Institusi / Organisasi
+                            Komunitas / Tim / Kampus
                         </label>
                         <input type="text" 
                                x-model="profile.department"
-                               placeholder="Nama unit kerja atau universitas..."
+                               placeholder="Nama tim, studio, atau kampus..."
                                class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[16px] text-black font-medium transition-colors">
                     </div>
 
@@ -197,7 +197,7 @@
                         </label>
                         <select x-model="preferences.exportFormat"
                                 class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors cursor-pointer">
-                            <option value="pdf">PDF Berita Acara Rapat Resmi</option>
+                            <option value="pdf">PDF Ringkasan Notulensi</option>
                             <option value="docx">Microsoft Word (.docx)</option>
                             <option value="markdown">Markdown (.md)</option>
                         </select>
@@ -248,7 +248,7 @@
             <div x-show="activeTab === 'kuota'" class="space-y-10" style="display: none;">
                 <div class="border-b border-[#d9d9d9]/60 pb-4">
                     <h2 class="text-[24px] font-bold tracking-tight text-black">Kuota Pemrosesan AI</h2>
-                    <p class="text-[14px] text-black/50 mt-0.5">Pemantauan durasi audio rapat dan kapasitas transkripsi yang tersedia.</p>
+                    <p class="text-[14px] text-black/50 mt-0.5">Pemantauan durasi audio diskusi dan kapasitas transkripsi yang tersedia.</p>
                 </div>
 
                 <div class="space-y-8 max-w-xl">
@@ -256,14 +256,14 @@
                     <div class="bg-white border border-[#d9d9d9] rounded-2xl p-6 space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="text-[13px] font-bold uppercase tracking-wider text-black/50">Penggunaan Bulan Ini</span>
-                            <span class="text-sm text-gray-500 font-medium">Paket Akademik</span>
+                            <span class="text-sm text-gray-500 font-medium">Paket Komunitas / Tim</span>
                         </div>
                         <div>
                             <div class="flex items-baseline space-x-2">
                                 <span class="text-[36px] font-black text-black tracking-tight">120</span>
                                 <span class="text-[16px] text-black/45">/ 300 Menit</span>
                             </div>
-                            <p class="text-[13px] text-black/55 mt-1">Tersisa 180 menit untuk periode penagihan hingga 31 Oktober 2026.</p>
+                            <p class="text-[13px] text-black/55 mt-1">Tersisa 180 menit untuk periode aktif hingga 31 Oktober 2026.</p>
                         </div>
 
                         <!-- Progress Bar -->
@@ -273,13 +273,13 @@
                     </div>
 
                     <div class="space-y-3 pt-2">
-                        <h3 class="text-[16px] font-bold text-black">Perlu Tambahan Jam Rapat?</h3>
+                        <h3 class="text-[16px] font-bold text-black">Perlu Tambahan Jam Diskusi?</h3>
                         <p class="text-[14px] text-black/55 leading-relaxed">
-                            Hubungi administrator institusi untuk meningkatkan kapasitas transkripsi audio tanpa batas untuk seluruh departemen.
+                            Tingkatkan kapasitas transkripsi audio tanpa batas untuk mendukung diskusi tim, proyek freelance, atau komunitas Anda.
                         </p>
                         <div class="pt-2">
                             <button type="button" class="px-6 py-2.5 rounded-lg border border-[#d9d9d9] text-[13px] font-medium text-black hover:bg-black hover:text-white transition-colors">
-                                Minta Perpanjangan Kuota
+                                Tingkatkan Kuota
                             </button>
                         </div>
                     </div>
@@ -337,7 +337,7 @@
                             </div>
                             <div>
                                 <p class="text-[15px] font-bold text-black">Google Drive</p>
-                                <p class="text-[12px] text-black/50">Arsipkan otomatis ekspor PDF berita acara rapat ke folder drive.</p>
+                                <p class="text-[12px] text-black/50">Arsipkan otomatis ekspor berkas notulensi ke folder Google Drive Anda.</p>
                             </div>
                         </div>
                         <button type="button" class="text-[13px] font-medium text-black hover:text-[#ff5347] border border-[#d9d9d9] rounded-lg px-4 py-1.5 hover:border-black transition-colors">

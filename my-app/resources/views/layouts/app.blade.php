@@ -145,9 +145,25 @@
             @yield('content')
         </main>
 
-        <!-- Minimalist Editorial Footer (100% Full Width) -->
-        <footer class="w-full px-6 sm:px-10 lg:px-14 py-8 border-t border-[#d9d9d9]/60 text-[12px] text-black/45 flex items-center justify-between">
-            <span class="font-bold text-black tracking-tight text-[13px]">Nome.</span>
+        <!-- Clean, Spacious Footer with Secondary Color Base (#ff5347) -->
+        <footer class="w-full bg-[#ff5347] text-white py-12 px-6 sm:px-10 lg:px-14 mt-auto">
+            <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+                <!-- Left: Logo & Brand -->
+                <div class="flex items-center space-x-3">
+                    <span class="w-7 h-7 rounded-full bg-white text-[#ff5347] flex items-center justify-center font-black text-xs tracking-tighter">
+                        N
+                    </span>
+                    <span class="font-extrabold text-[18px] tracking-tight text-white">Nome.</span>
+                    <span class="text-white/70 text-xs hidden sm:inline ml-2">&copy; {{ date('Y') }}</span>
+                </div>
+
+                <!-- Right: Simple Links -->
+                <div class="flex items-center space-x-6 sm:space-x-8 text-[13px] font-medium text-white/90">
+                    <a href="#" class="hover:text-white transition-colors">Bantuan</a>
+                    <a href="#" class="hover:text-white transition-colors">Privasi</a>
+                    <a href="#" class="hover:text-white transition-colors">Ketentuan</a>
+                </div>
+            </div>
         </footer>
     </div>
 </body>

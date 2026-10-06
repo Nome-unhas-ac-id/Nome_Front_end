@@ -227,7 +227,7 @@
                     <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
                         <!-- Left Column (Typography & CTA, No Decorative Pill) -->
                         <div class="lg:col-span-6 space-y-8">
-                            <div class="space-y-4">
+                            <div class="space-y-2 sm:space-y-2.5">
                                 <h1 class="text-[44px] sm:text-[56px] lg:text-[62px] font-black tracking-tighter text-black leading-[1.05] animate-fade-in-up">
                                     1,090 Rapat Dirangkum <span class="relative inline-block text-black">Tanpa Ribet.<span class="absolute left-0 bottom-1 sm:bottom-2 w-full h-3 sm:h-3.5 bg-[#FFD027] -z-10 rounded-xs"></span></span>
                                 </h1>
@@ -504,7 +504,8 @@
             <!-- VIEW 2: ADD MEMO (NOTION-STYLE PROGRESSIVE DISCLOSURE) -->
             <!-- ======================================================== -->
             <div x-show="currentView === 'add-memo'" 
-                 class="max-w-4xl mx-auto pt-32 pb-24 px-6 sm:px-10 space-y-10 min-h-[75vh]"
+                 class="max-w-4xl mx-auto px-6 sm:px-10 transition-all duration-300"
+                 :class="memoStep === 1 ? 'h-[calc(100vh-7rem)] flex flex-col justify-center pb-24 overflow-hidden' : 'space-y-10 py-10 sm:py-14 min-h-screen overflow-visible pt-32 pb-24'"
                  style="display: none;">
                 
                 <!-- STEP 1: GIANT BORDERLESS INPUT FOR MEETING TITLE -->
@@ -513,13 +514,13 @@
                            x-model="memoTitle"
                            placeholder="Judul Rapat..." 
                            @keydown.enter.prevent="if (memoTitle.trim().length > 0) { memoStep = 2; }" 
-                           class="text-4xl sm:text-5xl font-bold w-full bg-transparent border-none outline-none focus:ring-0 placeholder-gray-300 text-black leading-tight tracking-tight">
+                           class="text-4xl sm:text-5xl font-bold w-full bg-transparent border-none outline-none focus:ring-0 placeholder-gray-300 text-black leading-tight tracking-tight caret-[#ff5347]">
 
                     <!-- Muted helper text -->
                     <p x-show="memoStep === 1" 
                        x-transition.opacity.duration.300ms
                        class="text-[15px] text-black/40 font-normal">
-                        Tekan Enter untuk mulai mengatur rapat...
+                        Tekan Enter untuk mulai mengatur sesi diskusi...
                     </p>
                 </div>
 
@@ -557,26 +558,26 @@
 
                             <div class="space-y-2">
                                 <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
-                                    Lokasi / Tautan Rapat
+                                    Lokasi / Tautan Sesi
                                 </label>
                                 <input type="text" 
                                        x-model="memoLocation"
-                                       placeholder="Ruang Rapat Utama atau link Google Meet..."
+                                       placeholder="Ruang diskusi, studio, atau tautan Google Meet / Zoom..."
                                        class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
                             </div>
 
                             <div class="space-y-2">
                                 <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
-                                    Pimpinan & Notulis Rapat
+                                    Pemandu & Pencatat Diskusi
                                 </label>
                                 <div class="grid grid-cols-2 gap-4">
                                     <input type="text" 
                                            x-model="memoLeader"
-                                           placeholder="Nama Pimpinan"
+                                           placeholder="Pemandu / Fasilitator"
                                            class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
                                     <input type="text" 
                                            x-model="memoNotetaker"
-                                           placeholder="Nama Notulis"
+                                           placeholder="Pencatat / Notulis"
                                            class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
                                 </div>
                             </div>
@@ -586,11 +587,11 @@
                     <!-- 2. AGENDA PEMBAHASAN -->
                     <div class="space-y-3">
                         <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
-                            Agenda Pembahasan
+                            Agenda & Topik Bahasan
                         </label>
                         <textarea rows="3" 
                                   x-model="memoAgenda"
-                                  placeholder="Tuliskan pokok agenda atau tujuan pembahasan rapat di sini..."
+                                  placeholder="Tuliskan pokok agenda, topik bahasan, atau tujuan sesi brainstorming di sini..."
                                   class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[16px] text-black leading-relaxed placeholder-black/30 transition-colors resize-none"></textarea>
                     </div>
 
@@ -607,12 +608,12 @@
                             <input type="text" 
                                    x-model="newAttName"
                                    @keydown.enter.prevent="addAttendee()"
-                                   placeholder="Peserta 1..."
+                                   placeholder="Nama Peserta..."
                                    class="flex-1 w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[14px] text-black font-medium placeholder-black/30 transition-colors">
                             <input type="text" 
                                    x-model="newAttRole"
                                    @keydown.enter.prevent="addAttendee()"
-                                   placeholder="Peran (opsional)..."
+                                   placeholder="Peran Anda (Opsional)..."
                                    class="w-full sm:w-56 border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[14px] text-black font-medium placeholder-black/30 transition-colors">
                             <button type="button" 
                                     @click="addAttendee()"
@@ -642,7 +643,7 @@
                     <div class="space-y-4 pt-4 border-t border-[#d9d9d9]/60">
                         <div class="flex items-center justify-between">
                             <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
-                                Suara Rapat & Sumber Audio
+                                Audio Sesi & Rekaman Suara
                             </label>
                             <div class="flex items-center space-x-3 text-[13px]">
                                 <button type="button" 
@@ -671,7 +672,7 @@
                                 </div>
                                 <div>
                                     <div class="font-mono text-[28px] font-bold text-black tracking-tight" x-text="formatTime(recordTime)"></div>
-                                    <p class="text-[13px] text-black/50" x-text="isRecording ? 'Sedang merekam suara rapat...' : 'Klik tombol di samping untuk mulai merekam.'"></p>
+                                    <p class="text-[13px] text-black/50" x-text="isRecording ? 'Sedang merekam suara percakapan...' : 'Klik tombol di samping untuk mulai merekam.'"></p>
                                 </div>
                                 <div class="pl-4">
                                     <button type="button" 
@@ -849,7 +850,7 @@
                         Pengaturan.
                     </h1>
                     <p class="text-[17px] text-black/55 mt-2 max-w-2xl font-normal leading-relaxed">
-                        Kelola profil pengguna, preferensi transkripsi rapat, kuota AI, serta integrasi kalender dan dokumen.
+                        Kelola profil pengguna, preferensi transkripsi diskusi & rapat, kuota AI, serta integrasi kalender dan dokumen.
                     </p>
                 </div>
 
@@ -918,8 +919,12 @@
                                     <input type="email" value="andiabi@unhas.ac.id" class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
                                 </div>
                                 <div class="space-y-1.5">
-                                    <label class="block text-[12px] font-bold text-black/50 uppercase tracking-wider">Jabatan / Peran</label>
-                                    <input type="text" value="Koordinator Tim Riset & Inovasi" class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
+                                    <label class="block text-[12px] font-bold text-black/50 uppercase tracking-wider">Peran / Profesi</label>
+                                    <input type="text" value="Desainer & Kreator Independen" class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="block text-[12px] font-bold text-black/50 uppercase tracking-wider">Komunitas / Tim / Kampus</label>
+                                    <input type="text" value="Komunitas & Studio Kreatif" class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
                                 </div>
                                 <div class="pt-2">
                                     <button @click="triggerToast('Pengaturan profil disimpan!')" class="px-7 py-3 rounded-full bg-[#ff5347] hover:bg-[#e0453a] text-white text-[14px] font-semibold transition-all">
@@ -946,7 +951,7 @@
                                 <div class="space-y-1.5">
                                     <label class="block text-[12px] font-bold text-black/50 uppercase tracking-wider">Format Ekspor Default</label>
                                     <select class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors cursor-pointer">
-                                        <option>PDF Berita Acara Rapat Resmi</option>
+                                        <option>PDF Ringkasan Notulensi</option>
                                         <option>Microsoft Word (.docx)</option>
                                     </select>
                                 </div>
@@ -962,12 +967,12 @@
                         <div x-show="settingsTab === 'kuota'" class="space-y-8" style="display: none;">
                             <div class="border-b border-[#d9d9d9]/60 pb-3">
                                 <h2 class="text-[22px] font-bold tracking-tight text-black">Kuota Pemrosesan AI</h2>
-                                <p class="text-[13px] text-black/50 mt-0.5">Pemantauan durasi audio rapat dan kuota transkripsi.</p>
+                                <p class="text-[13px] text-black/50 mt-0.5">Pemantauan durasi audio diskusi dan kuota transkripsi.</p>
                             </div>
                             <div class="bg-white border border-[#d9d9d9] rounded-2xl p-6 space-y-4 max-w-xl">
                                 <div class="flex items-center justify-between">
                                     <span class="text-[13px] font-bold uppercase tracking-wider text-black/50">Penggunaan Bulan Ini</span>
-                                    <span class="text-sm text-gray-500 font-medium">Paket Akademik</span>
+                                    <span class="text-sm text-gray-500 font-medium">Paket Komunitas / Tim</span>
                                 </div>
                                 <div>
                                     <div class="flex items-baseline space-x-2">
@@ -1043,21 +1048,22 @@
                 <!-- Grand Paper Sheet -->
                 <div class="bg-white border border-[#d9d9d9]/80 rounded-3xl p-10 sm:p-16 space-y-10 text-black font-sans" contenteditable="true">
                     <div class="text-center border-b-2 border-black pb-6 space-y-1">
-                        <p class="text-[12px] uppercase tracking-widest font-semibold text-black/70">Dokumen Catatan Rapat</p>
-                        <p class="text-[20px] uppercase tracking-wide font-black text-black">Ruang Kerja Notulensi</p>
-                        <p class="text-[14px] uppercase font-bold text-black/90">Laporan Diskusi &bull; Rangkuman Otomatis</p>
+                        <p class="text-[12px] uppercase tracking-widest font-semibold text-black/70">Dokumen Catatan Rapat & Diskusi</p>
+                        <p class="text-[20px] uppercase tracking-wide font-black text-black">Ruang Kerja Kolaborasi</p>
+                        <p class="text-[14px] uppercase font-bold text-black/90">Laporan Diskusi & Sesi Brainstorming</p>
                     </div>
 
                     <div class="text-center space-y-1">
-                        <h2 class="text-[22px] font-extrabold uppercase underline tracking-tight">Notulensi Catatan Rapat</h2>
+                        <h2 class="text-[22px] font-extrabold uppercase underline tracking-tight">Notulensi Diskusi & Rapat</h2>
                         <p class="text-[13px] font-mono text-black/70">Nomor: 085/NOT-TIM/2026</p>
                     </div>
 
                     <div class="space-y-3">
-                        <h3 class="text-[15px] font-bold uppercase border-b border-[#d9d9d9] pb-1">I. Keterangan Rapat</h3>
-                        <p class="text-[15px]"><strong>Agenda:</strong> Rapat Sinkronisasi Rencana Kerja & Roadmap Fitur</p>
+                        <h3 class="text-[15px] font-bold uppercase border-b border-[#d9d9d9] pb-1">I. Keterangan Sesi</h3>
+                        <p class="text-[15px]"><strong>Topik:</strong> Rapat Sinkronisasi Rencana Kerja & Roadmap Fitur</p>
                         <p class="text-[15px]"><strong>Hari/Tanggal:</strong> Rabu, 07 Oktober 2026 &bull; 09:00 - 11:45 WIB</p>
-                        <p class="text-[15px]"><strong>Koordinator:</strong> Peserta 1</p>
+                        <p class="text-[15px]"><strong>Pemandu / Fasilitator:</strong> Peserta 1</p>
+                        <p class="text-[15px]"><strong>Pencatat Diskusi:</strong> Peserta 2</p>
                     </div>
 
                     <div class="space-y-3">
@@ -1071,11 +1077,11 @@
 
                     <div class="pt-8 grid grid-cols-2 gap-8 text-[14px] text-center">
                         <div class="space-y-16">
-                            <p class="text-black/80">Mengetahui,<br><strong class="text-black">Koordinator Tim</strong></p>
+                            <p class="text-black/80">Mengetahui,<br><strong class="text-black">Pemandu Diskusi</strong></p>
                             <p class="font-bold underline">Peserta 1</p>
                         </div>
                         <div class="space-y-16">
-                            <p class="text-black/80">07 Oktober 2026<br><strong class="text-black">Pencatat Notulensi</strong></p>
+                            <p class="text-black/80">07 Oktober 2026<br><strong class="text-black">Pencatat Diskusi</strong></p>
                             <p class="font-bold underline">Peserta 2</p>
                         </div>
                     </div>
@@ -1083,6 +1089,22 @@
             </div>
 
         </main>
+
+        <!-- FOOTER (SECONDARY COLOR BASE #ff5347) -->
+        <footer class="w-full bg-[#ff5347] text-white py-14 px-6 sm:px-10 lg:px-16 mt-auto">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div class="flex items-center space-x-3">
+                    <span class="text-[20px] font-black tracking-tight text-white">Nome.</span>
+                    <span class="text-white/40">&bull;</span>
+                    <span class="text-[13px] text-white/80 font-normal">Sistem Notulensi & Ringkasan Percakapan</span>
+                </div>
+                <div class="flex items-center space-x-6 text-[13px] font-medium text-white/90">
+                    <a href="#" class="hover:text-white transition-colors">Bantuan</a>
+                    <a href="#" class="hover:text-white transition-colors">Privasi</a>
+                    <a href="#" class="hover:text-white transition-colors">Ketentuan</a>
+                </div>
+            </div>
+        </footer>
     </div>
 </body>
 </html>

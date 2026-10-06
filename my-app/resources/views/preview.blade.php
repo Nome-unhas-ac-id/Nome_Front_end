@@ -64,7 +64,7 @@
             this.isExportingPdf = true;
             setTimeout(() => {
                 this.isExportingPdf = false;
-                this.triggerToast('Berkas PDF Resmi (085-UN4.6.1-PL-2026.pdf) berhasil diunduh!');
+                this.triggerToast('Berkas PDF (Ringkasan-Notulensi-2026.pdf) berhasil diunduh!');
             }, 1000);
         },
 
@@ -72,7 +72,7 @@
             this.isExportingDocx = true;
             setTimeout(() => {
                 this.isExportingDocx = false;
-                this.triggerToast('Berkas Microsoft Word (085-UN4.6.1-PL-2026.docx) berhasil diunduh!');
+                this.triggerToast('Berkas Microsoft Word (Ringkasan-Notulensi-2026.docx) berhasil diunduh!');
             }, 1000);
         },
 
@@ -193,28 +193,28 @@
         <div class="bg-white border border-[#d9d9d9]/80 rounded-3xl p-10 sm:p-16 lg:p-20 max-w-4xl mx-auto space-y-12 font-sans text-black" contenteditable="true">
             <!-- Kop Catatan Resmi -->
             <div class="text-center border-b-2 border-black pb-6 space-y-1.5">
-                <p class="text-[12px] uppercase tracking-widest font-semibold text-black/70">Dokumen Catatan Rapat</p>
-                <p class="text-[20px] sm:text-[22px] uppercase tracking-wide font-black text-black">Ruang Kerja Notulensi</p>
-                <p class="text-[14px] uppercase font-bold text-black/90">Laporan Diskusi Risalah</p>
+                <p class="text-[12px] uppercase tracking-widest font-semibold text-black/70">Dokumen Catatan Rapat & Diskusi</p>
+                <p class="text-[20px] sm:text-[22px] uppercase tracking-wide font-black text-black">Ruang Kerja Kolaborasi</p>
+                <p class="text-[14px] uppercase font-bold text-black/90">Laporan Diskusi & Sesi Brainstorming</p>
             </div>
 
             <!-- Title of Memo -->
             <div class="text-center space-y-2">
                 <h2 class="text-[22px] sm:text-[26px] font-extrabold tracking-tight uppercase underline text-black">
-                    Notulensi Catatan Rapat
+                    Notulensi Diskusi & Rapat
                 </h2>
                 <p class="text-[14px] font-mono text-black/75">
                     Nomor: <span x-text="memoData.letterNumber"></span>
                 </p>
             </div>
 
-            <!-- Bagian I: Keterangan Pelaksanaan Rapat -->
+            <!-- Bagian I: Keterangan Pelaksanaan Sesi -->
             <div class="space-y-4">
                 <h3 class="text-[16px] font-bold tracking-tight uppercase border-b border-[#d9d9d9] pb-2 text-black">
-                    I. Keterangan Pelaksanaan Rapat
+                    I. Keterangan Pelaksanaan Sesi
                 </h3>
                 <div class="grid grid-cols-1 sm:grid-cols-4 gap-y-3 gap-x-4 text-[15px] leading-relaxed">
-                    <span class="text-black/55">Nama Rapat</span>
+                    <span class="text-black/55">Topik / Agenda</span>
                     <span class="sm:col-span-3 font-bold text-black" x-text="memoData.title"></span>
 
                     <span class="text-black/55">Hari / Tanggal</span>
@@ -226,10 +226,10 @@
                     <span class="text-black/55">Tempat</span>
                     <span class="sm:col-span-3 text-black" x-text="memoData.location"></span>
 
-                    <span class="text-black/55">Koordinator Rapat</span>
+                    <span class="text-black/55">Pemandu / Fasilitator</span>
                     <span class="sm:col-span-3 font-semibold text-black" x-text="memoData.leader"></span>
 
-                    <span class="text-black/55">Pencatat Notulensi</span>
+                    <span class="text-black/55">Pencatat Diskusi</span>
                     <span class="sm:col-span-3 font-semibold text-black" x-text="memoData.notetaker"></span>
                 </div>
             </div>
@@ -283,21 +283,21 @@
                 </div>
             </div>
 
-            <!-- Bagian V: Pengesahan Tanda Tangan -->
+            <!-- Bagian V: Konfirmasi & Tanda Tangan -->
             <div class="pt-10 grid grid-cols-2 gap-8 text-[14px] text-center">
                 <div class="space-y-20">
-                    <p class="text-black/80">Mengetahui,<br><strong class="text-black">Koordinator Tim</strong></p>
+                    <p class="text-black/80">Mengetahui,<br><strong class="text-black">Pemandu Diskusi</strong></p>
                     <div>
                         <p class="font-bold underline text-black">Peserta 1</p>
-                        <p class="text-[12px] text-black/60 font-mono mt-0.5">Penanggung Jawab</p>
+                        <p class="text-[12px] text-black/60 font-mono mt-0.5">Fasilitator Sesi</p>
                     </div>
                 </div>
 
                 <div class="space-y-20">
-                    <p class="text-black/80">07 Oktober 2026<br><strong class="text-black">Pencatat Notulensi</strong></p>
+                    <p class="text-black/80">07 Oktober 2026<br><strong class="text-black">Pencatat Diskusi</strong></p>
                     <div>
                         <p class="font-bold underline text-black">Peserta 2</p>
-                        <p class="text-[12px] text-black/60 font-mono mt-0.5">Notulis Sesi</p>
+                        <p class="text-[12px] text-black/60 font-mono mt-0.5">Notulis</p>
                     </div>
                 </div>
             </div>

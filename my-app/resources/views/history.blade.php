@@ -111,7 +111,7 @@
                     Memo.
                 </h1>
                 <p class="text-[17px] text-black/55 mt-2 max-w-2xl font-normal leading-relaxed">
-                    Riwayat seluruh catatan rapat, transkrip obrolan, dan rangkuman tugas tim yang tersimpan secara terstruktur.
+                    Riwayat seluruh catatan rapat, transkrip diskusi, dan rangkuman tugas kolaborasi yang tersimpan secara terstruktur.
                 </p>
             </div>
 
@@ -127,7 +127,7 @@
         <div class="relative w-full lg:w-96">
             <input type="text" 
                    x-model="searchQuery"
-                   placeholder="Cari agenda, nomor surat, pimpinan..." 
+                   placeholder="Cari agenda, topik bahasan, atau nama pemandu..." 
                    class="w-full bg-white border border-[#d9d9d9] rounded-full px-5 py-3 text-[14px] text-black placeholder-black/40 focus:outline-none focus:border-black transition-colors">
         </div>
 

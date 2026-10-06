@@ -1,7 +1,10 @@
 @extends('layouts.app')
 
+@section('main_class', 'flex-1 w-full px-6 sm:px-10 lg:px-14 pt-28')
+
 @section('content')
-<div class="max-w-4xl mx-auto py-10 sm:py-14 space-y-10 min-h-[75vh]" 
+<div class="max-w-4xl mx-auto"
+     :class="step === 1 ? 'h-[calc(100vh-7rem)] flex flex-col justify-center pb-24 overflow-hidden' : 'space-y-10 py-10 sm:py-14 min-h-screen overflow-visible'" 
      x-data="{
         step: 1,
         meetingTitle: '',
@@ -13,8 +16,8 @@
         meetingNotetaker: '',
         agenda: '',
         attendees: [
-            { name: 'Peserta 1', role: 'Koordinator' },
-            { name: 'Peserta 2', role: 'Notulis' }
+            { name: 'Peserta 1', role: 'Fasilitator' },
+            { name: 'Peserta 2', role: 'Pencatat' }
         ],
         newAttendeeName: '',
         newAttendeeRole: '',
@@ -22,7 +25,7 @@
             if (this.newAttendeeName.trim()) {
                 this.attendees.push({
                     name: this.newAttendeeName.trim(),
-                    role: this.newAttendeeRole.trim() || 'Anggota Rapat'
+                    role: this.newAttendeeRole.trim() || 'Peserta'
                 });
                 this.newAttendeeName = '';
                 this.newAttendeeRole = '';
@@ -71,18 +74,18 @@
      }">
 
     <!-- STEP 1 (INITIAL VIEW): GIANT BORDERLESS INPUT FOR MEETING TITLE -->
-    <div class="space-y-4 pt-6">
+    <div class="space-y-4 pt-4">
         <input type="text" 
                x-model="meetingTitle"
                placeholder="Judul Rapat..." 
                @keydown.enter.prevent="if (meetingTitle.trim().length > 0) { step = 2; }" 
-               class="text-4xl sm:text-5xl font-bold w-full bg-transparent border-none outline-none focus:ring-0 placeholder-gray-300 text-black leading-tight tracking-tight">
+               class="text-4xl sm:text-5xl font-bold w-full bg-transparent border-none outline-none focus:ring-0 placeholder-gray-300 text-black leading-tight tracking-tight caret-[#ff5347]">
 
         <!-- Small muted helper text -->
         <p x-show="step === 1" 
            x-transition.opacity.duration.300ms
            class="text-[15px] text-black/40 font-normal">
-            Tekan Enter untuk mulai mengatur rapat...
+            Tekan Enter untuk mulai mengatur agenda rapat...
         </p>
     </div>
 
@@ -122,27 +125,27 @@
                 <!-- Ruang / Lokasi -->
                 <div class="space-y-2">
                     <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
-                        Lokasi / Tautan Rapat
+                        Lokasi / Tautan Sesi
                     </label>
                     <input type="text" 
                            x-model="meetingLocation"
-                           placeholder="Ruang Rapat Utama atau link Google Meet..."
+                           placeholder="Ruang diskusi, studio, atau tautan Google Meet / Zoom..."
                            class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
                 </div>
 
-                <!-- Pimpinan & Notulis -->
+                <!-- Pemandu & Pencatat -->
                 <div class="space-y-2">
                     <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
-                        Pimpinan & Notulis Rapat
+                        Pemandu & Pencatat Diskusi
                     </label>
                     <div class="grid grid-cols-2 gap-4">
                         <input type="text" 
                                x-model="meetingLeader"
-                               placeholder="Nama Pimpinan"
+                               placeholder="Pemandu / Fasilitator"
                                class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
                         <input type="text" 
                                x-model="meetingNotetaker"
-                               placeholder="Nama Notulis"
+                               placeholder="Pencatat / Notulis"
                                class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2.5 text-[15px] text-black font-medium transition-colors">
                     </div>
                 </div>
@@ -152,11 +155,11 @@
         <!-- 2. AGENDA PEMBAHASAN -->
         <div class="space-y-3">
             <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
-                Agenda Pembahasan
+                Agenda & Topik Bahasan
             </label>
             <textarea rows="3" 
                       x-model="agenda"
-                      placeholder="Tuliskan pokok agenda atau tujuan pembahasan rapat di sini..."
+                      placeholder="Tuliskan pokok agenda, topik bahasan, atau tujuan sesi brainstorming di sini..."
                       class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[16px] text-black leading-relaxed placeholder-black/30 transition-colors resize-none"></textarea>
         </div>
 
@@ -173,12 +176,12 @@
                 <input type="text" 
                        x-model="newAttendeeName"
                        @keydown.enter.prevent="addAttendee()"
-                       placeholder="Peserta 1..."
+                       placeholder="Nama Peserta..."
                        class="flex-1 w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[14px] text-black font-medium placeholder-black/30 transition-colors">
                 <input type="text" 
                        x-model="newAttendeeRole"
                        @keydown.enter.prevent="addAttendee()"
-                       placeholder="Peran (opsional)..."
+                       placeholder="Peran Anda (Opsional)..."
                        class="w-full sm:w-56 border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none focus:ring-0 px-0 py-2 text-[14px] text-black font-medium placeholder-black/30 transition-colors">
                 <button type="button" 
                         @click="addAttendee()"
@@ -208,7 +211,7 @@
         <div class="space-y-4 pt-4 border-t border-[#d9d9d9]/60">
             <div class="flex items-center justify-between">
                 <label class="block text-[12px] font-bold text-black/45 uppercase tracking-wider">
-                    Suara Rapat & Sumber Audio
+                    Audio Sesi & Rekaman Suara
                 </label>
                 <!-- Simple Mode Toggle -->
                 <div class="flex items-center space-x-3 text-[13px]">
@@ -240,7 +243,7 @@
 
                     <div>
                         <div class="font-mono text-[28px] font-bold text-black tracking-tight" x-text="formatTime(recordTime)"></div>
-                        <p class="text-[13px] text-black/50" x-text="isRecording ? 'Sedang merekam suara rapat...' : 'Klik tombol di samping untuk mulai merekam.'"></p>
+                        <p class="text-[13px] text-black/50" x-text="isRecording ? 'Sedang merekam suara percakapan...' : 'Klik tombol di samping untuk mulai merekam.'"></p>
                     </div>
 
                     <div class="pl-4">
