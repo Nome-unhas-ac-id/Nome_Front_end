@@ -333,47 +333,67 @@
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <div @click="currentView = 'history'" class="bg-[#F0EEFF] rounded-3xl p-6 flex flex-col justify-between h-44 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[12px] font-bold tracking-wider uppercase text-[#5B21B6]">Tim Mingguan</span>
-                                    <span class="text-sm text-gray-500 font-medium">12 Catatan</span>
+                            <div @click="currentView = 'history'" class="group flex flex-col items-center text-center justify-between bg-[#F0EEFF] rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
+                                <div class="w-full flex flex-col items-center text-center">
+                                    <div class="w-32 h-24 mx-auto mb-6 bg-white/50 border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-medium rounded-lg">SVG Placeholder</div>
+                                    <h3 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
+                                        Diskusi Tim Mingguan
+                                    </h3>
+                                    <p class="text-[13px] text-black/55 mt-1.5 leading-relaxed">
+                                        Update progres dan koordinasi kerja
+                                    </p>
                                 </div>
-                                <div>
-                                    <h3 class="text-[18px] font-bold text-black tracking-tight">Diskusi Tim Mingguan</h3>
-                                    <p class="text-[13px] text-black/60 mt-1">Update progres dan koordinasi</p>
-                                </div>
-                            </div>
-
-                            <div @click="currentView = 'history'" class="bg-[#EAF4FE] rounded-3xl p-6 flex flex-col justify-between h-44 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[12px] font-bold tracking-wider uppercase text-[#1E40AF]">Produk</span>
-                                    <span class="text-sm text-gray-500 font-medium">8 Catatan</span>
-                                </div>
-                                <div>
-                                    <h3 class="text-[18px] font-bold text-black tracking-tight">Rencana & Desain Produk</h3>
-                                    <p class="text-[13px] text-black/60 mt-1">Roadmap fitur dan riset</p>
+                                <div class="w-full pt-4 mt-6 border-t border-indigo-950/5 flex items-center justify-between text-[12px] text-black/50">
+                                    <span>12 Catatan</span>
+                                    <span>Diperbarui kemarin</span>
                                 </div>
                             </div>
 
-                            <div @click="currentView = 'history'" class="bg-[#FEF6EC] rounded-3xl p-6 flex flex-col justify-between h-44 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[12px] font-bold tracking-wider uppercase text-[#9A3412]">Laporan</span>
-                                    <span class="text-sm text-gray-500 font-medium">5 Catatan</span>
+                            <div @click="currentView = 'history'" class="group flex flex-col items-center text-center justify-between bg-[#EAF4FE] rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
+                                <div class="w-full flex flex-col items-center text-center">
+                                    <div class="w-32 h-24 mx-auto mb-6 bg-white/50 border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-medium rounded-lg">SVG Placeholder</div>
+                                    <h3 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
+                                        Rencana & Desain Produk
+                                    </h3>
+                                    <p class="text-[13px] text-black/55 mt-1.5 leading-relaxed">
+                                        Roadmap fitur dan riset pengguna
+                                    </p>
                                 </div>
-                                <div>
-                                    <h3 class="text-[18px] font-bold text-black tracking-tight">Evaluasi & Laporan</h3>
-                                    <p class="text-[13px] text-black/60 mt-1">Review capaian dan kendala</p>
+                                <div class="w-full pt-4 mt-6 border-t border-blue-950/5 flex items-center justify-between text-[12px] text-black/50">
+                                    <span>8 Catatan</span>
+                                    <span>Diperbarui 3 hari lalu</span>
                                 </div>
                             </div>
 
-                            <div @click="currentView = 'history'" class="bg-[#F4F4F3] rounded-3xl p-6 flex flex-col justify-between h-44 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[12px] font-bold tracking-wider uppercase text-black/70">Eksplorasi</span>
-                                    <span class="text-sm text-gray-500 font-medium">3 Catatan</span>
+                            <div @click="currentView = 'history'" class="group flex flex-col items-center text-center justify-between bg-[#FEF6EC] rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
+                                <div class="w-full flex flex-col items-center text-center">
+                                    <div class="w-32 h-24 mx-auto mb-6 bg-white/50 border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-medium rounded-lg">SVG Placeholder</div>
+                                    <h3 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
+                                        Evaluasi & Laporan
+                                    </h3>
+                                    <p class="text-[13px] text-black/55 mt-1.5 leading-relaxed">
+                                        Review capaian dan kendala tim
+                                    </p>
                                 </div>
-                                <div>
-                                    <h3 class="text-[18px] font-bold text-black tracking-tight">Eksplorasi Ide Baru</h3>
-                                    <p class="text-[13px] text-black/60 mt-1">Brainstorming gagasan tim</p>
+                                <div class="w-full pt-4 mt-6 border-t border-amber-950/5 flex items-center justify-between text-[12px] text-black/50">
+                                    <span>5 Catatan</span>
+                                    <span>Diperbarui 1 minggu lalu</span>
+                                </div>
+                            </div>
+
+                            <div @click="currentView = 'history'" class="group flex flex-col items-center text-center justify-between bg-[#F4F4F3] rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5 cursor-pointer">
+                                <div class="w-full flex flex-col items-center text-center">
+                                    <div class="w-32 h-24 mx-auto mb-6 bg-white/50 border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-medium rounded-lg">SVG Placeholder</div>
+                                    <h3 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
+                                        Eksplorasi Ide Baru
+                                    </h3>
+                                    <p class="text-[13px] text-black/55 mt-1.5 leading-relaxed">
+                                        Brainstorming gagasan dan eksperimen
+                                    </p>
+                                </div>
+                                <div class="w-full pt-4 mt-6 border-t border-black/5 flex items-center justify-between text-[12px] text-black/50">
+                                    <span>3 Catatan</span>
+                                    <span>Diperbarui 2 minggu lalu</span>
                                 </div>
                             </div>
                         </div>

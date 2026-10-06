@@ -197,73 +197,69 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                     <!-- Folder 1: Lavender Pastel -->
-                    <a href="{{ url('/memo') }}" class="group block bg-[#F0EEFF] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
-                        <div class="flex items-center justify-between mb-8">
-                            <span class="w-10 h-10 rounded-2xl bg-white/80 flex items-center justify-center text-black">
-                                <svg class="w-5 h-5 text-indigo-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                            </span>
-                            <span class="text-sm text-gray-500 font-medium">12 Catatan</span>
+                    <a href="{{ url('/memo') }}" class="group flex flex-col items-center text-center justify-between bg-[#F0EEFF] rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
+                        <div class="w-full flex flex-col items-center text-center">
+                            <div class="w-32 h-24 mx-auto mb-6 bg-white/50 border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-medium rounded-lg">SVG Placeholder</div>
+                            <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
+                                Diskusi Tim Mingguan
+                            </h4>
+                            <p class="text-[13px] text-black/55 mt-1.5 leading-relaxed">
+                                Update progres dan koordinasi kerja
+                            </p>
                         </div>
-                        <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-indigo-900 transition-colors">
-                            Diskusi Tim Mingguan
-                        </h4>
-                        <p class="text-[13px] text-black/50 mt-1">Update progres dan koordinasi kerja</p>
-                        <div class="flex items-center space-x-1.5 mt-5 pt-4 border-t border-indigo-950/5 text-[11px] font-medium text-black/40">
-                            <span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
+                        <div class="w-full pt-4 mt-6 border-t border-indigo-950/5 flex items-center justify-between text-[12px] text-black/50">
+                            <span>12 Catatan</span>
                             <span>Diperbarui kemarin</span>
                         </div>
                     </a>
 
                     <!-- Folder 2: Sky Blue Pastel -->
-                    <a href="{{ url('/memo') }}" class="group block bg-[#EAF4FE] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
-                        <div class="flex items-center justify-between mb-8">
-                            <span class="w-10 h-10 rounded-2xl bg-white/80 flex items-center justify-center text-black">
-                                <svg class="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                            </span>
-                            <span class="text-sm text-gray-500 font-medium">8 Catatan</span>
+                    <a href="{{ url('/memo') }}" class="group flex flex-col items-center text-center justify-between bg-[#EAF4FE] rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
+                        <div class="w-full flex flex-col items-center text-center">
+                            <div class="w-32 h-24 mx-auto mb-6 bg-white/50 border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-medium rounded-lg">SVG Placeholder</div>
+                            <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
+                                Rencana & Desain Produk
+                            </h4>
+                            <p class="text-[13px] text-black/55 mt-1.5 leading-relaxed">
+                                Roadmap fitur dan riset pengguna
+                            </p>
                         </div>
-                        <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-blue-900 transition-colors">
-                            Rencana & Desain Produk
-                        </h4>
-                        <p class="text-[13px] text-black/50 mt-1">Roadmap fitur dan riset pengguna</p>
-                        <div class="flex items-center space-x-1.5 mt-5 pt-4 border-t border-blue-950/5 text-[11px] font-medium text-black/40">
-                            <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                        <div class="w-full pt-4 mt-6 border-t border-blue-950/5 flex items-center justify-between text-[12px] text-black/50">
+                            <span>8 Catatan</span>
                             <span>Diperbarui 3 hari lalu</span>
                         </div>
                     </a>
 
                     <!-- Folder 3: Warm Peach / Cream Pastel -->
-                    <a href="{{ url('/memo') }}" class="group block bg-[#FEF6EC] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
-                        <div class="flex items-center justify-between mb-8">
-                            <span class="w-10 h-10 rounded-2xl bg-white/80 flex items-center justify-center text-black">
-                                <svg class="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                            </span>
-                            <span class="text-sm text-gray-500 font-medium">5 Catatan</span>
+                    <a href="{{ url('/memo') }}" class="group flex flex-col items-center text-center justify-between bg-[#FEF6EC] rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
+                        <div class="w-full flex flex-col items-center text-center">
+                            <div class="w-32 h-24 mx-auto mb-6 bg-white/50 border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-medium rounded-lg">SVG Placeholder</div>
+                            <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
+                                Evaluasi & Laporan
+                            </h4>
+                            <p class="text-[13px] text-black/55 mt-1.5 leading-relaxed">
+                                Review capaian dan kendala tim
+                            </p>
                         </div>
-                        <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-amber-900 transition-colors">
-                            Evaluasi & Laporan
-                        </h4>
-                        <p class="text-[13px] text-black/50 mt-1">Review capaian dan kendala tim</p>
-                        <div class="flex items-center space-x-1.5 mt-5 pt-4 border-t border-amber-950/5 text-[11px] font-medium text-black/40">
-                            <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                        <div class="w-full pt-4 mt-6 border-t border-amber-950/5 flex items-center justify-between text-[12px] text-black/50">
+                            <span>5 Catatan</span>
                             <span>Diperbarui 1 minggu lalu</span>
                         </div>
                     </a>
 
                     <!-- Folder 4: Minimal Neutral Gray -->
-                    <a href="{{ url('/memo') }}" class="group block bg-[#F4F4F3] rounded-3xl p-6 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
-                        <div class="flex items-center justify-between mb-8">
-                            <span class="w-10 h-10 rounded-2xl bg-white/80 flex items-center justify-center text-black">
-                                <svg class="w-5 h-5 text-black/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                            </span>
-                            <span class="text-sm text-gray-500 font-medium">3 Catatan</span>
+                    <a href="{{ url('/memo') }}" class="group flex flex-col items-center text-center justify-between bg-[#F4F4F3] rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
+                        <div class="w-full flex flex-col items-center text-center">
+                            <div class="w-32 h-24 mx-auto mb-6 bg-white/50 border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-medium rounded-lg">SVG Placeholder</div>
+                            <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
+                                Eksplorasi Ide Baru
+                            </h4>
+                            <p class="text-[13px] text-black/55 mt-1.5 leading-relaxed">
+                                Brainstorming gagasan dan eksperimen
+                            </p>
                         </div>
-                        <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
-                            Eksplorasi Ide Baru
-                        </h4>
-                        <p class="text-[13px] text-black/50 mt-1">Brainstorming gagasan dan eksperimen</p>
-                        <div class="flex items-center space-x-1.5 mt-5 pt-4 border-t border-black/5 text-[11px] font-medium text-black/40">
-                            <span class="w-1.5 h-1.5 rounded-full bg-black/40"></span>
+                        <div class="w-full pt-4 mt-6 border-t border-black/5 flex items-center justify-between text-[12px] text-black/50">
+                            <span>3 Catatan</span>
                             <span>Diperbarui 2 minggu lalu</span>
                         </div>
                     </a>
