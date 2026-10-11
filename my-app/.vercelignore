@@ -1,0 +1,12 @@
+.env
+.env.*
+.phpunit.result.cache
+.git
+.github
+tests
+/vendor
+/node_modules
+/storage/*.key
+/storage/pail
+Homestead.json
+Homestead.yaml
