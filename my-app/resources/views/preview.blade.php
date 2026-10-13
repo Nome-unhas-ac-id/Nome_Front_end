@@ -1,7 +1,61 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="space-y-12 max-w-6xl mx-auto pb-24" 
+<!-- ======================================================== -->
+<!-- 1. LOCKED STATE (UNAUTHENTICATED): x-show="!isLoggedIn" -->
+<!-- ======================================================== -->
+<div x-show="!isLoggedIn" x-cloak class="max-w-xl mx-auto py-16 sm:py-24 text-center">
+    <div class="bg-white border border-[#d9d9d9] rounded-3xl p-10 sm:p-14 space-y-6 shadow-none">
+        <div class="w-16 h-16 rounded-2xl bg-[#ff5347]/10 border border-[#ff5347]/20 flex items-center justify-center mx-auto text-[#ff5347]">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+        </div>
+
+        <div class="space-y-2">
+            <span class="inline-block px-3 py-1 rounded-full bg-[#ff5347]/10 text-[#ff5347] text-[11px] font-bold tracking-wider uppercase">
+                Dokumen Terproteksi
+            </span>
+            <h2 class="text-[32px] sm:text-[38px] font-black tracking-tighter text-black leading-tight">
+                Notulensi Terkunci.
+            </h2>
+            <p class="text-[15px] font-semibold text-black/85">
+                Harap masuk untuk mulai mencatat rapat
+            </p>
+            <p class="text-[13px] text-black/55 max-w-md mx-auto leading-relaxed">
+                Pratinjau notulensi resmi, transkrip obrolan, dan ekspor berkas hanya dapat diakses oleh anggota terdaftar.
+            </p>
+        </div>
+
+        <div class="space-y-3 pt-2">
+            <button type="button" 
+                    @click="showLoginModal = true" 
+                    class="w-full bg-[#ff5347] hover:bg-[#e0453a] text-white font-bold text-[14px] rounded-full py-3.5 transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-95 shadow-none cursor-pointer">
+                Buka Pintu Masuk
+            </button>
+            <div class="flex items-center justify-center gap-3">
+                <a href="{{ url('/login') }}" 
+                   class="flex-1 bg-white hover:bg-black/[0.04] text-black border border-[#d9d9d9] font-semibold text-[13px] rounded-full py-2.5 transition-all text-center">
+                    Masuk ke Akun
+                </a>
+                <a href="{{ url('/signup') }}" 
+                   class="flex-1 bg-white hover:bg-black/[0.04] text-black border border-[#d9d9d9] font-semibold text-[13px] rounded-full py-2.5 transition-all text-center">
+                    Daftar Baru
+                </a>
+            </div>
+            <button type="button" 
+                    @click="setLoggedIn(true)" 
+                    class="text-[12px] font-semibold text-[#ff5347] hover:underline pt-2 cursor-pointer">
+                &bull; Simulasi Masuk Instan (Demo Mode) &bull;
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ======================================================== -->
+<!-- 2. AUTHENTICATED STATE: x-show="isLoggedIn" -->
+<!-- ======================================================== -->
+<div x-show="isLoggedIn" x-cloak class="space-y-12 max-w-6xl mx-auto pb-24" 
      x-data="{
         activeTab: 'document', // 'document', 'transcript', 'json'
         isExportingPdf: false,

@@ -231,5 +231,87 @@
             </div>
         </footer>
     </div>
+
+    <!-- ======================================================== -->
+    <!-- THE GATE (LOGIN WARNING MODAL) -->
+    <!-- x-show="showLoginModal" -->
+    <!-- ======================================================== -->
+    <div x-show="showLoginModal" 
+         x-cloak
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+         style="display: none;">
+        
+        <!-- Backdrop -->
+        <div x-show="showLoginModal"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="showLoginModal = false"
+             class="fixed inset-0 bg-black/40 backdrop-blur-xs"></div>
+
+        <!-- Modal Dialog Box (Notion-like, warm paper border, zero shadow) -->
+        <div x-show="showLoginModal"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 scale-95 translate-y-3"
+             x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+             x-transition:leave-end="opacity-0 scale-95 translate-y-3"
+             @keydown.escape.window="showLoginModal = false"
+             class="relative bg-white border border-[#d9d9d9] rounded-2xl p-7 sm:p-9 max-w-md w-full space-y-6 z-10 text-center">
+            
+            <!-- Close Button -->
+            <button type="button" 
+                    @click="showLoginModal = false"
+                    class="absolute top-5 right-5 text-black/40 hover:text-black w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/[0.05] transition-colors cursor-pointer"
+                    title="Tutup">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <!-- Icon Header -->
+            <div class="w-14 h-14 rounded-2xl bg-[#ff5347]/10 border border-[#ff5347]/20 flex items-center justify-center mx-auto text-[#ff5347]">
+                <span class="relative flex items-center justify-center w-8 h-8">
+                    <span class="absolute inline-flex w-full h-full rounded-full bg-[#ff5347] opacity-35 animate-ping"></span>
+                    <svg class="w-6 h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </span>
+            </div>
+
+            <!-- Modal Typography -->
+            <div class="space-y-2">
+                <h3 class="text-[22px] sm:text-[24px] font-black tracking-tight text-black leading-snug">
+                    Akses Fitur Terkunci
+                </h3>
+                <p class="text-[15px] font-semibold text-black/85 leading-relaxed">
+                    Harap masuk untuk mulai mencatat rapat
+                </p>
+                <p class="text-[13px] text-black/55 leading-relaxed">
+                    Masuk atau buat akun baru untuk mengakses transkripsi suara, diarisasi pembicara otomatis, dan ekspor arsip resmi.
+                </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="space-y-3 pt-2">
+                <a href="{{ url('/login') }}" 
+                   class="block w-full bg-[#ff5347] hover:bg-[#e0453a] text-white font-bold text-[14px] rounded-full py-3.5 transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-95 shadow-none text-center">
+                    Masuk ke Akun
+                </a>
+                
+                <a href="{{ url('/signup') }}" 
+                   class="block w-full bg-[#F8F7F3] hover:bg-black hover:text-white text-black border border-[#d9d9d9] font-semibold text-[14px] rounded-full py-3.5 transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-95 text-center">
+                    Daftar Akun Baru
+                </a>
+
+                <button type="button"
+                        @click="setLoggedIn(true); showLoginModal = false"
+                        class="w-full text-[12px] font-semibold text-[#ff5347] hover:underline pt-1 py-1 transition-colors cursor-pointer">
+                    &bull; Masuk Cepat Sebagai Pengguna Demo &bull;
+                </button>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>
