@@ -261,9 +261,9 @@
 
     <!-- 5. ELEGANT EMPTY STATE: BRIEF TEXT & PRIMARY #ff5347 BUTTON "Buat Catatan Baru" (Strict Placeholder Rule) -->
     <div x-show="filteredMemos.length === 0" class="text-center py-24 bg-white border border-[#d9d9d9]/70 rounded-3xl p-12 space-y-5 max-w-lg mx-auto">
-        <!-- Simple colored div placeholder (No complex SVG) -->
-        <div class="w-12 h-12 rounded-full bg-gray-200 mx-auto flex items-center justify-center text-gray-400 font-bold text-sm">
-            N
+        <!-- Hand-drawn illustration for empty state -->
+        <div class="w-28 h-24 mx-auto flex items-center justify-center">
+            <img src="/images/whisper_bot.svg" alt="Belum Ada Catatan" class="w-full h-full object-contain">
         </div>
         <div class="space-y-1">
             <h3 class="text-[20px] font-bold tracking-tight text-black">Belum Ada Catatan Rapat</h3>

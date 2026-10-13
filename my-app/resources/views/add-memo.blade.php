@@ -265,9 +265,9 @@
                            accept="audio/*" 
                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
 
-                    <!-- Simple Colored Div Placeholder for upload icon -->
-                    <div class="w-10 h-10 rounded-full bg-gray-200 mx-auto flex items-center justify-center text-black/50 text-[12px] font-bold">
-                        AI
+                    <!-- Upload audio illustration -->
+                    <div class="w-12 h-12 mx-auto flex items-center justify-center">
+                        <img src="/images/soundwave_blob.svg" alt="Unggah Audio" class="w-full h-full object-contain">
                     </div>
 
                     <div class="space-y-1">

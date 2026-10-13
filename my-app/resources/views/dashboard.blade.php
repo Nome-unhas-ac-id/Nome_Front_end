@@ -35,7 +35,9 @@
                 <!-- Launch Checklist / Feature Highlight (Matches Reference Image) -->
                 <div class="pt-8 border-t border-[#d9d9d9]/60 flex items-center gap-5 hover:scale-[1.02] transition-transform duration-300">
                     <!-- Universal Icon Placeholder -->
-                    <div id="hero-illustration-bottom-left" class="w-12 h-12 rounded-full bg-[#ff5347]/20 border border-[#ff5347] shrink-0"></div>
+                    <div id="hero-illustration-bottom-left" class="w-12 h-12 rounded-full bg-[#ff5347]/10 border border-[#ff5347]/30 flex items-center justify-center p-2 shrink-0">
+                        <img src="/images/soundwave_blob.svg" alt="Audio Wave" class="w-full h-full object-contain">
+                    </div>
 
                     <div class="space-y-1">
                         <h4 class="text-[16px] font-bold text-black tracking-tight">Kerja Lebih Cepat</h4>
@@ -65,26 +67,12 @@
                             <span>#hero-illustration-top-card</span>
                             <span class="w-2 h-2 rounded-full bg-[#ff5347]"></span>
                         </div>
-                        <!-- Default SVG: Waving character -->
-                        <svg class="w-full h-28 sm:h-32 text-black" viewBox="0 0 160 100" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <!-- Head and Hair -->
-                            <path d="M60 40 Q80 20 100 40 Q110 60 90 70 Q70 75 60 40 Z" fill="white"/>
-                            <path d="M55 35 Q80 15 105 35 Q105 50 95 50 Q75 40 55 35 Z" fill="black"/>
-                            <!-- Eyes & Smile -->
-                            <circle cx="75" cy="45" r="2" fill="black"/>
-                            <circle cx="88" cy="45" r="2" fill="black"/>
-                            <path d="M78 55 Q82 60 86 55"/>
-                            <!-- Body / Collar -->
-                            <path d="M65 72 L50 98 M90 72 L105 98 M77 72 L77 98"/>
-                            <!-- Waving Hand -->
-                            <path d="M110 50 Q125 35 130 45 Q125 55 115 60" stroke-width="2.2"/>
-                        </svg>
+                        <img src="/images/avatar_note.png" alt="Notion Character" class="w-full h-28 sm:h-32 object-contain mx-auto">
                     </div>
 
                     <!-- ======================================================== -->
                     <!-- [HERO SVG SLOT 2: RIGHT COLLABORATION CARD] -->
                     <!-- ID: #hero-illustration-right-card -->
-                    <!-- Paste your exported SVG directly here or replace with <img> -->
                     <!-- ======================================================== -->
                     <div id="hero-illustration-right-card" 
                          class="absolute top-24 sm:top-24 -right-2 sm:right-2 z-30 w-52 sm:w-60 bg-white border border-black rounded-2xl p-3 shadow-none hover:-rotate-1 transition-transform">
@@ -92,26 +80,12 @@
                             <span>#hero-illustration-right-card</span>
                             <span class="w-2 h-2 rounded-full bg-blue-500"></span>
                         </div>
-                        <!-- Default SVG: Collaborative Duo -->
-                        <svg class="w-full h-32 sm:h-36 text-black" viewBox="0 0 180 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <!-- Monitor Frame -->
-                            <rect x="25" y="25" width="65" height="55" rx="6" fill="white"/>
-                            <!-- Face in screen with heart -->
-                            <circle cx="58" cy="48" r="14" fill="white"/>
-                            <path d="M53 46h2M62 46h2M54 54 Q58 58 62 54"/>
-                            <path d="M42 42 Q40 36 45 36 Q49 36 49 40 Q49 36 53 36 Q58 36 56 42 Q52 48 49 51 Q46 48 42 42 Z" fill="#ff5347" stroke="#ff5347" stroke-width="1"/>
-                            <!-- Colleague Pointing -->
-                            <path d="M125 35 Q140 20 155 35 Q160 55 145 65" fill="white"/>
-                            <path d="M120 30 Q140 10 160 30 Q150 45 135 40 Z" fill="black"/>
-                            <path d="M135 70 L115 85 L95 72" stroke-width="2.5"/>
-                            <circle cx="95" cy="72" r="3" fill="black"/>
-                        </svg>
+                        <img src="/images/recording_bot.svg" alt="Recording Bot" class="w-full h-32 sm:h-36 object-contain mx-auto">
                     </div>
 
                     <!-- ======================================================== -->
-                    <!-- [HERO SVG SLOT 3: MAIN CENTRAL NOTION-STYLE CHARACTER] -->
+                    <!-- [HERO SVG SLOT 3: MAIN CENTRAL SOUNDWAVE CHARACTER] -->
                     <!-- ID: #hero-illustration-main -->
-                    <!-- Paste your exported SVG directly here or replace with <img> -->
                     <!-- ======================================================== -->
                     <div id="hero-illustration-main" 
                          class="relative z-20 w-72 sm:w-96 bg-white border border-black rounded-3xl p-5 shadow-none mt-16 sm:mt-20">
@@ -119,45 +93,15 @@
                             <span>#hero-illustration-main (Pusat Ilustrasi)</span>
                             <span class="w-2 h-2 rounded-full bg-black"></span>
                         </div>
-                        <!-- Default SVG: Person with Laptop & Papers -->
-                        <svg class="w-full h-48 sm:h-56 text-black" viewBox="0 0 240 160" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <!-- Person with Glasses -->
-                            <path d="M90 60 Q110 30 130 60 Q135 85 115 95 Q95 90 90 60 Z" fill="white"/>
-                            <!-- Hair -->
-                            <path d="M85 55 Q105 30 135 50 Q130 65 120 60 Q100 50 85 55 Z" fill="black"/>
-                            <!-- Glasses & Nose -->
-                            <circle cx="105" cy="65" r="7" stroke-width="1.8"/>
-                            <circle cx="122" cy="65" r="7" stroke-width="1.8"/>
-                            <line x1="112" y1="65" x2="115" y2="65"/>
-                            <path d="M110 75 Q115 80 118 76"/>
-                            <!-- Tie and Collar -->
-                            <path d="M108 95 L114 135 L120 95 Z" fill="black"/>
-                            <path d="M95 95 L108 95 M120 95 L133 95"/>
-                            <!-- Laptop with Diamond Icon -->
-                            <rect x="145" y="85" width="75" height="50" rx="6" fill="black"/>
-                            <polygon points="182,100 188,106 182,114 176,106" fill="white"/>
-                            <line x1="135" y1="135" x2="225" y2="135" stroke-width="3"/>
-                            <!-- Hands on Keyboard -->
-                            <path d="M130 110 Q145 115 155 125"/>
-                            <!-- Papers on Desk -->
-                            <path d="M40 115 L75 110 L85 145 L50 150 Z" fill="white"/>
-                            <line x1="50" y1="122" x2="70" y2="120" stroke-width="1.5"/>
-                            <line x1="52" y1="130" x2="75" y2="128" stroke-width="1.5"/>
-                            <line x1="55" y1="138" x2="78" y2="136" stroke-width="1.5"/>
-                        </svg>
+                        <img src="/images/soundwave_bot.svg" alt="Soundwave Bot" class="w-full h-48 sm:h-56 object-contain mx-auto">
                     </div>
 
                     <!-- ======================================================== -->
-                    <!-- [HERO SVG SLOT 5: FLOATING DOODLE ACCENTS] -->
+                    <!-- [HERO SVG SLOT 5: FLOATING AI ACCENTS] -->
                     <!-- ID: #hero-illustration-floating -->
-                    <!-- Paste your exported SVG directly here or replace with <img> -->
                     <!-- ======================================================== -->
-                    <div id="hero-illustration-floating" class="absolute top-4 left-6 z-10 w-24 h-24 pointer-events-none opacity-80">
-                        <svg class="w-full h-full text-black" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20 50 Q35 48 50 35 Q52 50 65 52 Q50 54 48 68 Q46 52 20 50 Z" fill="white"/>
-                            <circle cx="75" cy="25" r="3" fill="black"/>
-                            <circle cx="85" cy="35" r="2" fill="black"/>
-                        </svg>
+                    <div id="hero-illustration-floating" class="absolute top-4 left-6 z-10 w-24 h-24 pointer-events-none opacity-85">
+                        <img src="/images/ai-bubble.svg" alt="AI Bubble Accent" class="w-full h-full object-contain">
                     </div>
 
                 </div>
@@ -199,7 +143,9 @@
                     <!-- Folder 1: Lavender Pastel -->
                     <a href="{{ url('/memo') }}" class="group flex flex-col items-center text-center justify-between bg-[#F0EEFF] rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
                         <div class="w-full flex flex-col items-center text-center">
-                            <div class="w-32 h-24 mx-auto mb-6 bg-white/50 border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-medium rounded-lg">SVG Placeholder</div>
+                            <div class="w-32 h-24 mx-auto mb-6 flex items-center justify-center">
+                                <img src="/images/note_bot.svg" alt="Diskusi Tim Mingguan" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300">
+                            </div>
                             <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
                                 Diskusi Tim Mingguan
                             </h4>
@@ -216,7 +162,9 @@
                     <!-- Folder 2: Sky Blue Pastel -->
                     <a href="{{ url('/memo') }}" class="group flex flex-col items-center text-center justify-between bg-[#EAF4FE] rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
                         <div class="w-full flex flex-col items-center text-center">
-                            <div class="w-32 h-24 mx-auto mb-6 bg-white/50 border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-medium rounded-lg">SVG Placeholder</div>
+                            <div class="w-32 h-24 mx-auto mb-6 flex items-center justify-center">
+                                <img src="/images/equalizer_bot.svg" alt="Rencana & Desain Produk" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300">
+                            </div>
                             <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
                                 Rencana & Desain Produk
                             </h4>
@@ -233,7 +181,9 @@
                     <!-- Folder 3: Warm Peach / Cream Pastel -->
                     <a href="{{ url('/memo') }}" class="group flex flex-col items-center text-center justify-between bg-[#FEF6EC] rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
                         <div class="w-full flex flex-col items-center text-center">
-                            <div class="w-32 h-24 mx-auto mb-6 bg-white/50 border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-medium rounded-lg">SVG Placeholder</div>
+                            <div class="w-32 h-24 mx-auto mb-6 flex items-center justify-center">
+                                <img src="/images/whisper_bot.svg" alt="Evaluasi & Laporan" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300">
+                            </div>
                             <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
                                 Evaluasi & Laporan
                             </h4>
@@ -250,7 +200,9 @@
                     <!-- Folder 4: Minimal Neutral Gray -->
                     <a href="{{ url('/memo') }}" class="group flex flex-col items-center text-center justify-between bg-[#F4F4F3] rounded-3xl p-6 sm:p-8 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-0.5">
                         <div class="w-full flex flex-col items-center text-center">
-                            <div class="w-32 h-24 mx-auto mb-6 bg-white/50 border border-dashed border-gray-300 flex items-center justify-center text-xs text-gray-400 font-medium rounded-lg">SVG Placeholder</div>
+                            <div class="w-32 h-24 mx-auto mb-6 flex items-center justify-center">
+                                <img src="/images/sonic-orb.svg" alt="Eksplorasi Ide Baru" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300">
+                            </div>
                             <h4 class="text-[18px] font-bold text-black tracking-tight group-hover:text-black transition-colors">
                                 Eksplorasi Ide Baru
                             </h4>
@@ -307,17 +259,7 @@
 
                     <!-- Hand-drawn style line art SVG illustration -->
                     <div class="py-4 flex items-center justify-center">
-                        <svg class="w-48 h-32 text-black/85" viewBox="0 0 200 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <ellipse cx="100" cy="50" rx="30" ry="24" stroke="currentColor" stroke-width="2" fill="white"/>
-                            <path d="M85 35 Q100 20 115 35 Q118 45 105 45 Q90 40 85 35 Z" fill="black"/>
-                            <circle cx="94" cy="50" r="2.5" fill="black"/>
-                            <circle cx="106" cy="50" r="2.5" fill="black"/>
-                            <path d="M96 60 Q100 64 104 60" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            <path d="M78 74 Q60 85 55 125 L145 125 Q140 85 122 74" stroke="currentColor" stroke-width="2" fill="white"/>
-                            <path d="M85 100 L115 100 L115 125 L85 125 Z" stroke="currentColor" stroke-width="1.8" fill="#F8F7F3"/>
-                            <path d="M90 108 H110 M90 115 H105" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                            <path d="M125 105 L140 85" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
+                        <img src="/images/spirit_wave.svg" alt="Transkrip Otomatis" class="w-48 h-32 object-contain mx-auto group-hover:scale-105 transition-transform duration-300">
                     </div>
 
                     <div class="pt-2 border-t border-[#d9d9d9]/60 flex items-center justify-between text-[12px] text-black/50">

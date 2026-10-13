@@ -42,8 +42,10 @@ Route::get('/signup', function () {
 Route::get('/images/{filename}', function (string $filename) {
     $path = public_path('images/'.$filename);
     if (file_exists($path)) {
+        $mime = str_ends_with($filename, '.svg') ? 'image/svg+xml' : (str_ends_with($filename, '.png') ? 'image/png' : mime_content_type($path));
+
         return response()->file($path, [
-            'Content-Type' => 'image/png',
+            'Content-Type' => $mime,
             'Cache-Control' => 'public, max-age=31536000',
         ]);
     }
