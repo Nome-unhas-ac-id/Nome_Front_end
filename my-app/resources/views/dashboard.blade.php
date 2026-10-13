@@ -57,17 +57,16 @@
                     <div class="absolute inset-0 border border-dashed border-[#d9d9d9]/60 rounded-3xl -z-10 bg-[#fafafa]/50"></div>
 
                     <!-- ======================================================== -->
-                    <!-- [HERO SVG SLOT 1: TOP FLOATING CARD] -->
+                    <!-- [HERO SVG SLOT 1: TOP-LEFT FLOATING CARD] -->
                     <!-- ID: #hero-illustration-top-card -->
-                    <!-- Paste your exported SVG directly here or replace with <img> -->
                     <!-- ======================================================== -->
                     <div id="hero-illustration-top-card" 
-                         class="absolute top-2 right-6 sm:right-16 z-20 w-44 sm:w-52 bg-white border border-black rounded-2xl p-3 shadow-none hover:rotate-1 transition-transform">
+                         class="absolute -top-3 sm:top-1 left-2 sm:left-4 z-20 w-44 sm:w-52 bg-white border border-black rounded-2xl p-3 shadow-none hover:-rotate-1 transition-transform">
                         <div class="text-[10px] text-black/40 border-b border-[#d9d9d9]/60 pb-1 mb-2 flex items-center justify-between">
                             <span>#hero-illustration-top-card</span>
                             <span class="w-2 h-2 rounded-full bg-[#ff5347]"></span>
                         </div>
-                        <img src="/images/avatar_note.png" alt="Notion Character" class="w-full h-28 sm:h-32 object-contain mx-auto">
+                        <img src="/images/snake_bot.svg" alt="Snake Bot" class="w-full h-24 sm:h-28 object-contain mx-auto">
                     </div>
 
                     <!-- ======================================================== -->
@@ -75,12 +74,12 @@
                     <!-- ID: #hero-illustration-right-card -->
                     <!-- ======================================================== -->
                     <div id="hero-illustration-right-card" 
-                         class="absolute top-24 sm:top-24 -right-2 sm:right-2 z-30 w-52 sm:w-60 bg-white border border-black rounded-2xl p-3 shadow-none hover:-rotate-1 transition-transform">
+                         class="absolute top-8 sm:top-10 -right-2 sm:right-2 z-20 w-48 sm:w-56 bg-white border border-black rounded-2xl p-3 shadow-none hover:rotate-1 transition-transform">
                         <div class="text-[10px] text-black/40 border-b border-[#d9d9d9]/60 pb-1 mb-2 flex items-center justify-between">
                             <span>#hero-illustration-right-card</span>
                             <span class="w-2 h-2 rounded-full bg-blue-500"></span>
                         </div>
-                        <img src="/images/recording_bot.svg" alt="Recording Bot" class="w-full h-32 sm:h-36 object-contain mx-auto">
+                        <img src="/images/recording_bot.svg" alt="Recording Bot" class="w-full h-28 sm:h-32 object-contain mx-auto">
                     </div>
 
                     <!-- ======================================================== -->
@@ -88,19 +87,19 @@
                     <!-- ID: #hero-illustration-main -->
                     <!-- ======================================================== -->
                     <div id="hero-illustration-main" 
-                         class="relative z-20 w-72 sm:w-96 bg-white border border-black rounded-3xl p-5 shadow-none mt-16 sm:mt-20">
+                         class="relative z-30 w-72 sm:w-88 bg-white border border-black rounded-3xl p-5 shadow-none mt-20 sm:mt-24">
                         <div class="text-[10px] text-black/40 border-b border-[#d9d9d9]/60 pb-1.5 mb-3 flex items-center justify-between">
                             <span>#hero-illustration-main (Pusat Ilustrasi)</span>
                             <span class="w-2 h-2 rounded-full bg-black"></span>
                         </div>
-                        <img src="/images/soundwave_bot.svg" alt="Soundwave Bot" class="w-full h-48 sm:h-56 object-contain mx-auto">
+                        <img src="/images/soundwave_bot.svg" alt="Soundwave Bot" class="w-full h-44 sm:h-52 object-contain mx-auto">
                     </div>
 
                     <!-- ======================================================== -->
                     <!-- [HERO SVG SLOT 5: FLOATING AI ACCENTS] -->
                     <!-- ID: #hero-illustration-floating -->
                     <!-- ======================================================== -->
-                    <div id="hero-illustration-floating" class="absolute top-4 left-6 z-10 w-24 h-24 pointer-events-none opacity-85">
+                    <div id="hero-illustration-floating" class="absolute -top-3 right-16 sm:right-24 z-40 w-16 h-16 sm:w-20 sm:h-20 pointer-events-none opacity-90">
                         <img src="/images/ai-bubble.svg" alt="AI Bubble Accent" class="w-full h-full object-contain">
                     </div>
 
