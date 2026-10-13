@@ -3,9 +3,22 @@
 @section('content')
 <div class="max-w-md mx-auto py-12 space-y-8">
     <div class="text-center space-y-3">
-        <!-- Minimalist Line-Art Brand Icon -->
-        <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-black text-white font-black text-2xl tracking-tighter mx-auto">
-            N
+        <!-- Brand Header with Pulsing Recording Icon & Nome Logo -->
+        <div class="flex items-center justify-center space-x-3.5 mx-auto">
+            <span class="relative flex items-center justify-center w-10 h-10 shrink-0">
+                <span class="absolute inline-flex w-full h-full rounded-full bg-[#ff5347] opacity-40 animate-ping"></span>
+                <span class="absolute -inset-1 rounded-full bg-[#ff5347]/30 blur-xs animate-pulse"></span>
+                <span class="relative w-9 h-9 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#ff6b60] via-[#ff5347] to-[#e03d32] border border-white/30 shadow-xs">
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-45 mix-blend-overlay" xmlns="http://www.w3.org/2000/svg">
+                        <filter id="rec-noise-login">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/>
+                        </filter>
+                        <rect width="100%" height="100%" filter="url(#rec-noise-login)"/>
+                    </svg>
+                    <span class="relative w-3 h-3 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.95)] animate-pulse"></span>
+                </span>
+            </span>
+            <img src="{{ asset('images/nome-logo.png') }}" alt="Nome." class="h-10 w-auto object-contain">
         </div>
         <div>
             <h1 class="text-[38px] sm:text-[44px] font-black tracking-tighter text-black leading-tight">

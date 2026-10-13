@@ -79,12 +79,27 @@
 
     <!-- FLOATING LIQUID GLASS PILL NAVBAR (Top Center, Pill-Shaped, Glassmorphism) -->
     <header class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[92%] sm:w-auto max-w-4xl bg-white/60 backdrop-blur-lg border border-white/40 ring-1 ring-black/[0.08] shadow-sm floating-glass-pill rounded-full px-6 py-3 flex items-center justify-between gap-6 sm:gap-10 transition-all">
-        <!-- Left: Logo text (Black, bold) -->
-        <a href="{{ url('/dashboard') }}" class="flex items-center space-x-2.5 group shrink-0">
-            <span class="w-7 h-7 rounded-full bg-black text-white flex items-center justify-center font-black text-xs tracking-tighter transition-transform group-hover:scale-105">
-                N
+        <!-- Left: Logo & Live Pulse Recording Icon -->
+        <a href="{{ url('/dashboard') }}" class="flex items-center space-x-2.5 group shrink-0" title="Nome — Sistem Notulensi & Transkripsi AI">
+            <!-- Pulsing #FF5347 Recording Icon with Grain/Noise Texture -->
+            <span class="relative flex items-center justify-center w-7 h-7 shrink-0">
+                <span class="absolute inline-flex w-full h-full rounded-full bg-[#ff5347] opacity-40 animate-ping"></span>
+                <span class="absolute -inset-0.5 rounded-full bg-[#ff5347]/30 blur-[2px] animate-pulse"></span>
+                <span class="relative w-6 h-6 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#ff6b60] via-[#ff5347] to-[#e03d32] border border-white/30 shadow-xs transition-transform group-hover:scale-105">
+                    <!-- SVG Noise Texture Overlay -->
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-45 mix-blend-overlay" xmlns="http://www.w3.org/2000/svg">
+                        <filter id="rec-noise-nav">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/>
+                        </filter>
+                        <rect width="100%" height="100%" filter="url(#rec-noise-nav)"/>
+                    </svg>
+                    <!-- Inner Recording Core Dot -->
+                    <span class="relative w-2 h-2 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.95)] animate-pulse"></span>
+                </span>
             </span>
-            <span class="text-[18px] sm:text-[19px] font-black tracking-tight text-black leading-none">Nome.</span>
+
+            <!-- Official Nome Logo Image -->
+            <img src="{{ asset('images/nome-logo.png') }}" alt="Nome." class="h-6 sm:h-7 w-auto object-contain transition-transform group-hover:scale-[1.02]">
         </a>
 
         <!-- Center: Simple navigation links (Only Workspace & Memo) -->
@@ -150,10 +165,19 @@
             <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
                 <!-- Left: Logo & Brand -->
                 <div class="flex items-center space-x-3">
-                    <span class="w-7 h-7 rounded-full bg-white text-[#ff5347] flex items-center justify-center font-black text-xs tracking-tighter">
-                        N
+                    <span class="relative flex items-center justify-center w-7 h-7 shrink-0">
+                        <span class="absolute inline-flex w-full h-full rounded-full bg-white opacity-40 animate-ping"></span>
+                        <span class="relative w-6 h-6 rounded-full overflow-hidden flex items-center justify-center bg-white shadow-xs">
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-30 mix-blend-multiply" xmlns="http://www.w3.org/2000/svg">
+                                <filter id="rec-noise-footer">
+                                    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/>
+                                </filter>
+                                <rect width="100%" height="100%" filter="url(#rec-noise-footer)"/>
+                            </svg>
+                            <span class="relative w-2 h-2 rounded-full bg-[#ff5347] animate-pulse"></span>
+                        </span>
                     </span>
-                    <span class="font-extrabold text-[18px] tracking-tight text-white">Nome.</span>
+                    <img src="{{ asset('images/nome-logo.png') }}" alt="Nome." class="h-6 w-auto object-contain brightness-0 invert">
                     <span class="text-white/70 text-xs hidden sm:inline ml-2">&copy; {{ date('Y') }}</span>
                 </div>
 
