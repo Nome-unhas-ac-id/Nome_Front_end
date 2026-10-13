@@ -1,5 +1,8 @@
 <?php
 
+$_ENV['VERCEL'] = '1';
+$_SERVER['VERCEL'] = '1';
+
 // Ensure writable directories exist in /tmp on Vercel's serverless environment
 $storageDirs = [
     '/tmp/storage',
@@ -17,6 +20,10 @@ foreach ($storageDirs as $dir) {
     if (! is_dir($dir)) {
         mkdir($dir, 0755, true);
     }
+}
+
+if (! file_exists('/tmp/database.sqlite')) {
+    touch('/tmp/database.sqlite');
 }
 
 // Forward request to Laravel's standard entry point
