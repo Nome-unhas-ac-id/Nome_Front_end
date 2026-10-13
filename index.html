@@ -207,12 +207,12 @@
 
             <!-- Right: Unauthenticated Actions: Masuk (Ghost) & Daftar Gratis (Primary #ff5347 Pill) -->
             <div x-show="!isLoggedIn" class="flex items-center space-x-2 sm:space-x-3 shrink-0">
-                <button type="button" @click="triggerToast('Silakan masuk untuk melanjutkan'); showLoginModal = true" 
-                        class="text-[13px] font-medium text-black/75 hover:text-black px-3 py-2 transition-colors">
+                <button type="button" @click="currentView = 'login'" 
+                        class="text-[13px] font-medium text-black/75 hover:text-black px-3 py-2 transition-colors cursor-pointer">
                     Masuk
                 </button>
-                <button type="button" @click="showLoginModal = true" 
-                        class="inline-flex items-center space-x-1.5 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-5 py-2 text-[13px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">
+                <button type="button" @click="currentView = 'signup'" 
+                        class="inline-flex items-center space-x-1.5 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-5 py-2 text-[13px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 cursor-pointer">
                     <span>Daftar Gratis</span>
                 </button>
             </div>
@@ -918,13 +918,13 @@
                             </p>
                             <div class="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3.5">
                                 <button type="button" 
-                                        @click="showLoginModal = true" 
+                                        @click="currentView = 'signup'" 
                                         class="w-full sm:w-auto bg-[#ff5347] hover:bg-[#e0453a] text-white px-8 py-4 rounded-full font-bold text-[15px] transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-95 cursor-pointer">
                                     Daftar Akun Baru
                                 </button>
                                 <button type="button" 
-                                        @click="showLoginModal = true" 
-                                        class="w-full sm:w-auto text-black/75 hover:text-black font-semibold text-[15px] px-6 py-4 transition-colors">
+                                        @click="currentView = 'login'" 
+                                        class="w-full sm:w-auto text-black/75 hover:text-black font-semibold text-[15px] px-6 py-4 transition-colors cursor-pointer">
                                     Sudah punya akun? Masuk &rarr;
                                 </button>
                             </div>
@@ -1518,6 +1518,239 @@
                             <p class="text-black/80">07 Oktober 2026<br><strong class="text-black">Pencatat Diskusi</strong></p>
                             <p class="font-bold underline">Peserta 2</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- VIEW 6: LOGIN (MINIMALIST NOTION-STYLE WARM PAPER) -->
+            <!-- ======================================================== -->
+            <div x-show="currentView === 'login'" 
+                 class="min-h-[85vh] flex items-center justify-center py-24 px-4 sm:px-6"
+                 style="display: none;">
+                <div class="bg-white border border-[#d9d9d9] rounded-2xl p-8 sm:p-10 max-w-md w-full space-y-8">
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-2.5">
+                            <span class="relative flex items-center justify-center w-8 h-8 shrink-0">
+                                <span class="absolute inline-flex w-full h-full rounded-full bg-[#ff5347] opacity-40 animate-ping"></span>
+                                <span class="absolute -inset-0.5 rounded-full bg-[#ff5347]/30 blur-[2px] animate-pulse"></span>
+                                <span class="relative w-7 h-7 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#ff6b60] via-[#ff5347] to-[#e03d32] border border-white/30 shadow-xs">
+                                    <span class="relative w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.95)] animate-pulse"></span>
+                                </span>
+                            </span>
+                            <img src="images/nome-logo.png" alt="Nome." class="h-7 w-auto object-contain">
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <h1 class="text-[34px] sm:text-[38px] font-black tracking-tighter text-black leading-tight">
+                                Selamat Datang
+                            </h1>
+                            <p class="text-[14px] text-black/55 font-normal leading-relaxed">
+                                Masuk ke ruang kerja notulensi cerdas Anda.
+                            </p>
+                        </div>
+                    </div>
+
+                    <form @submit.prevent="setLoggedIn(true); currentView = 'dashboard'; triggerToast('Berhasil masuk! Selamat datang kembali.')" class="space-y-5">
+                        <div class="space-y-2">
+                            <label for="html-login-email" class="block text-[13px] font-bold text-black tracking-tight">
+                                Email Pengguna
+                            </label>
+                            <input id="html-login-email" 
+                                   type="email" 
+                                   required
+                                   value="andi@unhas.ac.id" 
+                                   placeholder="nama@unhas.ac.id"
+                                   class="w-full bg-[#fafafa] border border-[#d9d9d9] focus:border-[#ff5347] focus:ring-2 focus:ring-[#ff5347]/20 focus:bg-white focus:outline-none rounded-xl px-4 py-3.5 text-[14px] text-black transition-all">
+                        </div>
+
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label for="html-login-password" class="text-[13px] font-bold text-black tracking-tight">
+                                    Kata Sandi
+                                </label>
+                                <button type="button" @click="currentView = 'forgot-password'" class="text-[12px] font-medium text-black/50 hover:text-[#ff5347] transition-colors cursor-pointer">
+                                    Lupa kata sandi?
+                                </button>
+                            </div>
+                            <input id="html-login-password" 
+                                   type="password" 
+                                   required
+                                   value="password123" 
+                                   placeholder="Masukkan kata sandi"
+                                   class="w-full bg-[#fafafa] border border-[#d9d9d9] focus:border-[#ff5347] focus:ring-2 focus:ring-[#ff5347]/20 focus:bg-white focus:outline-none rounded-xl px-4 py-3.5 text-[14px] text-black transition-all">
+                        </div>
+
+                        <div class="flex items-center justify-between pt-1">
+                            <label class="flex items-center space-x-2.5 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 rounded border-[#d9d9d9] text-[#ff5347] focus:ring-[#ff5347]">
+                                <span class="text-[13px] text-black/70 font-medium">Ingat perangkat ini</span>
+                            </label>
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" 
+                                    class="w-full bg-[#ff5347] hover:bg-[#e0453a] text-white font-bold text-[15px] rounded-full py-3.5 transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-95 shadow-none flex items-center justify-center space-x-2 cursor-pointer">
+                                <span>Masuk ke Akun</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="pt-4 border-t border-[#d9d9d9]/60 text-center text-[13px] text-black/60">
+                        <span>Belum memiliki akun?</span>
+                        <button type="button" @click="currentView = 'signup'" class="text-[#ff5347] font-bold ml-1 hover:underline cursor-pointer">
+                            Daftar Gratis
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- VIEW 7: SIGNUP (BUAT AKUN) -->
+            <!-- ======================================================== -->
+            <div x-show="currentView === 'signup'" 
+                 class="min-h-[85vh] flex items-center justify-center py-24 px-4 sm:px-6"
+                 style="display: none;">
+                <div class="bg-white border border-[#d9d9d9] rounded-2xl p-8 sm:p-10 max-w-md w-full space-y-8">
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-2.5">
+                            <span class="relative flex items-center justify-center w-8 h-8 shrink-0">
+                                <span class="absolute inline-flex w-full h-full rounded-full bg-[#ff5347] opacity-40 animate-ping"></span>
+                                <span class="absolute -inset-0.5 rounded-full bg-[#ff5347]/30 blur-[2px] animate-pulse"></span>
+                                <span class="relative w-7 h-7 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#ff6b60] via-[#ff5347] to-[#e03d32] border border-white/30 shadow-xs">
+                                    <span class="relative w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.95)] animate-pulse"></span>
+                                </span>
+                            </span>
+                            <img src="images/nome-logo.png" alt="Nome." class="h-7 w-auto object-contain">
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <h1 class="text-[34px] sm:text-[38px] font-black tracking-tighter text-black leading-tight">
+                                Buat Akun
+                            </h1>
+                            <p class="text-[14px] text-black/55 font-normal leading-relaxed">
+                                Mulai catat dan rangkum rapat tanpa ribet sekarang.
+                            </p>
+                        </div>
+                    </div>
+
+                    <form @submit.prevent="setLoggedIn(true); currentView = 'dashboard'; triggerToast('Akun berhasil dibuat! Selamat datang di Nome.')" class="space-y-5">
+                        <div class="space-y-2">
+                            <label for="html-signup-name" class="block text-[13px] font-bold text-black tracking-tight">
+                                Nama Lengkap
+                            </label>
+                            <input id="html-signup-name" 
+                                   type="text" 
+                                   required
+                                   placeholder="Contoh: Rian Pratama"
+                                   class="w-full bg-[#fafafa] border border-[#d9d9d9] focus:border-[#ff5347] focus:ring-2 focus:ring-[#ff5347]/20 focus:bg-white focus:outline-none rounded-xl px-4 py-3.5 text-[14px] text-black transition-all">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="html-signup-email" class="block text-[13px] font-bold text-black tracking-tight">
+                                Email Kampus / Instansi
+                            </label>
+                            <input id="html-signup-email" 
+                                   type="email" 
+                                   required
+                                   placeholder="nama@unhas.ac.id"
+                                   class="w-full bg-[#fafafa] border border-[#d9d9d9] focus:border-[#ff5347] focus:ring-2 focus:ring-[#ff5347]/20 focus:bg-white focus:outline-none rounded-xl px-4 py-3.5 text-[14px] text-black transition-all">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label for="html-signup-password" class="block text-[13px] font-bold text-black tracking-tight">
+                                Kata Sandi
+                            </label>
+                            <input id="html-signup-password" 
+                                   type="password" 
+                                   required
+                                   placeholder="Minimal 8 karakter"
+                                   class="w-full bg-[#fafafa] border border-[#d9d9d9] focus:border-[#ff5347] focus:ring-2 focus:ring-[#ff5347]/20 focus:bg-white focus:outline-none rounded-xl px-4 py-3.5 text-[14px] text-black transition-all">
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" 
+                                    class="w-full bg-[#ff5347] hover:bg-[#e0453a] text-white font-bold text-[15px] rounded-full py-3.5 transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-95 shadow-none flex items-center justify-center space-x-2 cursor-pointer">
+                                <span>Daftar Akun Gratis</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="pt-4 border-t border-[#d9d9d9]/60 text-center text-[13px] text-black/60">
+                        <span>Sudah memiliki akun?</span>
+                        <button type="button" @click="currentView = 'login'" class="text-[#ff5347] font-bold ml-1 hover:underline cursor-pointer">
+                            Masuk ke Akun
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================== -->
+            <!-- VIEW 8: FORGOT PASSWORD (LUPA KATA SANDI) -->
+            <!-- ======================================================== -->
+            <div x-show="currentView === 'forgot-password'" 
+                 class="min-h-[85vh] flex items-center justify-center py-24 px-4 sm:px-6"
+                 style="display: none;"
+                 x-data="{ fpSent: false }">
+                <div class="bg-white border border-[#d9d9d9] rounded-2xl p-8 sm:p-10 max-w-md w-full space-y-8">
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-2.5">
+                            <span class="relative flex items-center justify-center w-8 h-8 shrink-0">
+                                <span class="absolute inline-flex w-full h-full rounded-full bg-[#ff5347] opacity-40 animate-ping"></span>
+                                <span class="absolute -inset-0.5 rounded-full bg-[#ff5347]/30 blur-[2px] animate-pulse"></span>
+                                <span class="relative w-7 h-7 rounded-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-[#ff6b60] via-[#ff5347] to-[#e03d32] border border-white/30 shadow-xs">
+                                    <span class="relative w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_6px_rgba(255,255,255,0.95)] animate-pulse"></span>
+                                </span>
+                            </span>
+                            <img src="images/nome-logo.png" alt="Nome." class="h-7 w-auto object-contain">
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <h1 class="text-[32px] sm:text-[36px] font-black tracking-tighter text-black leading-tight">
+                                Lupa Kata Sandi?
+                            </h1>
+                            <p class="text-[14px] text-black/55 font-normal leading-relaxed">
+                                Masukkan email Anda untuk menerima instruksi pemulihan kata sandi akun.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div x-show="fpSent" 
+                         class="bg-[#F0EEFF] border border-[#5b45d9]/30 rounded-xl p-4 text-[13px] text-[#5b45d9] space-y-1"
+                         style="display: none;">
+                        <div class="font-bold">Tautan Pemulihan Terkirim</div>
+                        <div>Kami telah mengirimkan tautan reset kata sandi ke email Anda. Silakan periksa kotak masuk atau spam.</div>
+                    </div>
+
+                    <form x-show="!fpSent" @submit.prevent="fpSent = true; triggerToast('Tautan pemulihan dikirim ke email.')" class="space-y-5">
+                        <div class="space-y-2">
+                            <label for="html-reset-email" class="block text-[13px] font-bold text-black tracking-tight">
+                                Alamat Email Terdaftar
+                            </label>
+                            <input id="html-reset-email" 
+                                   type="email" 
+                                   required
+                                   placeholder="nama@unhas.ac.id"
+                                   class="w-full bg-[#fafafa] border border-[#d9d9d9] focus:border-[#ff5347] focus:ring-2 focus:ring-[#ff5347]/20 focus:bg-white focus:outline-none rounded-xl px-4 py-3.5 text-[14px] text-black transition-all">
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" 
+                                    class="w-full bg-[#ff5347] hover:bg-[#e0453a] text-white font-bold text-[15px] rounded-full py-3.5 transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-95 shadow-none flex items-center justify-center space-x-2 cursor-pointer">
+                                <span>Kirim Tautan Reset</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="pt-4 border-t border-[#d9d9d9]/60 text-center">
+                        <button type="button" @click="currentView = 'login'" 
+                                class="inline-flex items-center space-x-1.5 text-[13px] font-semibold text-black/60 hover:text-black transition-colors cursor-pointer">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                            <span>Kembali ke Login</span>
+                        </button>
                     </div>
                 </div>
             </div>

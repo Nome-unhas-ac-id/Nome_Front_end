@@ -39,6 +39,10 @@ Route::get('/signup', function () {
     return view('auth.signup');
 })->name('signup');
 
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+})->name('forgot-password');
+
 Route::get('/images/{filename}', function (string $filename) {
     $path = public_path('images/'.$filename);
     if (file_exists($path)) {

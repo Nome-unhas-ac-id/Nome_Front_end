@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -23,5 +22,12 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'image/png');
+    }
+
+    public function test_auth_routes_return_successful_responses(): void
+    {
+        $this->get('/login')->assertStatus(200)->assertSee('Selamat Datang');
+        $this->get('/signup')->assertStatus(200)->assertSee('Buat Akun');
+        $this->get('/forgot-password')->assertStatus(200)->assertSee('Lupa Kata Sandi?');
     }
 }
