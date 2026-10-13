@@ -25,9 +25,25 @@
                 </div>
 
                 <!-- CTA Button (Secondary Color #ff5347, rounded-full, white text) -->
-                <div class="animate-fade-in-up-delay">
-                    <a href="{{ url('/add-memo') }}" class="inline-flex items-center space-x-2.5 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-8 py-4 text-[15px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 shadow-none">
-                        <span>Mulai Rapat Sekarang</span>
+                <div class="animate-fade-in-up-delay flex flex-wrap items-center gap-3.5">
+                    <button type="button" 
+                            @click="isLoggedIn ? window.location.href='{{ url('/add-memo') }}' : showLoginModal = true"
+                            class="inline-flex items-center space-x-2.5 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-8 py-4 text-[15px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95 shadow-none cursor-pointer">
+                        <span x-text="isLoggedIn ? 'Mulai Rapat Sekarang' : 'Coba Sekarang Gratis'">Mulai Rapat Sekarang</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </button>
+
+                    <!-- Unauthenticated secondary: Scroll to Cara Kerja -->
+                    <a x-show="!isLoggedIn" href="#cara-kerja" 
+                       class="inline-flex items-center space-x-2 bg-white hover:bg-black/[0.04] text-black border border-[#d9d9d9] rounded-full px-6 py-4 text-[15px] font-semibold transition-all">
+                        <span>Pelajari Cara Kerja</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                    </a>
+
+                    <!-- Authenticated secondary: Buka Arsip Memo -->
+                    <a x-show="isLoggedIn" href="{{ url('/memo') }}" 
+                       class="inline-flex items-center space-x-2 bg-white hover:bg-black/[0.04] text-black border border-[#d9d9d9] rounded-full px-6 py-4 text-[15px] font-semibold transition-all">
+                        <span>Buka Arsip Memo</span>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </a>
                 </div>
@@ -110,9 +126,10 @@
     </section>
 
     <!-- ======================================================== -->
-    <!-- 3. LOWER DASHBOARD UI (WARM CANVAS #F8F7F3, FULL CONTENT) -->
+    <!-- 3. AUTHENTICATED LOWER DASHBOARD UI (WARM CANVAS #F8F7F3) -->
+    <!-- Displayed when isLoggedIn === true -->
     <!-- ======================================================== -->
-    <div class="bg-[#F8F7F3] px-6 sm:px-10 lg:px-16 py-14 sm:py-20 space-y-16">
+    <div x-show="isLoggedIn" x-cloak class="bg-[#F8F7F3] px-6 sm:px-10 lg:px-16 py-14 sm:py-20 space-y-16">
         <div class="max-w-7xl mx-auto space-y-16" x-data="{ activeFilter: 'all' }">
             
             <!-- A. MACRO-TYPOGRAPHY GREETING & STATUS -->
@@ -396,6 +413,392 @@
                     </div>
                 </div>
             </div>
+
+        </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 4. UNAUTHENTICATED PUBLIC LANDING PAGE SECTIONS -->
+    <!-- Displayed when isLoggedIn === false -->
+    <!-- ======================================================== -->
+    <div x-show="!isLoggedIn" x-cloak class="bg-[#F8F7F3] px-6 sm:px-10 lg:px-16 py-14 sm:py-24 space-y-24 sm:space-y-32">
+        <div class="max-w-7xl mx-auto space-y-24 sm:space-y-32">
+
+            <!-- ======================================================== -->
+            <!-- SECTION 1: HOW IT WORKS (CARA KERJA) -->
+            <!-- Minimalist 3-step grid with SVG placeholders and short text -->
+            <!-- ======================================================== -->
+            <section id="cara-kerja" class="space-y-12 sm:space-y-16 scroll-mt-28">
+                <!-- Section Header -->
+                <div class="space-y-4 max-w-3xl">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white border border-[#d9d9d9] text-[12px] font-semibold text-black tracking-wide uppercase">
+                        <span class="w-2 h-2 rounded-full bg-[#ff5347]"></span>
+                        <span>Cara Kerja</span>
+                    </div>
+
+                    <h2 class="text-[38px] sm:text-[50px] lg:text-[58px] font-black tracking-tighter text-black leading-[1.05]">
+                        Notulensi Rapi dalam Tiga Langkah Ringkas.
+                    </h2>
+
+                    <p class="text-[17px] text-black/60 font-normal leading-relaxed">
+                        Tanpa repot mencatat cepat saat rapat berlangsung. Nome mendengar, membedakan setiap pembicara, dan merangkum poin krusial secara otomatis.
+                    </p>
+                </div>
+
+                <!-- 3-Step Minimalist Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+                    <!-- Step 01 -->
+                    <div class="bg-white border border-[#d9d9d9] rounded-3xl p-7 sm:p-8 flex flex-col justify-between space-y-6 hover:-translate-y-1 transition-all duration-300">
+                        <div class="space-y-5">
+                            <div class="flex items-center justify-between border-b border-[#d9d9d9]/60 pb-3">
+                                <span class="text-xs font-mono font-bold text-black/40">LANGKAH 01</span>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#F0EEFF] text-[#5b45d9]">Input Suara</span>
+                            </div>
+
+                            <!-- SVG Placeholder Card -->
+                            <div class="w-full h-40 bg-[#F8F7F3] border border-[#d9d9d9]/70 rounded-2xl flex items-center justify-center p-4 relative overflow-hidden group">
+                                <div class="absolute inset-0 border border-dashed border-black/10 rounded-2xl m-2 pointer-events-none"></div>
+                                <img src="/images/recording_bot.svg" alt="Rekam Suara" class="h-28 w-auto object-contain transition-transform group-hover:scale-105 duration-300">
+                            </div>
+
+                            <h3 class="text-[20px] font-extrabold tracking-tight text-black">
+                                1. Rekam atau Unggah Audio
+                            </h3>
+                            <p class="text-[14px] text-black/60 leading-relaxed">
+                                Mulai rekaman langsung lewat mikrofon perangkat Anda atau unggah file rekaman format MP3, WAV, atau M4A tanpa konfigurasi rumit.
+                            </p>
+                        </div>
+
+                        <div class="pt-4 border-t border-[#d9d9d9]/50 flex items-center text-[12px] font-medium text-black/50">
+                            <span>Mendukung hingga durasi 3 jam / sesi</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 02 -->
+                    <div class="bg-white border border-[#d9d9d9] rounded-3xl p-7 sm:p-8 flex flex-col justify-between space-y-6 hover:-translate-y-1 transition-all duration-300">
+                        <div class="space-y-5">
+                            <div class="flex items-center justify-between border-b border-[#d9d9d9]/60 pb-3">
+                                <span class="text-xs font-mono font-bold text-black/40">LANGKAH 02</span>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#E5F7FF] text-[#0072b2]">AI Diarisasi</span>
+                            </div>
+
+                            <!-- SVG Placeholder Card -->
+                            <div class="w-full h-40 bg-[#F8F7F3] border border-[#d9d9d9]/70 rounded-2xl flex items-center justify-center p-4 relative overflow-hidden group">
+                                <div class="absolute inset-0 border border-dashed border-black/10 rounded-2xl m-2 pointer-events-none"></div>
+                                <img src="/images/equalizer_bot.svg" alt="Diarisasi AI" class="h-28 w-auto object-contain transition-transform group-hover:scale-105 duration-300">
+                            </div>
+
+                            <h3 class="text-[20px] font-extrabold tracking-tight text-black">
+                                2. AI Bedakan Tiap Pembicara
+                            </h3>
+                            <p class="text-[14px] text-black/60 leading-relaxed">
+                                Model kecerdasan buatan mengenali frekuensi suara dan otomatis memisahkan siapa yang berbicara dengan penanda waktu presisi.
+                            </p>
+                        </div>
+
+                        <div class="pt-4 border-t border-[#d9d9d9]/50 flex items-center text-[12px] font-medium text-black/50">
+                            <span>Akurasi diarisasi hingga 15 peserta</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 03 -->
+                    <div class="bg-white border border-[#d9d9d9] rounded-3xl p-7 sm:p-8 flex flex-col justify-between space-y-6 hover:-translate-y-1 transition-all duration-300">
+                        <div class="space-y-5">
+                            <div class="flex items-center justify-between border-b border-[#d9d9d9]/60 pb-3">
+                                <span class="text-xs font-mono font-bold text-black/40">LANGKAH 03</span>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#E8F8EE] text-[#1b7a42]">Hasil Notulensi</span>
+                            </div>
+
+                            <!-- SVG Placeholder Card -->
+                            <div class="w-full h-40 bg-[#F8F7F3] border border-[#d9d9d9]/70 rounded-2xl flex items-center justify-center p-4 relative overflow-hidden group">
+                                <div class="absolute inset-0 border border-dashed border-black/10 rounded-2xl m-2 pointer-events-none"></div>
+                                <img src="/images/note_bot.svg" alt="Rangkuman Notulensi" class="h-28 w-auto object-contain transition-transform group-hover:scale-105 duration-300">
+                            </div>
+
+                            <h3 class="text-[20px] font-extrabold tracking-tight text-black">
+                                3. Rangkuman & Action Items Rapi
+                            </h3>
+                            <p class="text-[14px] text-black/60 leading-relaxed">
+                                Dapatkan ringkasan eksekutif, butir keputusan mufakat, serta daftar penanggung jawab tugas yang siap diekspor ke PDF kop resmi.
+                            </p>
+                        </div>
+
+                        <div class="pt-4 border-t border-[#d9d9d9]/50 flex items-center text-[12px] font-medium text-black/50">
+                            <span>Format ekspor PDF, Word, & Markdown</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- SECTION 2: FEATURE HIGHLIGHTS (FITUR) -->
+            <!-- ======================================================== -->
+            <section id="fitur" class="space-y-12 sm:space-y-16 scroll-mt-28">
+                <!-- Section Header -->
+                <div class="space-y-4 max-w-3xl">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white border border-[#d9d9d9] text-[12px] font-semibold text-black tracking-wide uppercase">
+                        <span class="w-2 h-2 rounded-full bg-[#ff5347]"></span>
+                        <span>Fitur Unggulan</span>
+                    </div>
+
+                    <h2 class="text-[38px] sm:text-[50px] lg:text-[58px] font-black tracking-tighter text-black leading-[1.05]">
+                        Kecerdasan Buatan untuk Diskusi Serius.
+                    </h2>
+
+                    <p class="text-[17px] text-black/60 font-normal leading-relaxed">
+                        Dirancang khusus untuk mendukung ritme kerja akademis dan organisasi yang memerlukan kepastian arsip dan kecepatan tindak lanjut.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                    <div class="bg-white border border-[#d9d9d9] rounded-3xl p-8 space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-[#ff5347]/10 flex items-center justify-center text-[#ff5347]">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"></path></svg>
+                        </div>
+                        <h3 class="text-[19px] font-extrabold text-black tracking-tight">Konteks Bahasa Indonesia Alami</h3>
+                        <p class="text-[14px] text-black/60 leading-relaxed">
+                            Model AI dilatih mengenali istilah teknis, singkatan kampus, dan percampuran istilah lokal dalam suasana rapat formal maupun diskusi santai.
+                        </p>
+                    </div>
+
+                    <div class="bg-white border border-[#d9d9d9] rounded-3xl p-8 space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-[#ff5347]/10 flex items-center justify-center text-[#ff5347]">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                        </div>
+                        <h3 class="text-[19px] font-extrabold text-black tracking-tight">Diarisasi Multi-Speaker Akurat</h3>
+                        <p class="text-[14px] text-black/60 leading-relaxed">
+                            Secara otomatis memberi label pembicara secara mandiri, memungkinkan Anda melacak siapa yang menyampaikan usulan tanpa ragu.
+                        </p>
+                    </div>
+
+                    <div class="bg-white border border-[#d9d9d9] rounded-3xl p-8 space-y-4">
+                        <div class="w-12 h-12 rounded-2xl bg-[#ff5347]/10 flex items-center justify-center text-[#ff5347]">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        </div>
+                        <h3 class="text-[19px] font-extrabold text-black tracking-tight">Format Kop Surat Resmi Instan</h3>
+                        <p class="text-[14px] text-black/60 leading-relaxed">
+                            Ekspor langsung dengan format standar institusi, dilengkapi tanggal, nomor berkas, daftar peserta hadir, dan butir keputusan mufakat.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- SECTION 3: PRICING (PAKET) -->
+            <!-- Two minimalist pricing cards (Gratis vs. Pro) with hairline borders, no shadows -->
+            <!-- ======================================================== -->
+            <section id="harga" class="space-y-12 sm:space-y-16 scroll-mt-28">
+                <!-- Section Header -->
+                <div class="text-center space-y-4 max-w-2xl mx-auto">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white border border-[#d9d9d9] text-[12px] font-semibold text-black tracking-wide uppercase">
+                        <span class="w-2 h-2 rounded-full bg-[#ff5347]"></span>
+                        <span>Pilihan Paket</span>
+                    </div>
+
+                    <h2 class="text-[38px] sm:text-[50px] lg:text-[58px] font-black tracking-tighter text-black leading-[1.05]">
+                        Sederhana & Transparan.
+                    </h2>
+
+                    <p class="text-[17px] text-black/60 font-normal leading-relaxed">
+                        Mulai gratis tanpa kartu kredit. Tingkatkan kapasitas saat tim Anda membutuhkan frekuensi rapat tak terbatas.
+                    </p>
+                </div>
+
+                <!-- Two Minimalist Pricing Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
+                    <!-- Card 1: Gratis (Starter) -->
+                    <div class="bg-white border border-[#d9d9d9] rounded-3xl p-8 sm:p-10 flex flex-col justify-between space-y-8 relative hover:-translate-y-0.5 transition-all">
+                        <div class="space-y-6">
+                            <div class="space-y-2">
+                                <h3 class="text-[24px] font-black text-black tracking-tight">Gratis</h3>
+                                <p class="text-[14px] text-black/55 leading-relaxed">
+                                    Cocok untuk mahasiswa, individu, atau rapat tim kecil berkala.
+                                </p>
+                            </div>
+
+                            <div class="flex items-baseline space-x-1.5 py-4 border-y border-[#d9d9d9]/60">
+                                <span class="text-[44px] font-black tracking-tight text-black leading-none">Rp 0</span>
+                                <span class="text-sm text-black/50 font-medium">/ selamanya</span>
+                            </div>
+
+                            <!-- Feature List -->
+                            <ul class="space-y-3.5 text-[14px] text-black/75">
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-black shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                    <span><strong>5 sesi rapat</strong> per bulan (maks. 45 menit/sesi)</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-black shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                    <span>Diarisasi dasar (hingga 2 pembicara)</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-black shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                    <span>Rangkuman intisari & butir kesimpulan AI</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-black shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                    <span>Ekspor format Teks (.txt) & Markdown</span>
+                                </li>
+                                <li class="flex items-start space-x-3 text-black/45">
+                                    <svg class="w-5 h-5 text-black/35 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                    <span>Penyimpanan arsip 30 hari</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="pt-4">
+                            <button type="button" 
+                                    @click="showLoginModal = true" 
+                                    class="w-full bg-[#F8F7F3] hover:bg-black hover:text-white text-black border border-black rounded-full py-4 text-[14px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-95 cursor-pointer">
+                                Mulai Sekarang Gratis
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Pro (Unlimited) -->
+                    <div class="bg-white border-2 border-black rounded-3xl p-8 sm:p-10 flex flex-col justify-between space-y-8 relative hover:-translate-y-0.5 transition-all">
+                        <!-- Populer Badge -->
+                        <div class="absolute -top-3.5 right-8 bg-[#ff5347] text-white text-[11px] font-extrabold px-3.5 py-1 rounded-full uppercase tracking-wider">
+                            Paling Populer
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="space-y-2">
+                                <h3 class="text-[24px] font-black text-black tracking-tight">Pro Unlimited</h3>
+                                <p class="text-[14px] text-black/55 leading-relaxed">
+                                    Untuk pimpinan tim, dosen, sekretariat, dan divisi profesional.
+                                </p>
+                            </div>
+
+                            <div class="flex items-baseline space-x-1.5 py-4 border-y border-[#d9d9d9]/60">
+                                <span class="text-[44px] font-black tracking-tight text-black leading-none">Rp 49.000</span>
+                                <span class="text-sm text-black/50 font-medium">/ bulan</span>
+                            </div>
+
+                            <!-- Feature List -->
+                            <ul class="space-y-3.5 text-[14px] text-black/85">
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-[#ff5347] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                    <span><strong>Sesi rapat tanpa batas</strong> (tanpa limit durasi)</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-[#ff5347] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                    <span>Diarisasi cerdas hingga <strong>15 pembicara</strong></span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-[#ff5347] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                    <span>Ekspor resmi kop surat (PDF, Word, Markdown)</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-[#ff5347] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                    <span>Penyimpanan arsip permanen & pencarian semantik</span>
+                                </li>
+                                <li class="flex items-start space-x-3">
+                                    <svg class="w-5 h-5 text-[#ff5347] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                    <span>Prioritas pemrosesan server kilat</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="pt-4">
+                            <button type="button" 
+                                    @click="showLoginModal = true" 
+                                    class="w-full bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full py-4 text-[14px] font-bold transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-95 cursor-pointer">
+                                Coba Pro 14 Hari Gratis
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- SECTION 4: TESTIMONIALS (TESTIMONI) -->
+            <!-- ======================================================== -->
+            <section id="testimoni" class="space-y-12 sm:space-y-16 scroll-mt-28">
+                <div class="space-y-4 max-w-3xl">
+                    <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white border border-[#d9d9d9] text-[12px] font-semibold text-black tracking-wide uppercase">
+                        <span class="w-2 h-2 rounded-full bg-[#ff5347]"></span>
+                        <span>Testimoni Pengguna</span>
+                    </div>
+
+                    <h2 class="text-[38px] sm:text-[50px] lg:text-[58px] font-black tracking-tighter text-black leading-[1.05]">
+                        Dipercaya untuk Diskusi yang Menghasilkan Keputusan.
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+                    <div class="bg-white border border-[#d9d9d9] rounded-3xl p-8 space-y-6 flex flex-col justify-between">
+                        <p class="text-[15px] text-black/75 leading-relaxed italic">
+                            &ldquo;Rapat koordinasi kurikulum fakultas selama 2 jam selesai terangkum rapi hanya dalam 3 menit. Sangat menghemat waktu tim sekretariat kami.&rdquo;
+                        </p>
+                        <div class="pt-4 border-t border-[#d9d9d9]/60 flex items-center space-x-3.5">
+                            <div class="w-10 h-10 rounded-full bg-[#ff5347]/10 flex items-center justify-center font-bold text-sm text-[#ff5347]">
+                                DR
+                            </div>
+                            <div>
+                                <h4 class="text-[14px] font-bold text-black">Dr. Ir. Fachruddin, M.T.</h4>
+                                <p class="text-[12px] text-black/50">Dosen & Tim Penjaminan Mutu</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-[#d9d9d9] rounded-3xl p-8 space-y-6 flex flex-col justify-between">
+                        <p class="text-[15px] text-black/75 leading-relaxed italic">
+                            &ldquo;Diarisasi suaranya luar biasa akurat. Siapa yang mengusulkan fitur dan siapa yang menyetujui langsung tercatat jelas tanpa ada yang terlewat.&rdquo;
+                        </p>
+                        <div class="pt-4 border-t border-[#d9d9d9]/60 flex items-center space-x-3.5">
+                            <div class="w-10 h-10 rounded-full bg-[#ff5347]/10 flex items-center justify-center font-bold text-sm text-[#ff5347]">
+                                AL
+                            </div>
+                            <div>
+                                <h4 class="text-[14px] font-bold text-black">Annisa Larasati</h4>
+                                <p class="text-[12px] text-black/50">Product Lead & Researcher</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-[#d9d9d9] rounded-3xl p-8 space-y-6 flex flex-col justify-between">
+                        <p class="text-[15px] text-black/75 leading-relaxed italic">
+                            &ldquo;Format ekspor notulensinya bersih dan siap dikirim ke dekanat langsung tanpa perlu proses pengetikan ulang berjam-jam.&rdquo;
+                        </p>
+                        <div class="pt-4 border-t border-[#d9d9d9]/60 flex items-center space-x-3.5">
+                            <div class="w-10 h-10 rounded-full bg-[#ff5347]/10 flex items-center justify-center font-bold text-sm text-[#ff5347]">
+                                DP
+                            </div>
+                            <div>
+                                <h4 class="text-[14px] font-bold text-black">Dimas Pratama</h4>
+                                <p class="text-[12px] text-black/50">Koordinator Notulensi Organisasi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================================== -->
+            <!-- SECTION 5: PUBLIC BOTTOM CTA -->
+            <!-- ======================================================== -->
+            <section class="bg-white border border-[#d9d9d9] rounded-3xl p-10 sm:p-16 text-center max-w-4xl mx-auto space-y-6">
+                <div class="w-12 h-12 rounded-full bg-[#ff5347]/10 border border-[#ff5347]/30 flex items-center justify-center mx-auto text-[#ff5347]">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+                </div>
+                <h3 class="text-[34px] sm:text-[46px] font-black tracking-tighter text-black leading-tight">
+                    Mulai Catat Rapat Pertama Anda Sekarang.
+                </h3>
+                <p class="text-[16px] text-black/60 max-w-lg mx-auto font-normal leading-relaxed">
+                    Bergabung bersama ribuan akademisi dan profesional yang menghemat waktu rapat dengan dokumentasi cerdas Nome.
+                </p>
+                <div class="pt-3 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+                    <button type="button" 
+                            @click="showLoginModal = true" 
+                            class="w-full sm:w-auto bg-[#ff5347] hover:bg-[#e0453a] text-white px-8 py-4 rounded-full font-bold text-[15px] transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-95 cursor-pointer">
+                        Daftar Akun Baru
+                    </button>
+                    <a href="{{ url('/login') }}" 
+                       class="w-full sm:w-auto text-black/75 hover:text-black font-semibold text-[15px] px-6 py-4 transition-colors">
+                        Sudah punya akun? Masuk &rarr;
+                    </a>
+                </div>
+            </section>
 
         </div>
     </div>

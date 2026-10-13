@@ -74,13 +74,28 @@
         </style>
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @endif
+
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
-<body class="bg-[#F8F7F3] text-black/95 font-sans antialiased selection:bg-[#ff5347]/20 selection:text-black">
+<body x-data="{ 
+    isLoggedIn: localStorage.getItem('nome_is_logged_in') === 'true',
+    showLoginModal: false,
+    setLoggedIn(val) {
+        this.isLoggedIn = val;
+        if (val) {
+            localStorage.setItem('nome_is_logged_in', 'true');
+        } else {
+            localStorage.removeItem('nome_is_logged_in');
+        }
+    }
+}" class="bg-[#F8F7F3] text-black/95 font-sans antialiased selection:bg-[#ff5347]/20 selection:text-black">
 
     <!-- FLOATING LIQUID GLASS PILL NAVBAR (Top Center, Pill-Shaped, Glassmorphism) -->
     <header class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[92%] sm:w-auto max-w-4xl bg-white/60 backdrop-blur-lg border border-white/40 ring-1 ring-black/[0.08] shadow-sm floating-glass-pill rounded-full px-6 py-3 flex items-center justify-between gap-6 sm:gap-10 transition-all">
         <!-- Left: Logo & Live Pulse Recording Icon -->
-        <a href="{{ url('/dashboard') }}" class="flex items-center space-x-2.5 group shrink-0" title="Nome — Sistem Notulensi & Transkripsi AI">
+        <a href="{{ url('/') }}" class="flex items-center space-x-2.5 group shrink-0" title="Nome — Sistem Notulensi & Transkripsi AI">
             <!-- Pulsing #FF5347 Recording Icon with Grain/Noise Texture -->
             <span class="relative flex items-center justify-center w-7 h-7 shrink-0">
                 <span class="absolute inline-flex w-full h-full rounded-full bg-[#ff5347] opacity-40 animate-ping"></span>
@@ -102,8 +117,16 @@
             <img src="{{ asset('images/nome-logo.png') }}" alt="Nome." class="h-6 sm:h-7 w-auto object-contain transition-transform group-hover:scale-[1.02]">
         </a>
 
-        <!-- Center: Simple navigation links (Only Workspace & Memo) -->
-        <nav class="hidden md:flex items-center space-x-8 text-[13px] font-medium">
+        <!-- Center: Unauthenticated Marketing Links (Fitur, Cara Kerja, Harga, Testimoni) -->
+        <nav x-show="!isLoggedIn" x-cloak class="hidden md:flex items-center space-x-7 text-[13px] font-medium text-black/70">
+            <a href="{{ url('/#fitur') }}" class="hover:text-black hover:text-[#ff5347] transition-colors">Fitur</a>
+            <a href="{{ url('/#cara-kerja') }}" class="hover:text-black hover:text-[#ff5347] transition-colors">Cara Kerja</a>
+            <a href="{{ url('/#harga') }}" class="hover:text-black hover:text-[#ff5347] transition-colors">Harga</a>
+            <a href="{{ url('/#testimoni') }}" class="hover:text-black hover:text-[#ff5347] transition-colors">Testimoni</a>
+        </nav>
+
+        <!-- Center: Authenticated App Navigation (Workspace & Memo) -->
+        <nav x-show="isLoggedIn" x-cloak class="hidden md:flex items-center space-x-8 text-[13px] font-medium">
             <a href="{{ url('/dashboard') }}" 
                class="transition-colors pb-0.5 {{ request()->is('dashboard') || request()->is('/') ? 'font-bold text-[#ff5347] border-b-2 border-[#ff5347]' : 'text-black/65 hover:text-black' }}">
                 Workspace
@@ -114,8 +137,20 @@
             </a>
         </nav>
 
-        <!-- Right: Primary Action Button (#ff5347) & Simple Account Dropdown -->
-        <div class="flex items-center space-x-3 shrink-0">
+        <!-- Right: Unauthenticated Actions: Masuk (Ghost) & Daftar Gratis (Primary #ff5347 Pill) -->
+        <div x-show="!isLoggedIn" x-cloak class="flex items-center space-x-2 sm:space-x-3 shrink-0">
+            <a href="{{ url('/login') }}" 
+               class="text-[13px] font-medium text-black/75 hover:text-black px-3 py-2 transition-colors">
+                Masuk
+            </a>
+            <a href="{{ url('/signup') }}" 
+               class="inline-flex items-center space-x-1.5 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-5 py-2 text-[13px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">
+                <span>Daftar Gratis</span>
+            </a>
+        </div>
+
+        <!-- Right: Authenticated Actions: Mulai Rapat & User Account Dropdown -->
+        <div x-show="isLoggedIn" x-cloak class="flex items-center space-x-3 shrink-0">
             <a href="{{ url('/add-memo') }}" 
                class="inline-flex items-center space-x-2 bg-[#ff5347] hover:bg-[#e0453a] text-white rounded-full px-5 py-2 text-[13px] font-semibold transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-sm active:scale-95">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
@@ -129,7 +164,7 @@
                         type="button" 
                         class="flex items-center focus:outline-none transition-transform duration-300 ease-out hover:scale-105" 
                         title="Menu Pengguna">
-                    <div class="w-8 h-8 rounded-full bg-[#ff5347] cursor-pointer"></div>
+                    <div class="w-8 h-8 rounded-full bg-[#ff5347] cursor-pointer ring-2 ring-white"></div>
                 </button>
 
                 <!-- Dropdown Menu Card -->
@@ -140,14 +175,20 @@
                      x-transition:leave="transition ease-in duration-150"
                      x-transition:leave-start="opacity-100 scale-100 translate-y-0"
                      x-transition:leave-end="opacity-0 scale-95 -translate-y-2"
-                     class="absolute right-0 mt-3 w-44 bg-white border border-[#d9d9d9] rounded-2xl p-2 z-50 floating-glass-pill space-y-1">
+                     class="absolute right-0 mt-3 w-48 bg-white border border-[#d9d9d9] rounded-2xl p-2 z-50 floating-glass-pill space-y-1">
+                    <div class="px-3.5 py-1.5 border-b border-[#d9d9d9]/60">
+                        <div class="text-[12px] font-bold text-black">Akun Pengguna</div>
+                        <div class="text-[11px] text-black/50 truncate">user@nome.ac.id</div>
+                    </div>
                     <a href="{{ url('/settings') }}" class="flex items-center px-3.5 py-2 rounded-xl text-[13px] font-medium text-black/75 hover:text-black hover:bg-black/[0.04] transition-colors">
                         Settings
                     </a>
                     <div class="h-px bg-[#d9d9d9]/60 my-1"></div>
-                    <a href="{{ url('/login') }}" class="flex items-center px-3.5 py-2 rounded-xl text-[13px] font-medium text-black/75 hover:text-black hover:bg-black/[0.04] transition-colors">
-                        Login/Signup
-                    </a>
+                    <button type="button" 
+                            @click="setLoggedIn(false); open = false" 
+                            class="w-full text-left flex items-center px-3.5 py-2 rounded-xl text-[13px] font-semibold text-[#ff5347] hover:bg-[#ff5347]/10 transition-colors">
+                        Keluar (Simulasi)
+                    </button>
                 </div>
             </div>
         </div>
