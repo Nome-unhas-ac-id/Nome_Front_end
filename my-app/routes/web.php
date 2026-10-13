@@ -38,3 +38,14 @@ Route::get('/login', function () {
 Route::get('/signup', function () {
     return view('auth.signup');
 })->name('signup');
+
+Route::get('/images/{filename}', function (string $filename) {
+    $path = public_path('images/'.$filename);
+    if (file_exists($path)) {
+        return response()->file($path, [
+            'Content-Type' => 'image/png',
+            'Cache-Control' => 'public, max-age=31536000',
+        ]);
+    }
+    abort(404);
+})->where('filename', '.*');
