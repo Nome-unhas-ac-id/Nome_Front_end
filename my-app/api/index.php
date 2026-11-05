@@ -22,9 +22,5 @@ foreach ($storageDirs as $dir) {
     }
 }
 
-if (! file_exists('/tmp/database.sqlite')) {
-    touch('/tmp/database.sqlite');
-}
-
 // Forward request to Laravel's standard entry point
 require __DIR__.'/../public/index.php';
