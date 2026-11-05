@@ -2,11 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Jobs\ProcessAudio;
+use App\Models\AudioJob;
 use App\Models\Memo;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
 use Laravel\Sanctum\Sanctum;
@@ -140,6 +144,24 @@ class MemoApiTest extends TestCase
         $this->getJson('/api/memos?per_page=51&status=review')->assertUnprocessable();
     }
 
+    public function test_valid_audio_is_private_queued_and_conflicting_uploads_are_rejected(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+        $this->aiConfig();
+        $user = $this->user();
+        $memo = Memo::factory()->for($user)->create();
+        $response = $this->post('/api/memos/'.$memo->id.'/upload-audio', ['audio' => $this->audio()], ['Accept' => 'application/json'])
+            ->assertStatus(202)->assertJsonPath('data.status', 'processing');
+        $job = AudioJob::findOrFail($response->json('data.job_id'));
+        Storage::disk('local')->assertExists($job->path);
+        Queue::assertPushed(ProcessAudio::class, fn (ProcessAudio $queued) => $queued->audioJobId === $job->id);
+        $this->getJson('/api/memos/'.$memo->id.'/status')->assertOk()->assertJsonPath('data.audio_job.job_id', $job->id);
+        $this->post('/api/memos/'.$memo->id.'/upload-audio', ['audio' => $this->audio()], ['Accept' => 'application/json'])->assertStatus(409);
+        $this->assertDatabaseCount('audio_jobs', 1);
+        $this->assertCount(1, Storage::disk('local')->allFiles());
+    }
+
     public function test_upload_rejects_bad_files_and_missing_ai_configuration_without_changing_memo(): void
     {
         Storage::fake('local');
@@ -150,6 +172,47 @@ class MemoApiTest extends TestCase
         $this->post('/api/memos/'.$memo->id.'/upload-audio', ['audio' => $this->audio()], ['Accept' => 'application/json'])->assertStatus(503);
         $this->assertSame('draft', $memo->fresh()->status);
         $this->assertCount(0, Storage::disk('local')->allFiles());
+    }
+
+    public function test_signed_completion_updates_preview_and_duplicate_callbacks_do_not_overwrite_edits(): void
+    {
+        $this->aiConfig();
+        $user = $this->user();
+        $memo = Memo::factory()->for($user)->create(['status' => 'processing']);
+        $job = AudioJob::factory()->for($memo)->create();
+        $memo->update(['latest_audio_job_id' => $job->id]);
+        $data = ['job_id' => $job->id, 'status' => 'completed', 'structured_minutes' => "## Ringkasan\n- Keputusan tim", 'transcript' => 'Transkrip asli'];
+        $this->sendCallback($data, false)->assertUnauthorized();
+        $this->sendCallback($data)->assertOk()->assertJsonPath('data.status', 'completed');
+        $this->getJson('/api/memos/'.$memo->id.'/preview')->assertOk()->assertJsonPath('data.can_export', true)->assertJsonPath('data.transcript', 'Transkrip asli');
+        $this->putJson('/api/memos/'.$memo->id, ['summary_text' => '<p>Koreksi pengguna</p>'])->assertOk();
+        $this->sendCallback($data)->assertOk()->assertJsonPath('data', null);
+        $this->assertStringContainsString('Koreksi pengguna', $memo->fresh()->summary_text);
+    }
+
+    public function test_worker_sends_the_documented_adapter_payload_without_exposing_webhook_secret(): void
+    {
+        $this->aiConfig();
+        config(['services.nome.callback_url' => 'https://nome.test/api/webhooks/nome-callback']);
+        Storage::fake('local');
+        Storage::disk('local')->put('audio/test.wav', 'test bytes');
+        Http::preventStrayRequests();
+        $payload = null;
+        Http::fake(function ($request) use (&$payload) {
+            $payload = $request->body();
+
+            return Http::response(['accepted' => true], 202);
+        });
+        $memo = Memo::factory()->create(['status' => 'processing']);
+        $job = AudioJob::factory()->for($memo)->create();
+        $memo->update(['latest_audio_job_id' => $job->id]);
+        (new ProcessAudio($job->id))->handle();
+        Http::assertSent(fn ($request) => $request->url() === 'https://ai.test/submit' && $request->hasHeader('Idempotency-Key', $job->id));
+        $this->assertStringContainsString($job->id, $payload);
+        $this->assertStringContainsString('https://nome.test/api/webhooks/nome-callback', $payload);
+        (new ProcessAudio($job->id))->failed(new \RuntimeException('Do not expose secrets'));
+        $this->assertSame('failed', $memo->fresh()->status);
+        $this->assertStringNotContainsString('secrets', $memo->fresh()->error_message);
     }
 
     public function test_oversized_upload_is_rejected_and_empty_letter_round_trips(): void
