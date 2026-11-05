@@ -37,11 +37,11 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::get('/signup', function () {
-    return view('auth.signup');
+    return view('auth.account-help', ['heading' => 'Buat Akun', 'message' => 'Akun disediakan oleh pengelola aplikasi. Hubungi pengelola untuk memperoleh akun login.']);
 })->name('signup');
 
 Route::get('/forgot-password', function () {
-    return view('auth.forgot-password');
+    return view('auth.account-help', ['heading' => 'Lupa Kata Sandi?', 'message' => 'Pemulihan kata sandi mandiri belum tersedia. Hubungi pengelola akun.']);
 })->name('forgot-password');
 
 Route::get('/images/{filename}', function (string $filename) {
