@@ -63,4 +63,16 @@ class SummaryHtml
             }
         }
     }
+
+    public static function xhtml(string $html): string
+    {
+        $document = new DOMDocument('1.0', 'UTF-8');
+        @$document->loadHTML('<?xml encoding="UTF-8"><body>'.self::clean($html).'</body>', LIBXML_NONET);
+        $result = '';
+        foreach ($document->getElementsByTagName('body')->item(0)->childNodes as $child) {
+            $result .= $document->saveXML($child);
+        }
+
+        return $result;
+    }
 }
