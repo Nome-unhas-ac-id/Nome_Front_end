@@ -319,7 +319,33 @@
             <p class="text-xs text-black/50">Agenda disimpan bersama memo dan disertakan dalam ekspor.</p>
         </div>
 
-
+        <section class="space-y-5 border-t border-[#d9d9d9]/60 pt-6" aria-label="Surat pengantar opsional">
+            <label class="inline-flex items-center gap-3 text-sm font-semibold">
+                <input type="checkbox" x-model="includeLetter" class="rounded border-[#d9d9d9] text-[#ff5347]">
+                Sertakan Surat Pengantar (Opsional)
+            </label>
+            <div x-show="includeLetter" x-cloak class="space-y-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    @foreach ([
+                        'letter_number' => ['Nomor Surat', 'text'],
+                        'subject' => ['Perihal', 'text'],
+                        'letter_date' => ['Tanggal Surat', 'date'],
+                        'recipient' => ['Penerima', 'text'],
+                        'signer_name' => ['Nama Penandatangan', 'text'],
+                        'signer_position' => ['Jabatan Penandatangan', 'text'],
+                        'signer_rank' => ['Pangkat Penandatangan', 'text'],
+                    ] as $field => [$label, $type])
+                        <div class="space-y-2">
+                            <label for="letter-{{ $field }}" class="block text-xs font-bold text-black/50 uppercase tracking-wider">{{ $label }}</label>
+                            <input id="letter-{{ $field }}" type="{{ $type }}" x-model="letter.{{ $field }}" class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none px-0 py-2.5 text-sm">
+                        </div>
+                    @endforeach
+                </div>
+                <p x-show="errors.letter_date" x-text="errors.letter_date" role="alert" class="text-sm text-red-700"></p>
+                <label for="letter-opening" class="block text-xs font-bold text-black/50 uppercase tracking-wider">Paragraf Pembuka</label>
+                <textarea id="letter-opening" rows="3" x-model="letter.opening_paragraph" class="w-full border-b border-[#d9d9d9] bg-transparent focus:border-black focus:outline-none px-0 py-2 text-sm" placeholder="Dengan hormat, ..."></textarea>
+            </div>
+        </section>
 
         <!-- 3. ATTENDEES (DAFTAR PESERTA) -->
         <div class="space-y-4">
