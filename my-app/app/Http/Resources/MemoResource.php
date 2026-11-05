@@ -21,6 +21,8 @@ class MemoResource extends JsonResource
             'meeting_end_time' => $this->meeting_end_time ? substr($this->meeting_end_time, 0, 5) : null,
             'location' => $this->location, 'leader_name' => $this->leader_name, 'notetaker_name' => $this->notetaker_name,
             'status' => $this->status, 'error_message' => $this->error_message, 'version' => $this->version,
+            'letter_number' => $this->letter['letter_number'] ?? null,
+            'attendees_count' => count($this->attendees ?? []),
             'created_at' => $this->created_at?->toISOString(), 'updated_at' => $this->updated_at?->toISOString(),
         ];
         if (! $request->routeIs('api.memos.index')) {
