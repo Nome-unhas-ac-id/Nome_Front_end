@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Memo;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -65,7 +66,7 @@ class MemoApiTest extends TestCase
         $this->postJson('/api/auth/login', ['email' => $user->email, 'password' => 'wrong'])->assertUnauthorized();
         $this->postJson('/api/auth/login', [])->assertUnprocessable()->assertJsonStructure(['errors' => ['email', 'password']]);
         $expired = $user->createToken('expired', ['*'], now()->subMinute());
-        $this->withToken($expired->plainTextToken)->getJson('/api/auth/me')->assertUnauthorized();
+        $this->withToken($expired->plainTextToken)->getJson('/api/memos')->assertUnauthorized();
     }
 
     public function test_login_rate_limit_returns_retry_after(): void
@@ -75,6 +76,41 @@ class MemoApiTest extends TestCase
         }
         $this->postJson('/api/auth/login', ['email' => 'throttle@test.com', 'password' => 'wrong'])
             ->assertStatus(429)->assertHeader('Retry-After')->assertJsonPath('success', false);
+    }
+
+    public function test_guest_cannot_read_or_create_memos(): void
+    {
+        $this->getJson('/api/memos')->assertUnauthorized()->assertJsonPath('data', null);
+        $this->postJson('/api/memos', ['title' => 'X', 'meeting_date' => '2026-11-10'])->assertUnauthorized();
+    }
+
+    public function test_update_returns_new_values_and_preserves_omitted_fields(): void
+    {
+        $user = $this->user();
+        $memo = Memo::factory()->for($user)->create(['letter' => ['letter_number' => 'ABC', 'signer_name' => 'Andi'], 'attendees' => [['name' => 'Budi'], ['name' => 'Rina']]]);
+        $this->putJson('/api/memos/'.$memo->id, [
+            'title' => 'Revisi', 'summary_text' => '<p onclick="bad()">A &amp; B</p><script>alert(1)</script>',
+            'attendees' => [['name' => 'Budi']], 'version' => 1,
+        ])->assertOk()->assertJsonPath('data.title', 'Revisi')->assertJsonCount(1, 'data.attendees')
+            ->assertJsonPath('data.letter.letter_number', 'ABC')->assertJsonPath('data.version', 2);
+        $this->assertStringNotContainsString('script', $memo->fresh()->summary_text);
+        $this->assertStringNotContainsString('onclick', $memo->fresh()->summary_text);
+        $this->putJson('/api/memos/'.$memo->id, ['letter' => ['signer_name' => 'Siti']])
+            ->assertOk()->assertJsonPath('data.letter.letter_number', 'ABC')->assertJsonPath('data.letter.signer_name', 'Siti');
+        $this->putJson('/api/memos/'.$memo->id, ['letter' => null, 'attendees' => []])
+            ->assertOk()->assertJsonPath('data.letter', null)->assertJsonCount(0, 'data.attendees');
+    }
+
+    public function test_search_filters_pagination_and_optional_date_to(): void
+    {
+        $user = $this->user();
+        Memo::factory()->for($user)->count(3)->create(['title' => 'Koordinasi', 'status' => 'completed']);
+        Memo::factory()->for($user)->create(['title' => 'Lainnya']);
+        Memo::factory()->create(['title' => 'Koordinasi', 'status' => 'completed']);
+        $this->getJson('/api/memos?search=Koordinasi&status=completed&per_page=2&page=2')
+            ->assertOk()->assertJsonCount(1, 'data.items')->assertJsonPath('data.meta.total', 3)->assertJsonPath('data.meta.last_page', 2);
+        $this->getJson('/api/memos?date_to=2026-12-01')->assertOk();
+        $this->getJson('/api/memos?date_from=2026-12-01&date_to=2026-01-01')->assertUnprocessable();
     }
 
 }
