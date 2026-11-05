@@ -95,8 +95,8 @@ class MemoApiTest extends TestCase
         ])->assertCreated()->assertJsonPath('data.status', 'draft')->assertJsonPath('data.agenda', 'Agenda tersimpan');
         $id = $created->json('data.id');
         $this->assertMatchesRegularExpression('/^[0-9a-f-]{36}$/', $id);
-        $this->getJson('/api/memos')->assertOk()
-            ->assertJsonPath('data.items.0.meeting_end_time', '11:00')
+        $this->getJson('/api/memos')->assertOk()->assertJsonPath('data.items.0.letter_number', '005/TEST')
+            ->assertJsonPath('data.items.0.attendees_count', 1)->assertJsonPath('data.items.0.meeting_end_time', '11:00')
             ->assertJsonMissingPath('data.items.0.summary_text')->assertJsonMissingPath('data.items.0.ai_raw_json');
         $this->getJson('/api/memos/'.$id.'/preview')->assertOk()->assertJsonPath('data.memo.agenda', 'Agenda tersimpan')
             ->assertJsonPath('data.memo.meeting_time_label', '09:30 WITA')->assertJsonPath('data.can_export', false);

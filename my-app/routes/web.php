@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Frontend Routes for Nome AI Meeting Transcription
@@ -27,8 +28,8 @@ Route::get('/add-memo', function () {
     return view('add-memo');
 })->name('add-memo');
 
-Route::get('/preview', function () {
-    return view('preview');
+Route::get('/preview', function (Request $request) {
+    return view($request->boolean('draft') ? 'draft-preview' : 'preview');
 })->name('preview');
 
 Route::get('/login', function () {
