@@ -6,6 +6,7 @@ use App\Jobs\ProcessAudio;
 use App\Models\AudioJob;
 use App\Models\Memo;
 use App\Models\User;
+use App\Services\SummaryHtml;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -238,6 +239,42 @@ class MemoApiTest extends TestCase
         (new ProcessAudio($job->id))->failed(new \RuntimeException('Do not expose secrets'));
         $this->assertSame('failed', $memo->fresh()->status);
         $this->assertStringNotContainsString('secrets', $memo->fresh()->error_message);
+    }
+
+    public function test_exports_require_completion_and_return_actual_pdf_and_docx(): void
+    {
+        $user = $this->user();
+        $memo = Memo::factory()->for($user)->create(['title' => 'Rapat A & B']);
+        $this->get('/api/memos/'.$memo->id.'/export/pdf', ['Accept' => 'application/json'])->assertStatus(409);
+        $memo->update(['status' => 'completed', 'summary_text' => '<h2>Ringkasan</h2><p>A &amp; B</p><ul><li>Poin</li></ul>', 'attendees' => [['name' => 'Budi & Rina']], 'letter' => ['subject' => 'Tim & Mitra']]);
+        $pdf = $this->get('/api/memos/'.$memo->id.'/export/pdf')->assertOk()->assertHeader('Content-Type', 'application/pdf');
+        $this->assertStringStartsWith('%PDF-', $pdf->getContent());
+        $docx = $this->get('/api/memos/'.$memo->id.'/export/docx')->assertOk()->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        $bytes = $docx->streamedContent();
+        $this->assertStringStartsWith('PK', $bytes);
+        $path = tempnam(sys_get_temp_dir(), 'nome-docx-');
+        try {
+            file_put_contents($path, $bytes);
+            $zip = new \ZipArchive;
+            $this->assertTrue($zip->open($path));
+            $xml = $zip->getFromName('word/document.xml');
+            $zip->close();
+            $document = new \DOMDocument;
+            $this->assertTrue($document->loadXML($xml, LIBXML_NONET));
+            $this->assertStringContainsString('Rapat A &amp; B', $xml);
+        } finally {
+            unlink($path);
+        }
+    }
+
+    public function test_sanitizer_preserves_safe_formatting_without_attributes_or_external_resources(): void
+    {
+        $clean = SummaryHtml::clean('<div><h2>Title</h2><table><tr><td style="color:red">A</td></tr></table><a href="javascript:alert(1)">Link</a><img src="file:///etc/passwd"><svg><script>bad()</script></svg><p onclick="bad()">Text</p></div>');
+        $this->assertStringContainsString('<table>', $clean);
+        foreach (['style=', 'onclick', '<img', '<svg', '<script', 'href=', 'file:'] as $forbidden) {
+            $this->assertStringNotContainsString($forbidden, $clean);
+        }
+        $this->assertStringContainsString('Link', $clean);
     }
 
     public function test_missing_callbacks_expire_and_allow_retry(): void
