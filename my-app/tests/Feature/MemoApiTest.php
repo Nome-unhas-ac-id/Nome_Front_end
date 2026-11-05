@@ -84,6 +84,24 @@ class MemoApiTest extends TestCase
         $this->postJson('/api/memos', ['title' => 'X', 'meeting_date' => '2026-11-10'])->assertUnauthorized();
     }
 
+    public function test_create_and_list_include_the_frontend_fields(): void
+    {
+        $this->user();
+        $created = $this->postJson('/api/memos', [
+            'title' => 'Rapat Integrasi', 'meeting_date' => '2026-11-10', 'meeting_time' => '09:30',
+            'meeting_end_time' => '11:00', 'agenda' => 'Agenda tersimpan',
+            'letter' => ['letter_number' => '005/TEST', 'signer_name' => 'Andi'],
+            'attendees' => [['name' => 'Budi', 'agency_or_position' => 'Kominfo']],
+        ])->assertCreated()->assertJsonPath('data.status', 'draft')->assertJsonPath('data.agenda', 'Agenda tersimpan');
+        $id = $created->json('data.id');
+        $this->assertMatchesRegularExpression('/^[0-9a-f-]{36}$/', $id);
+        $this->getJson('/api/memos')->assertOk()
+            ->assertJsonPath('data.items.0.meeting_end_time', '11:00')
+            ->assertJsonMissingPath('data.items.0.summary_text')->assertJsonMissingPath('data.items.0.ai_raw_json');
+        $this->getJson('/api/memos/'.$id.'/preview')->assertOk()->assertJsonPath('data.memo.agenda', 'Agenda tersimpan')
+            ->assertJsonPath('data.memo.meeting_time_label', '09:30 WITA')->assertJsonPath('data.can_export', false);
+    }
+
     public function test_update_returns_new_values_and_preserves_omitted_fields(): void
     {
         $user = $this->user();
@@ -111,6 +129,14 @@ class MemoApiTest extends TestCase
             ->assertOk()->assertJsonCount(1, 'data.items')->assertJsonPath('data.meta.total', 3)->assertJsonPath('data.meta.last_page', 2);
         $this->getJson('/api/memos?date_to=2026-12-01')->assertOk();
         $this->getJson('/api/memos?date_from=2026-12-01&date_to=2026-01-01')->assertUnprocessable();
+    }
+
+    public function test_validation_rejects_invalid_metadata_and_summary_on_create(): void
+    {
+        $this->user();
+        $this->postJson('/api/memos', ['title' => '', 'meeting_date' => '2026-02-30', 'meeting_time' => '25:00', 'summary_text' => 'not allowed'])
+            ->assertUnprocessable()->assertJsonStructure(['errors' => ['title', 'meeting_date', 'meeting_time', 'summary_text']]);
+        $this->getJson('/api/memos?per_page=51&status=review')->assertUnprocessable();
     }
 
 }
