@@ -30,6 +30,7 @@ class MemoRequest extends FormRequest
             'meeting_end_time' => ['sometimes', 'nullable', 'date_format:H:i'],
             'agenda' => ['sometimes', 'nullable', 'string', 'max:20000'],
             'summary_text' => [$this->isMethod('post') ? 'prohibited' : 'sometimes', 'nullable', 'string', 'max:200000'],
+            'version' => ['sometimes', 'integer', 'min:1'],
             'letter' => ['sometimes', 'nullable', 'array:letter_number,subject,letter_date,recipient,opening_paragraph,signer_name,signer_position,signer_rank'],
             'letter.letter_date' => ['sometimes', 'nullable', 'date_format:Y-m-d'],
             'letter.opening_paragraph' => ['sometimes', 'nullable', 'string', 'max:10000'],

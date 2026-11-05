@@ -75,6 +75,7 @@ class MemoController extends Controller
             $record = $request->user()->memos()->lockForUpdate()->findOrFail($memo);
             abort_if(in_array($record->status, ['pending', 'processing'], true), 409, 'Memo sedang diproses. Tunggu sebelum menyunting.');
             $data = $request->validated();
+            abort_if(isset($data['version']) && (int) $data['version'] !== $record->version, 409, 'Memo telah berubah. Muat ulang sebelum menyimpan.');
             unset($data['version']);
             if (array_key_exists('summary_text', $data)) {
                 $data['summary_text'] = SummaryHtml::clean($data['summary_text']);
