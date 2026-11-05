@@ -6,6 +6,7 @@ use App\Jobs\ProcessAudio;
 use App\Models\AudioJob;
 use App\Models\Memo;
 use App\Models\User;
+use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -124,6 +125,16 @@ class MemoApiTest extends TestCase
             ->assertOk()->assertJsonPath('data.letter', null)->assertJsonCount(0, 'data.attendees');
     }
 
+    public function test_version_conflicts_and_processing_edits_are_rejected(): void
+    {
+        $user = $this->user();
+        $memo = Memo::factory()->for($user)->create(['version' => 3]);
+        $this->putJson('/api/memos/'.$memo->id, ['title' => 'Conflict', 'version' => 2])->assertStatus(409);
+        $memo->update(['status' => 'processing']);
+        $this->putJson('/api/memos/'.$memo->id, ['title' => 'No'])->assertStatus(409);
+        $this->deleteJson('/api/memos/'.$memo->id)->assertStatus(409);
+    }
+
     public function test_search_filters_pagination_and_optional_date_to(): void
     {
         $user = $this->user();
@@ -190,6 +201,20 @@ class MemoApiTest extends TestCase
         $this->assertStringContainsString('Koreksi pengguna', $memo->fresh()->summary_text);
     }
 
+    public function test_stale_job_callbacks_and_failures_preserve_current_data(): void
+    {
+        $this->aiConfig();
+        $memo = Memo::factory()->create(['status' => 'processing', 'summary_text' => '<p>Previous result</p>']);
+        $old = AudioJob::factory()->for($memo)->create();
+        $latest = AudioJob::factory()->for($memo)->create();
+        $memo->update(['latest_audio_job_id' => $latest->id]);
+        $this->sendCallback(['job_id' => $old->id, 'status' => 'completed', 'structured_minutes' => 'Stale'])->assertOk()->assertJsonPath('data', null);
+        $this->sendCallback(['job_id' => $latest->id, 'status' => 'failed', 'error_message' => 'AI gagal'])->assertOk();
+        $this->assertSame('failed', $memo->fresh()->status);
+        $this->assertSame('<p>Previous result</p>', $memo->fresh()->summary_text);
+        $this->sendCallback(['job_id' => $latest->id, 'status' => 'completed', 'structured_minutes' => 'Late'])->assertOk()->assertJsonPath('data', null);
+    }
+
     public function test_worker_sends_the_documented_adapter_payload_without_exposing_webhook_secret(): void
     {
         $this->aiConfig();
@@ -213,6 +238,30 @@ class MemoApiTest extends TestCase
         (new ProcessAudio($job->id))->failed(new \RuntimeException('Do not expose secrets'));
         $this->assertSame('failed', $memo->fresh()->status);
         $this->assertStringNotContainsString('secrets', $memo->fresh()->error_message);
+    }
+
+    public function test_missing_callbacks_expire_and_allow_retry(): void
+    {
+        $memo = Memo::factory()->create(['status' => 'processing']);
+        $job = AudioJob::factory()->for($memo)->create();
+        $memo->update(['latest_audio_job_id' => $job->id, 'updated_at' => now()->subHours(3)]);
+        $this->artisan('nome:expire-jobs')->assertSuccessful();
+        $this->assertSame('failed', $memo->fresh()->status);
+        $this->assertSame('failed', $job->fresh()->status);
+    }
+
+    public function test_queue_outage_does_not_leave_a_memo_stuck_processing(): void
+    {
+        $this->aiConfig();
+        Storage::fake('local');
+        $user = $this->user();
+        $memo = Memo::factory()->for($user)->create();
+        $this->mock(Dispatcher::class, function ($mock): void {
+            $mock->shouldReceive('dispatch')->once()->andThrow(new \RuntimeException('Queue unavailable'));
+        });
+        $this->post('/api/memos/'.$memo->id.'/upload-audio', ['audio' => $this->audio()], ['Accept' => 'application/json'])
+            ->assertStatus(503);
+        $this->assertSame('failed', $memo->fresh()->status);
     }
 
     public function test_oversized_upload_is_rejected_and_empty_letter_round_trips(): void
