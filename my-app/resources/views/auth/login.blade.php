@@ -35,7 +35,8 @@
         </div>
 
         <!-- Login Form -->
-        <form @submit.prevent="setLoggedIn(true); window.location.href='{{ url('/dashboard') }}'" class="space-y-5">
+        <form x-data="nomeLogin" @submit.prevent="submit()" class="space-y-5">
+            <p x-show="error" x-text="error" role="alert" class="text-sm text-red-700"></p>
             <!-- Email Input (Soft gray box with ring-[#ff5347] focus) -->
             <div class="space-y-2">
                 <label for="login-email" class="block text-[13px] font-bold text-black tracking-tight">
@@ -44,7 +45,7 @@
                 <input id="login-email" 
                        type="email" 
                        required
-                       value="andi@unhas.ac.id" 
+                       x-model="email" autocomplete="username"
                        placeholder="nama@unhas.ac.id"
                        class="w-full bg-[#fafafa] border border-[#d9d9d9] focus:border-[#ff5347] focus:ring-2 focus:ring-[#ff5347]/20 focus:bg-white focus:outline-none rounded-xl px-4 py-3.5 text-[14px] text-black transition-all">
             </div>
@@ -62,7 +63,7 @@
                 <input id="login-password" 
                        type="password" 
                        required
-                       value="password123" 
+                       x-model="password" autocomplete="current-password"
                        placeholder="Masukkan kata sandi"
                        class="w-full bg-[#fafafa] border border-[#d9d9d9] focus:border-[#ff5347] focus:ring-2 focus:ring-[#ff5347]/20 focus:bg-white focus:outline-none rounded-xl px-4 py-3.5 text-[14px] text-black transition-all">
             </div>
@@ -70,16 +71,16 @@
             <!-- Remember Me -->
             <div class="flex items-center justify-between pt-1">
                 <label class="flex items-center space-x-2.5 cursor-pointer">
-                    <input type="checkbox" checked class="w-4 h-4 rounded border-[#d9d9d9] text-[#ff5347] focus:ring-[#ff5347]">
-                    <span class="text-[13px] text-black/70 font-medium">Ingat perangkat ini</span>
+                    <span class="text-[13px] text-black/70 font-medium">Sesi login disimpan hanya di tab ini.</span>
                 </label>
             </div>
 
             <!-- Full-width primary button (bg-[#ff5347]) -->
             <div class="pt-2">
                 <button type="submit" 
+                        :disabled="busy"
                         class="w-full bg-[#ff5347] hover:bg-[#e0453a] text-white font-bold text-[15px] rounded-full py-3.5 transition-all duration-300 ease-out hover:-translate-y-0.5 active:scale-95 shadow-none flex items-center justify-center space-x-2 cursor-pointer">
-                    <span>Masuk ke Akun</span>
+                    <span x-text="busy ? 'Memeriksa...' : 'Masuk ke Akun'"></span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </button>
             </div>
@@ -89,7 +90,7 @@
         <div class="pt-4 border-t border-[#d9d9d9]/60 text-center text-[13px] text-black/60">
             <span>Belum memiliki akun?</span>
             <a href="{{ url('/signup') }}" class="text-[#ff5347] font-bold ml-1 hover:underline">
-                Daftar Gratis
+                Akses Akun
             </a>
         </div>
 

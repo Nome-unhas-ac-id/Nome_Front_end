@@ -12,6 +12,10 @@
   },
   "routes": [
     {
+      "src": "/js/(.*)",
+      "dest": "/js/$1"
+    },
+    {
       "src": "/build/(.*)",
       "dest": "/build/$1"
     },
