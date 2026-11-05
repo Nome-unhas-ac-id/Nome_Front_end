@@ -56,3 +56,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Dependency and deployment security
+
+The existing Symfony runtime advisories have been patched. Configure APP_KEY on the host; it is not embedded in deployment configuration. Production requires durable database and private audio storage rather than temporary SQLite defaults.
