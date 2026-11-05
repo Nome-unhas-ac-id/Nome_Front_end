@@ -136,6 +136,19 @@ class MemoApiTest extends TestCase
         $this->deleteJson('/api/memos/'.$memo->id)->assertStatus(409);
     }
 
+    public function test_other_users_memos_are_inaccessible_on_every_endpoint(): void
+    {
+        $this->user();
+        $other = Memo::factory()->create();
+        foreach (['', '/preview', '/status', '/export/pdf', '/export/docx'] as $suffix) {
+            $this->getJson('/api/memos/'.$other->id.$suffix)->assertNotFound();
+        }
+        $this->putJson('/api/memos/'.$other->id, ['title' => 'No'])->assertNotFound();
+        $this->deleteJson('/api/memos/'.$other->id)->assertNotFound();
+        $this->postJson('/api/memos/'.$other->id.'/upload-audio')->assertNotFound();
+        $this->getJson('/api/memos')->assertJsonCount(0, 'data.items');
+    }
+
     public function test_search_filters_pagination_and_optional_date_to(): void
     {
         $user = $this->user();
@@ -275,6 +288,19 @@ class MemoApiTest extends TestCase
             $this->assertStringNotContainsString($forbidden, $clean);
         }
         $this->assertStringContainsString('Link', $clean);
+    }
+
+    public function test_deleting_a_memo_removes_its_private_audio(): void
+    {
+        Storage::fake('local');
+        Storage::disk('local')->put('audio/test.wav', 'bytes');
+        $user = $this->user();
+        $memo = Memo::factory()->for($user)->create(['status' => 'completed']);
+        AudioJob::factory()->for($memo)->create(['status' => 'completed']);
+        $this->deleteJson('/api/memos/'.$memo->id)->assertOk();
+        $this->assertDatabaseMissing('memos', ['id' => $memo->id]);
+        $this->assertDatabaseCount('audio_jobs', 0);
+        Storage::disk('local')->assertMissing('audio/test.wav');
     }
 
     public function test_missing_callbacks_expire_and_allow_retry(): void

@@ -7,6 +7,119 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Nome: one Laravel application
+
+The Blade/Alpine frontend and JSON API live together in this application.
+Authentication is login-only, with identical features for all users and memo ownership
+enforced on every protected endpoint. No roles or approval workflow are implemented.
+
+### Run locally
+
+Run commands from `my-app/`. For an existing installation, keep your current `.env`
+and application key:
+
+```sh
+composer install
+npm ci
+php artisan migrate
+npm run build
+php artisan nome:user your-email@example.com --name="Your Name"
+composer dev
+```
+
+The account command prompts for a password twice without echoing it or putting it in
+shell history. It will not overwrite an existing account. On a fresh checkout, copy
+`.env.example` to `.env` and run `php artisan key:generate` before migration.
+The browser stores its Bearer token in sessionStorage for the current tab, for at most
+seven days. Logout revokes the token and clears the local draft.
+
+The dev command starts the HTTP server, queue worker, Vite and scheduler together.
+To run them individually, use separate terminals:
+
+```sh
+composer serve
+npm run dev
+php artisan queue:work --timeout=65 --tries=1
+php artisan schedule:work
+```
+
+The development server sets upload_max_filesize=100M and post_max_size=110M.
+Configure equivalent PHP and HTTP request-body limits on the production host.
+
+### Completion checklist
+
+- [x] Login, current user, logout, seven-day token expiry, login throttling.
+- [x] Per-user memo CRUD, UUID URLs, pagination, date/status/search filters.
+- [x] Agenda and meeting end time saved in create/update/preview/export.
+- [x] Letter metadata and participants; list includes letter number and attendee count.
+- [x] Private audio upload with MIME/extension validation and a 100 MiB limit.
+- [x] Queued AI submission adapter, status polling, authenticated HMAC callback.
+- [x] Duplicate/stale callback protection, timeout recovery, version conflicts.
+- [x] Sanitized summary editing and actual PDF/DOCX downloads.
+- [x] Frontend uses server data; no simulated login, history or export.
+- [x] Unsupported registration/reset/settings flows show account guidance.
+- [x] API, JavaScript and browser workflow checks.
+- [ ] Supply and verify the actual external AI endpoint, credentials and callback secret.
+- [ ] Run an end-to-end test against the real AI service (automated tests mock it).
+- [ ] Configure production database, persistent private audio storage, queue worker and scheduler.
+- [x] Patched the existing Symfony advisories; Composer reports no known advisories.
+
+### AI adapter boundary
+
+The backend team's handoff defines the callback, but not the AI submission endpoint.
+The adapter in `app/Jobs/ProcessAudio.php` makes this explicit:
+
+- `NOME_AI_URL`: exact HTTPS audio-submission URL.
+- `NOME_AI_API_KEY`: optional outbound Bearer credential.
+- `NOME_WEBHOOK_SECRET`: a strong random secret provisioned separately on both services.
+- `NOME_CALLBACK_URL`: externally reachable URL ending in `/api/webhooks/nome-callback`.
+- `NOME_JOB_TIMEOUT_MINUTES`: default 120.
+
+The worker sends multipart fields `audio`, `job_id` and `callback_url`, with
+`Idempotency-Key: <job_id>`. The AI service must accept our job ID and return promptly
+with a 2xx acknowledgement. If the real service uses a different submission contract,
+adapt this job after receiving its documentation. The callback sends JSON with
+`job_id`, `status`, optional `transcript`, and `structured_minutes` (Markdown, required
+on completion). `X-Webhook-Signature` must contain lowercase hexadecimal HMAC SHA-256
+of the exact raw JSON bytes using the shared secret. Query-string secrets are rejected.
+The frontend never receives the AI key or callback secret.
+
+Without AI configuration, uploading returns 503 and preserves the existing memo.
+If a submission fails or its callback times out, the memo becomes `failed` and can
+be uploaded again. Previous results survive failures and are replaced only on a
+successful new completion. Editing/deletion is blocked during processing.
+
+All meeting wall-clock values use WITA. End time may be earlier than start time
+for overnight meetings; this version does not calculate meeting duration.
+
+### API and tests
+
+Import `Notulensi_API.postman_collection.json` into Postman. Supply credentials in
+your local environment; do not export populated secrets. Select the audio file
+before running. Run with a 5000 ms request delay for bounded status polling.
+`simulate_ai=true` enables a signed test-only callback; keep the real worker stopped
+for this local simulation. `allow_cleanup=true` enables permanent deletion of the
+test memo; it is skipped by default. Logout runs last.
+
+The contract extends the original handoff with `agenda`, `meeting_end_time`,
+`letter_number`, `attendees_count`, and integer `version`. Send the last received
+version with PUT to reject stale edits (409). Omitting attendees preserves them;
+sending an array replaces the complete list. `letter: null` removes the letter.
+Summary HTML is sanitized on save and rendering; exports omit styling attributes.
+
+```sh
+php artisan test --compact
+node --test --experimental-test-coverage tests/js/*.test.js
+vendor/bin/pint --test
+npm run build
+```
+
+The existing Vercel file is not a complete production backend deployment: a temporary
+SQLite database and temporary audio filesystem cannot provide durable meeting data,
+and a queue worker/scheduler must run outside short-lived requests. Provision a
+persistent Laravel host or the necessary managed services before deploying. Configure
+APP_KEY and other secrets on the host; no application key is embedded in vercel.json.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
@@ -56,7 +169,3 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-## Dependency and deployment security
-
-The existing Symfony runtime advisories have been patched. Configure APP_KEY on the host; it is not embedded in deployment configuration. Production requires durable database and private audio storage rather than temporary SQLite defaults.
