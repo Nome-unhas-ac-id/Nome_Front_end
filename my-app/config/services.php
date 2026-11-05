@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'nome' => [
+        'url' => env('NOME_AI_URL'),
+        'api_key' => env('NOME_AI_API_KEY'),
+        'webhook_secret' => env('NOME_WEBHOOK_SECRET'),
+        'callback_url' => env('NOME_CALLBACK_URL'),
+        'job_timeout_minutes' => (int) env('NOME_JOB_TIMEOUT_MINUTES', 120),
+    ],
 
     /*
     |--------------------------------------------------------------------------
