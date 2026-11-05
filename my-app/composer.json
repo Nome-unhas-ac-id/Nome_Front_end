@@ -3,10 +3,7 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": [
-        "laravel",
-        "framework"
-    ],
+    "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
         "php": "^8.3",
@@ -49,7 +46,11 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "@php artisan dev"
+            "npx concurrently --kill-others --names=server,queue,vite,scheduler \"composer serve\" \"php artisan queue:work --timeout=65 --tries=1\" \"npm run dev\" \"php artisan schedule:work\""
+        ],
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "cd public && php -d upload_max_filesize=100M -d post_max_size=110M -S 127.0.0.1:8000 ../vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php"
         ],
         "test": [
             "@php artisan config:clear --ansi @no_additional_args",
