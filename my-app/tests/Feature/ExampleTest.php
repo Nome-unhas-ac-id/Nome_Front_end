@@ -30,4 +30,37 @@ class ExampleTest extends TestCase
         $this->get('/signup')->assertStatus(200)->assertSee('Buat Akun');
         $this->get('/forgot-password')->assertStatus(200)->assertSee('Lupa Kata Sandi?');
     }
+
+    public function test_memo_form_includes_letter_fields_and_honest_draft_actions(): void
+    {
+        $this->get('/add-memo')
+            ->assertOk()
+            ->assertSee('Nomor Surat')
+            ->assertSee('Pangkat Penandatangan')
+            ->assertSee('Simpan Draf di Tab Ini')
+            ->assertSee('Maksimal 100 MB')
+            ->assertDontSee('500 MB');
+    }
+
+    public function test_local_draft_preview_does_not_show_sample_ai_results(): void
+    {
+        $this->get('/preview?draft=1')
+            ->assertOk()
+            ->assertViewIs('draft-preview')
+            ->assertSee('Kembali Sunting Draf')
+            ->assertDontSee('confidence_score')
+            ->assertDontSee('Rapat Sinkronisasi Rencana Kerja');
+
+        $this->get('/preview')->assertOk()->assertViewIs('preview');
+    }
+
+    public function test_history_filters_match_the_documented_processing_states(): void
+    {
+        $this->get('/history')
+            ->assertOk()
+            ->assertSee("selectedStatus = 'pending'", false)
+            ->assertSee("selectedStatus = 'processing'", false)
+            ->assertSee("selectedStatus = 'failed'", false)
+            ->assertDontSee('selectedCategory');
+    }
 }
