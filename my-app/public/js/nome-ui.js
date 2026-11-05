@@ -32,7 +32,6 @@ export function registerNome(Alpine) {
             this.authLoading = false;
             return this.api;
         },
-        setLoggedIn(value) { if (value) location.assign('/login'); else return this.logout(); },
         async logout() {
             try { await this.api.request('auth/logout', { method: 'POST' }); }
             finally {
