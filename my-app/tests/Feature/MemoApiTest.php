@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\TestResponse;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -139,4 +140,28 @@ class MemoApiTest extends TestCase
         $this->getJson('/api/memos?per_page=51&status=review')->assertUnprocessable();
     }
 
+    public function test_upload_rejects_bad_files_and_missing_ai_configuration_without_changing_memo(): void
+    {
+        Storage::fake('local');
+        $user = $this->user();
+        $memo = Memo::factory()->for($user)->create();
+        $this->post('/api/memos/'.$memo->id.'/upload-audio', ['audio' => UploadedFile::fake()->createWithContent('wrong.mp3', 'not audio')->mimeType('text/plain')], ['Accept' => 'application/json'])->assertUnprocessable();
+        config(['services.nome.url' => null]);
+        $this->post('/api/memos/'.$memo->id.'/upload-audio', ['audio' => $this->audio()], ['Accept' => 'application/json'])->assertStatus(503);
+        $this->assertSame('draft', $memo->fresh()->status);
+        $this->assertCount(0, Storage::disk('local')->allFiles());
+    }
+
+    public function test_oversized_upload_is_rejected_and_empty_letter_round_trips(): void
+    {
+        $this->aiConfig();
+        $user = $this->user();
+        $memo = Memo::factory()->for($user)->create(['letter' => []]);
+        $this->post('/api/memos/'.$memo->id.'/upload-audio', ['audio' => $this->audio()->size(102401)], ['Accept' => 'application/json'])
+            ->assertUnprocessable();
+        $response = $this->getJson('/api/memos/'.$memo->id.'/preview')->assertOk();
+        $this->assertIsObject(json_decode($response->getContent())->data->letter);
+        $this->putJson('/api/memos/'.$memo->id, ['version' => '1', 'letter' => ['subject' => 'Now filled']])
+            ->assertOk()->assertJsonPath('data.letter.subject', 'Now filled');
+    }
 }
